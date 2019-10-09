@@ -15,6 +15,8 @@ import { FeedComponent } from './components/feed/feed.component';
 import { HomeComponent } from './components/home/home.component';
 import { SocialComponent } from './components/social/social.component';
 import { GroupsComponent } from './components/social/groups/groups.component';
+import { ImprintComponent } from './components/imprint/imprint.component';
+import { AboutComponent } from './components/about/about.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
@@ -25,6 +27,8 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     DocumentComponent,
     RegisterComponent,
     LoginComponent,
+    ImprintComponent,
+    AboutComponent,
     AppScaffoldComponent,
     ChatComponent,
     FriendsComponent,

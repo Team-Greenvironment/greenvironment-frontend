@@ -5,12 +5,12 @@ import {Registration} from '../../models/registration';
 @Component({
   selector: 'registration',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
-})
+  styleUrls: ['./register.component.sass']
+})/*
 export class RegisterComponent implements OnInit {
   registration: Registration
-
-  constructor(private registerService: RegisterService) { }
+ 
+  constructor(private registerService: RegisterService) {}
 
   onClickSubmit(pUsername: string, pEmail: string, pPasswordHash: string) {
     this.registration.username = pUsername
@@ -19,6 +19,14 @@ export class RegisterComponent implements OnInit {
 
     this.registerService.register(this.registration)
   }
+
+  ngOnInit() {}
+
+}
+*/
+export class RegisterComponent implements OnInit {
+
+  constructor() { }
 
   ngOnInit() {
   }
