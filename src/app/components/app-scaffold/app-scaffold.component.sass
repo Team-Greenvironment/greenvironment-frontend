@@ -1,0 +1,37 @@
+@import '../../../styles/mixins.sass'
+@import '../../../styles/vars.sass'
+
+button
+  border: 2px solid $cHeadPrimaryBackground
+  margin-top: 0.125em
+  padding: 0.125em
+  background-color: $cHeadPrimaryBackground
+  color: $cHeadFontColor
+  font-weight: bold
+  transition-duration: 0.25s
+
+button:hover
+  background-color: lighten($cHeadPrimaryBackground, 10%)
+  cursor: pointer
+
+button:active
+  background-color: darken($cHeadPrimaryBackground, 5%)
+  box-shadow: inset 0.25em 0.25em 0.1em rgba(0, 0, 0, 0.25)
+
+h1
+  @include gridPosition(1, 2, 1, 2)
+  line-height: 100%
+  margin-left: 0.5em
+  margin-top: 0.25em
+
+#tab-home
+  @include gridPosition(1, 2, 2, 3)
+
+#tab-profile
+  @include gridPosition(1, 2, 3, 4)
+
+#tab-rank
+  @include gridPosition(1, 2, 4, 5)
+
+#logoutbutton
+  @include gridPosition(1, 2, 8, 9)
