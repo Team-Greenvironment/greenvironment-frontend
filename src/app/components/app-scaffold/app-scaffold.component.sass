@@ -1,0 +1,64 @@
+@import '../../../styles/mixins.sass'
+@import '../../../styles/vars.sass'
+
+button
+  border: 2px solid $cHeadPrimaryBackground
+  margin-top: 0.125em
+  padding: 0.125em
+  background-color: $cHeadPrimaryBackground
+  color: $cHeadFontColor
+  font-weight: bold
+  transition-duration: 0.25s
+
+button:hover
+  background-color: lighten($cHeadPrimaryBackground, 10%)
+  cursor: pointer
+
+button:active
+  background-color: darken($cHeadPrimaryBackground, 5%)
+  box-shadow: inset 0.25em 0.25em 0.1em rgba(0, 0, 0, 0.25)
+
+h1
+  @include gridPosition(1, 2, 1, 2)
+  line-height: 100%
+  margin-left: 0.5em
+  margin-top: 0.25em
+
+#tab-home
+  @include gridPosition(1, 2, 2, 3)
+
+#tab-profile
+  @include gridPosition(1, 2, 3, 4)
+
+#tab-rank
+  @include gridPosition(1, 2, 4, 5)
+
+#tab-about
+  @include gridPosition(1, 2, 5, 6)
+
+#tab-about
+  @include gridPosition(1, 2, 6, 7)
+
+#dropdown
+  @include gridPosition(1, 2, 7, 8)
+  display: flex
+  align-items: center
+  margin-left: 2em
+  span
+    margin-left: 1em
+  #dropdown-content
+    display: none
+    position: absolute
+    background-color: #f9f9f9
+    min-width: 160px
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2)
+    padding: 12px 16px
+    z-index: 1
+  div:hover
+    background-color: lighten($cHeadPrimaryBackground, 10%)
+    cursor: pointer
+  div:hover #dropdown-content
+  display: block
+
+#logoutbutton
+  @include gridPosition(1, 2, 8, 9)

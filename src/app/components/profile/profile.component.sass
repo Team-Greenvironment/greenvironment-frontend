@@ -1,0 +1,25 @@
+@import '../../../styles/mixins.sass'
+@import '../../../styles/vars.sass'
+
+#headerbar
+  @include gridPosition(1, 2, 1, 4)
+  display: grid
+  grid-template: 100% /30% 10% 10% 10% 10% 10% 10% 10%
+  background-color: $cHeadPrimaryBackground
+  color: $cHeadFontColor
+
+#chatcontainer
+  @include gridPosition(2, 3, 1, 2)
+  background-color: $cBoxBodyBackground
+
+#feedcontainer
+  @include gridPosition(2, 3, 2, 3)
+  display: grid
+  grid-template: 10% 90% /100%
+  background-color: $cSecondaryBackground
+
+#socialcontainer
+  @include gridPosition(2, 3, 3, 4)
+  display: grid
+  grid-template: 50% 50% /100%
+  background-color: $cBoxBodyBackground

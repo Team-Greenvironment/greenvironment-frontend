@@ -1,0 +1,25 @@
+<div id="register">
+  <div id="registercontainer">
+      <table style="width:100%">
+          <tr>
+            <td>username: </td>
+            <td><input #username type="text" name="username" username.value=''><br></td>
+          </tr>
+          <tr>
+            <td>email:</td>
+            <td><input #email type="text" name="email"><br></td>
+          </tr>
+          <tr>
+              <td>password:</td>
+              <td> <input #password type="text" name="password"><br></td>
+            </tr>
+          <tr>
+              <td>repeat password:</td>
+              <td> <input #repeatpassword type="text" name="repeatpassword"><br></td>
+          </tr>
+        </table>
+    <button type="registerbutton" (click)="onClickSubmit(username.value,email.value,password.value, repeatpassword.value)">Register</button>
+    <br>
+    <a href="/login">You are already part of greenvironment? - login</a>
+  </div>
+</div>

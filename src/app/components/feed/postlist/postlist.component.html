@@ -1,0 +1,19 @@
+<div class="feeditem" *ngFor = "let post of childPostList">
+  <div class="itemhead">
+    <div class="usertag">
+      <span class="title">{{post.username}}</span>
+      <span class="handle"><a href="#">{{post.handle}}</a></span>
+    </div>
+    <span class="date">{{post.date}}</span>
+  </div>
+  <div class="itembody">
+    <div class='text'>
+        <p>{{post.message}}</p>
+    </div>
+    <div class="vote">
+        <button id="down" type='submit'><span><i class="fa fa-thumbs-o-down fa-2x" aria-hidden="true"></i></span></button>
+        <button id="up" type='submit'><span><i class="fa fa-thumbs-o-up fa-2x" aria-hidden="true"></i></span></button>
+        <span id="votecounter"> Votes: {{post.votes}}</span>
+    </div>
+  </div>
+</div>

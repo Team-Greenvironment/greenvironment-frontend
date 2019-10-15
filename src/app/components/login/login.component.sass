@@ -1,0 +1,18 @@
+@import '../../../styles/mixins.sass'
+@import '../../../styles/vars.sass'
+
+#login
+  background-color:  $cSecondaryBackground
+  grid-template: 15% 70% 15% / 15% 70% 15% 
+  display: grid
+  min-height: 100vh
+  max-height: 100vh
+    
+#logincontainer
+    @include gridPosition(2, 2,2,2)
+    grid-template: 15% 15% 15% 15% 15% 15% / 100%
+    background-color: $cPrimaryBackground
+input
+    margin: 0.25em
+#header
+    @include gridPosition(1, 2, 1, 2)
