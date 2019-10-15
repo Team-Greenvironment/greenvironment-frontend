@@ -1,0 +1,24 @@
+@import '../../../../styles/mixins.sass'
+@import '../../../../styles/vars.sass'
+@import '../social.component.sass'
+
+#groupslist
+  overflow: auto
+  @include gridPosition(2, 3, 1, 2)
+  .groupitem
+    background-color: $cPrimaryBackground
+    height: 3em
+    margin: 0.2em
+    padding: 0.25em
+    border-radius: 0.25em
+    border: solid
+    display: flex;
+    .groupname
+      font-weight: bold
+      text-align: left
+      border: solid
+      width: 60%
+      padding-left: 1em
+      margin: auto
+      span
+        font-size: 125%
