@@ -1,17 +1,19 @@
+
 <div id="login">
   <div id="logincontainer">
     <table style="width:100%">
       <tr>
-        <td>username: </td>
-        <td><input type="inputBox" name="username"><br></td>
+        <td>email: </td>
+        <td><input #email type="text" name="email"><br></td>
       </tr>
       <tr>
           <td>password:</td>
-          <td> <input type="text" name="password"><br></td>
+          <td> <input #password type="password" name="password"><br></td>
         </tr>
     </table>
-      <button type="loginbutton">Login</button>
+      <button type="loginbutton" (click)="onClickSubmit(email.value,password.value)">Login</button>
       <br>
     <a href="/register">You aren´t part of greenvironment yet? - join us here</a>
   </div>
 </div>
+
