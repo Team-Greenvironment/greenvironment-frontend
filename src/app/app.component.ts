@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from './models/user';
+import { DatasharingService } from './services/datasharing.service';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  constructor() { }
+  constructor(private data: DatasharingService) { }
+
+  userInfo: User
 
   loggedIn : boolean = false;
   userID : number;
@@ -22,5 +26,7 @@ export class AppComponent implements OnInit {
 
   requestIDs : number[];
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.data.currentUserInfo.subscribe(user => this.userInfo = user)
+  }
 }

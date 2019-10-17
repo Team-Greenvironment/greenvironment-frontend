@@ -1,15 +1,15 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import {Http, URLSearchParams, Headers} from '@angular/http';
 import { Login } from '../../models/login';
+import { User } from 'src/app/models/user';
+import { DatasharingService } from '../datasharing.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http: Http) { }
-
-  @Output() showChatEvent = new EventEmitter<Chatinfo>();
+  constructor(private http: Http, private data: DatasharingService) { }
 
   public login(login : Login) {
  
@@ -22,12 +22,12 @@ export class LoginService {
     return this.http.post(url, this.buildJson(login))
       .subscribe(response => {
         console.log(response.text());
-        this.saveUserData(response.json())
+        this.updateUserInfo(response.json())
       });
   }
 
-  public saveUserData(text : any){
-    app = text.name;
+  public updateUserInfo(pUserInfo : User){
+    this.data.changeUserInfo(pUserInfo)
     
   }
 
