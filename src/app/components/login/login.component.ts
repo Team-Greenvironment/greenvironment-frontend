@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Login } from 'src/app/models/login';
 import { LoginService } from 'src/app/services/login/login.service';
+import { RouterLink } from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,17 +11,27 @@ import { LoginService } from 'src/app/services/login/login.service';
 })
 export class LoginComponent implements OnInit {
   login: Login
+  errorOccurred: boolean = false;
+  errorMessage: string;
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: LoginService,private router: Router) {
     this.login = {passwordHash: null, email: null};
   }
 
+  public loginError(error : any){
+    console.log(error.errors[0].message);
+    this.errorOccurred = true;
+    this.errorMessage = error.errors[0].message;
+  }
+
   onClickSubmit(pEmail: string, pPasswordHash: string) {
-    console.log('email: ' + pEmail); 
+    console.log('try to login with mail adress:' + pEmail); 
+    this.errorOccurred = false;
+    this.errorMessage = " ";
     this.login.email = pEmail
     this.login.passwordHash = pPasswordHash 
 
-    this.loginService.login(this.login)
+    this.loginService.login(this.login, error => this.loginError(error.json()));
   }
 
   ngOnInit() {}
