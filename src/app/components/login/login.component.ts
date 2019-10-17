@@ -9,7 +9,8 @@ import { LoginService } from 'src/app/services/login/login.service';
 })
 export class LoginComponent implements OnInit {
   login: Login 
- 
+  user: User
+
   constructor(private loginService: LoginService) {
     this.login = {passwordHash: null, email: null};
   }
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
 
     this.loginService.login(this.login)
   }
+
   ngOnInit() {}
 }
 

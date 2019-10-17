@@ -8,5 +8,19 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   constructor() { }
 
+  loggedIn : boolean = false;
+  userID : number;
+  username : string;
+  handle : string;
+  email : string;
+  points : number;
+  level : number;
+
+  friendIDs : number[];
+  groupIDs : number[];
+  chatIDs : number[];
+
+  requestIDs : number[];
+
   ngOnInit() { }
 }
