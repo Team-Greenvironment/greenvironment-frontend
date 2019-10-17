@@ -8,8 +8,7 @@ import { LoginService } from 'src/app/services/login/login.service';
   styleUrls: ['./login.component.sass']
 })
 export class LoginComponent implements OnInit {
-  login: Login 
-  user: User
+  login: Login
 
   constructor(private loginService: LoginService) {
     this.login = {passwordHash: null, email: null};

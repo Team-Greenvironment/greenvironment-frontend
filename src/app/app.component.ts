@@ -27,6 +27,9 @@ export class AppComponent implements OnInit {
   requestIDs : number[];
 
   ngOnInit() {
-    this.data.currentUserInfo.subscribe(user => this.userInfo = user)
+    this.data.currentUserInfo.subscribe(user => {
+      this.userInfo = user;
+      console.log(this.userInfo);
+    })
   }
 }

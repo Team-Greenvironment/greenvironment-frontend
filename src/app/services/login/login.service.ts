@@ -3,6 +3,7 @@ import {Http, URLSearchParams, Headers} from '@angular/http';
 import { Login } from '../../models/login';
 import { User } from 'src/app/models/user';
 import { DatasharingService } from '../datasharing.service';
+import { userInfo } from 'os';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,21 @@ export class LoginService {
       });
   }
 
-  public updateUserInfo(pUserInfo : User){
-    this.data.changeUserInfo(pUserInfo)
+  public updateUserInfo(response : any){
+    const user: User = new User();
+    user.loggedIn = true;
+    user.userID = response.data.login.id;
+    user.username = response.data.login.name;
+    user.handle = response.data.login.handle;
+    user.email = response.data.login.email;
+    user.points = response.data.login.points;
+    user.level = response.data.login.level;
+    user.friendIDs = response.data.login.friends;
+    user.groupIDs = response.data.login.groups;
+    user.chatIDs = response.data.login.chats;
+    user.requestIDs = response.data.login.requests;
+
+    this.data.changeUserInfo(user)
     
   }
 
