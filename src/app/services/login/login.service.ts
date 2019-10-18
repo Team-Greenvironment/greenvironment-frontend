@@ -4,15 +4,16 @@ import { Login } from '../../models/login';
 import { User } from 'src/app/models/user';
 import { DatasharingService } from '../datasharing.service';
 import { userInfo } from 'os';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private http: Http, private data: DatasharingService) { }
+  constructor(private http: Http, private data: DatasharingService,private router: Router) { }
 
-  public login(login : Login) {
+  public login(login : Login, errorCb: any) {
  
     //let url = './graphql'
     let url = 'https://greenvironment.net/graphql'
@@ -23,8 +24,15 @@ export class LoginService {
     return this.http.post(url, this.buildJson(login))
       .subscribe(response => {
         console.log(response.text());
+        this.loginSuccess();
         this.updateUserInfo(response.json())
-      });
+      }, errorCb
+      );
+  }
+  public loginSuccess(){
+    console.log('alles supi dupi');
+    //do routing
+    this.router.navigateByUrl('');
   }
 
   public updateUserInfo(response : any){
