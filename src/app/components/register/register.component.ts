@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {RegisterService} from '../../services/register/register.service';
 import {Registration} from '../../models/registration';
+import {Router} from '@angular/router';
+import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'registration',
@@ -9,6 +11,8 @@ import {Registration} from '../../models/registration';
 })
 export class RegisterComponent implements OnInit {
   registration: Registration 
+  errorOccurred: boolean = false;
+  errorMessage: string;
  
   constructor(private registerService: RegisterService) {
     this.registration = {username: null, passwordHash: null, email: null};
@@ -22,7 +26,8 @@ export class RegisterComponent implements OnInit {
       console.log('password same');  
     this.registration.username = pUsername
     this.registration.email = pEmail
-    this.registration.passwordHash = pPasswordHash 
+    const md5 = new Md5();
+    this.registration.passwordHash = md5.appendStr(pPasswordHash).end() as string
 
     this.registerService.register(this.registration)
     } else{console.log('password NOT same'); }

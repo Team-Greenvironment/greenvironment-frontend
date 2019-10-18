@@ -3,6 +3,7 @@ import { Login } from 'src/app/models/login';
 import { LoginService } from 'src/app/services/login/login.service';
 import { RouterLink } from '@angular/router';
 import {Router} from '@angular/router';
+import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
     this.errorOccurred = false;
     this.errorMessage = " ";
     this.login.email = pEmail
-    this.login.passwordHash = pPasswordHash 
+    const md5 = new Md5();
+    this.login.passwordHash = md5.appendStr(pPasswordHash).end() as string
 
     this.loginService.login(this.login, error => this.loginError(error.json()));
   }
