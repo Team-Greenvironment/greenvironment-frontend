@@ -15,10 +15,11 @@
             </tr>
           <tr>
               <td>repeat password:</td>
-              <td> <input #repeatpassword type="text" name="repeatpassword"><br></td>
+              <td> <input #repeatpassword type="password" name="repeatpassword"><br></td>
           </tr>
         </table>
     <button type="registerbutton" (click)="onClickSubmit(username.value,email.value,password.value, repeatpassword.value)">Register</button>
+    <p *ngIf="errorOccurred">{{errorMessage}}</p>
     <br>
     <a href="/login">You are already part of greenvironment? - login</a>
   </div>
