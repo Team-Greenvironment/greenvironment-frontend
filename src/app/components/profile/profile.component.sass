@@ -1,25 +1,18 @@
 @import '../../../styles/mixins.sass'
 @import '../../../styles/vars.sass'
 
-#headerbar
-  @include gridPosition(1, 2, 1, 4)
+#profile
+  background-color:  $cSecondaryBackground
+  grid-template: 3% 94% 3% / 10% 80% 10% 
   display: grid
-  grid-template: 100% /30% 10% 10% 10% 10% 10% 10% 10%
-  background-color: $cHeadPrimaryBackground
-  color: $cHeadFontColor
+  min-height: 100vh
+  max-height: 100vh
 
-#chatcontainer
-  @include gridPosition(2, 3, 1, 2)
-  background-color: $cBoxBodyBackground
+#profilecontainer
+  @include gridPosition(2, 2,2,2)
+  //grid-template: 15% 15% 15% 15% 15% 15% / 100%
+  background-color: $cPrimaryBackground
+  padding: 1em
 
-#feedcontainer
-  @include gridPosition(2, 3, 2, 3)
-  display: grid
-  grid-template: 10% 90% /100%
-  background-color: $cSecondaryBackground
-
-#socialcontainer
-  @include gridPosition(2, 3, 3, 4)
-  display: grid
-  grid-template: 50% 50% /100%
-  background-color: $cBoxBodyBackground
+th
+  text-align: left
