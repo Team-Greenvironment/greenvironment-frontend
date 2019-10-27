@@ -15,6 +15,7 @@ export class ProfileComponent implements OnInit {
   levellist: Levellist = new Levellist();
   user: User = new User()
   id : string
+  rankname: string;
   profileNotFound : boolean = false;
   constructor(private router: Router,private http: Http) { }
   
@@ -43,6 +44,7 @@ export class ProfileComponent implements OnInit {
       this.user.handle = response.data.getUser.handle;
       this.user.points = response.data.getUser.points;
       this.user.level = response.data.getUser.level;
+      this.rankname = this.levellist.getLevelName(this.user.level);
       this.user.friendIDs = response.data.getUser.friends;
     } else{
       this.profileNotFound = true;
