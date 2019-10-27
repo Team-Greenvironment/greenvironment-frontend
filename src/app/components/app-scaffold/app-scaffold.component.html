@@ -1,6 +1,6 @@
 <h1>Greenvironment</h1>
   <button id="tab-home" routerLink="">Home</button>
-  <button id="tab-profile" routerLink="/profile" *ngIf="loggedIn">Profile</button>
+  <button id="tab-profile" routerLink={{profileUrl}} *ngIf="loggedIn">Profile</button>
   <button id="tab-rank" *ngIf="loggedIn">Rank</button>
   <button id="tab-about" routerLink="/about">About</button>
   <button id="tab-imprint" routerLink="/imprint">Imprint</button>
