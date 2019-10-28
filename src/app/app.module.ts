@@ -25,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ImprintComponent } from './components/imprint/imprint.component';
 import { AboutComponent } from './components/about/about.component';
+import { ChatcontactsComponent } from './components/chatmanager/chatcontacts/chatcontacts.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
@@ -53,6 +54,7 @@ const appRoutes: Routes = [
     GroupsComponent,
     ChatmanagerComponent,
     ChatlistComponent,
+    ChatcontactsComponent,
     PostlistComponent,
     ImprintComponent,
     AboutComponent,

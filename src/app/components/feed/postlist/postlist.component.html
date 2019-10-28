@@ -1,19 +1,20 @@
-<div class="feeditem" *ngFor = "let post of childPostList">
+<div class="feeditem" *ngFor = "let post of childPostList" [class.selected]="post === selectedPost">
   <div class="itemhead">
     <div class="usertag">
-      <span class="title">{{post.username}}</span>
-      <span class="handle"><a href="#">{{post.handle}}</a></span>
+      <span class="title">{{post.author.name}}</span>
+      <span class="handle"><a href="#">@{{post.author.handle}}</a></span>
     </div>
     <span class="date">{{post.date}}</span>
   </div>
   <div class="itembody">
     <div class='text'>
-        <p>{{post.message}}</p>
+        <p>{{post.content}}</p>
     </div>
     <div class="vote">
-        <button id="down" type='submit'><span><i class="fa fa-thumbs-o-down fa-2x" aria-hidden="true"></i></span></button>
-        <button id="up" type='submit'><span><i class="fa fa-thumbs-o-up fa-2x" aria-hidden="true"></i></span></button>
-        <span id="votecounter"> Votes: {{post.votes}}</span>
+        <button id="down" type='submit'><span><i class="fa fa-thumbs-o-down fa-2x" aria-hidden="true" (click)="voteDown(post)"></i></span></button>
+        <button id="up" type='submit'><span><i class="fa fa-thumbs-o-up fa-2x" aria-hidden="true" (click)="voteUp(post)"></i></span></button>
+        <span id="downvotes">{{post.downvotes}}</span>
+        <span id="upvotes">{{post.upvotes}}</span>
     </div>
   </div>
 </div>
