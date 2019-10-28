@@ -39,7 +39,7 @@ export class SelfService {
   public notLoggedIn(){
     console.log('user was not logged in');
     //do routing
-    this.router.navigateByUrl('/login');
+    //this.router.navigateByUrl('/login');
   }
 
   public updateUserInfo(response : any){
@@ -60,8 +60,8 @@ export class SelfService {
   }
 
   public buildJson(): any {
-    const body =  {query: `query() {
-      getSelf(){id, name, handle, points, level, friends{id}, groups{id},chats{id}} 
+    const body =  {query: `{
+      getSelf{id, name,email, handle, points, level, friends{id}, groups{id},chats{id}} 
     }`, variables: {
       }};
     return body;

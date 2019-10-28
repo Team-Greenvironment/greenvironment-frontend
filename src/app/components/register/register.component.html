@@ -1,6 +1,6 @@
 <div id="register">
   <div id="registercontainer">
-      <table style="width:100%">
+      <table style="width:100%" (keyup.enter)="onClickSubmit(username.value,email.value,password.value, repeatpassword.value)">
           <tr>
             <td>username: </td>
             <td><input #username type="text" name="username" username.value=''><br></td>
@@ -20,6 +20,7 @@
         </table>
     <button type="registerbutton" (click)="onClickSubmit(username.value,email.value,password.value, repeatpassword.value)">Register</button>
     <p *ngIf="errorOccurred">{{errorMessage}}</p>
+    <br>
     <br>
     <a href="/login">You are already part of greenvironment? - login</a>
   </div>
