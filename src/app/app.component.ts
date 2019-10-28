@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from './models/user';
 import { DatasharingService } from './services/datasharing.service';
+import { SelfService } from './services/selfservice/self.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,7 @@ import { DatasharingService } from './services/datasharing.service';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  constructor(private data: DatasharingService) { }
+  constructor(private data: DatasharingService, private selfservice: SelfService) { }
 
   userInfo: User
 
@@ -32,5 +33,8 @@ export class AppComponent implements OnInit {
       console.log(this.userInfo);
       this.data.changeChatIDs(this.chatIDs)
     })
+    if(this.loggedIn != true){
+      this.selfservice.checkIfLoggedIn();
+    }
   }
 }

@@ -1,7 +1,7 @@
 
 <div id="login">
   <div id="logincontainer">
-    <table style="width:100%">
+    <table style="width:100%" (keyup.enter)="onClickSubmit(email.value,password.value)">
       <tr>
         <td>email: </td>
         <td><input #email type="text" name="email"><br></td>
@@ -11,8 +11,9 @@
           <td> <input #password type="password" name="password"><br></td>
         </tr>
     </table>
-      <button type="loginbutton" (click)="onClickSubmit(email.value,password.value)">Login</button>
+      <button type="loginbutton" (onClick)="onClickSubmit(email.value,password.value)">Login</button>
       <p *ngIf="errorOccurred">{{errorMessage}}</p>
+      <br>
       <br>
     <a href="/register">You aren´t part of greenvironment yet? - join us here</a>
   </div>

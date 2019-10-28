@@ -14,20 +14,14 @@ export class AppScaffoldComponent implements OnInit {
   userId: number;
   profileUrl: string;
 
-  constructor(private data: DatasharingService,private selfservice: SelfService) { }
+  constructor(private data: DatasharingService) { }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       this.loggedIn = user.loggedIn;
       this.userId = user.userID;
       this.profileUrl = '/profile/' + this.userId;
-      console.log(user.loggedIn);
-    })
-    if(this.loggedIn != true){
-      console.log('user is not logged in');
-      this.selfservice.checkIfLoggedIn;
-    };
-    console.log('loggedIn is ' + this.loggedIn)
+    })    
   }
 
 }

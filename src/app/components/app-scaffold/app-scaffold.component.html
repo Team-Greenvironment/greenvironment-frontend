@@ -1,9 +1,9 @@
 <h1>Greenvironment</h1>
   <button id="tab-home" routerLink="">Home</button>
   <button id="tab-profile" routerLink={{profileUrl}} *ngIf="loggedIn">Profile</button>
-  <button id="tab-rank" *ngIf="loggedIn">Rank</button>
   <button id="tab-about" routerLink="/about">About</button>
   <button id="tab-imprint" routerLink="/imprint">Imprint</button>
+  <button id="tab-login" routerLink="/login" *ngIf="loggedIn != true">Login</button>
   <div id="dropdown" *ngIf="loggedIn">
     <div>
       <span><i class="fa fa-caret-down" aria-hidden="true"></i></span>
