@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Login } from 'src/app/models/login';
 import { LoginService } from 'src/app/services/login/login.service';
+import { RouterLink } from '@angular/router';
+import {Router} from '@angular/router';
+import {Md5} from 'ts-md5/dist/md5';
 
 @Component({
   selector: 'app-login',
@@ -9,17 +12,28 @@ import { LoginService } from 'src/app/services/login/login.service';
 })
 export class LoginComponent implements OnInit {
   login: Login
+  errorOccurred: boolean = false;
+  errorMessage: string;
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: LoginService,private router: Router) {
     this.login = {passwordHash: null, email: null};
   }
 
-  onClickSubmit(pEmail: string, pPasswordHash: string) {
-    console.log('email: ' + pEmail); 
-    this.login.email = pEmail
-    this.login.passwordHash = pPasswordHash 
+  public loginError(error : any){
+    console.log(error.errors[0].message);
+    this.errorOccurred = true;
+    this.errorMessage = error.errors[0].message;
+  }
 
-    this.loginService.login(this.login)
+  onClickSubmit(pEmail: string, pPasswordHash: string) {
+    console.log('try to login with mail adress:' + pEmail); 
+    this.errorOccurred = false;
+    this.errorMessage = " ";
+    this.login.email = pEmail
+    const md5 = new Md5();
+    this.login.passwordHash = md5.appendStr(pPasswordHash).end() as string
+
+    this.loginService.login(this.login, error => this.loginError(error.json()));
   }
 
   ngOnInit() {}

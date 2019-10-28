@@ -9,30 +9,37 @@ import {Router} from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class SelfService {
 
   constructor(private http: Http, private data: DatasharingService,private router: Router) { }
 
-  public login(login : Login, errorCb: any) {
- 
+  public checkIfLoggedIn() {
+    console.log('check if logged in...');
     //let url = './graphql'
     let url = 'https://greenvironment.net/graphql'
  
     let headers = new Headers();
     headers.set('Content-Type', 'application/json');
  
-    return this.http.post(url, this.buildJson(login))
+    return this.http.post(url, this.buildJson())
       .subscribe(response => {
         console.log(response.text());
-        this.loginSuccess();
+        this.stillLoggedIn();
         this.updateUserInfo(response.json())
-      }, errorCb
+      }, error => {
+        this.notLoggedIn()
+        console.log(error.text())
+      }
       );
   }
-  public loginSuccess(){
-    console.log('alles supi dupi');
+  public stillLoggedIn(){
+    console.log('user was logged in');
+  }
+
+  public notLoggedIn(){
+    console.log('user was not logged in');
     //do routing
-    this.router.navigateByUrl('');
+    this.router.navigateByUrl('/login');
   }
 
   public updateUserInfo(response : any){
@@ -50,15 +57,12 @@ export class LoginService {
     user.requestIDs = response.data.login.requests;
 
     this.data.changeUserInfo(user)
-    
   }
 
-  public buildJson(login: Login): any {
-    const body =  {query: `mutation($email: String, $pwHash: String) {
-      login(email: $email, passwordHash: $pwHash) {id, name, handle, points, level, friends{id}, groups{id},chats{id}} 
+  public buildJson(): any {
+    const body =  {query: `query() {
+      getSelf(){id, name, handle, points, level, friends{id}, groups{id},chats{id}} 
     }`, variables: {
-        email: login.email,
-        pwHash: login.passwordHash,
       }};
     return body;
   }

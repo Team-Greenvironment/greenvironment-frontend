@@ -1,4 +1,57 @@
-<app-scaffold id="headerbar"></app-scaffold>
-<home-chatmanager id="chatcontainer"></home-chatmanager>
-<!--<home-feed id="feedcontainer"></home-feed>-->
-<home-social id="socialcontainer"></home-social>
+
+<div id="profile">
+    <div id="profilecontainer" *ngIf="profileNotFound == false">
+        <h1>Profile</h1>
+        <table style="width:100%">
+            <tr>
+                <td>name: </td>
+                <td>{{user.username}}</td>
+            </tr>
+            <tr>
+                <td>handle: </td>
+                <td>{{user.handle}}</td>
+            </tr>
+            <tr>
+                <td>profile ID: </td>
+                <td>{{user.userID}}</td>
+            </tr>
+            <tr>
+                <td>points: </td>
+                <td>{{user.points}}</td>
+            <tr>
+                <td>level: </td>
+                <td>{{user.level}} ({{rankname}})</td>
+            </tr>
+        </table>
+        <h2>What´s the level?</h2>
+            <p>There are different levels you can reach through green behaviour.
+                Collect 100 points to level up! The levels are called: 
+            </p>
+            <ol>
+                <li *ngFor= "let level of levellist.levels">
+                    {{level.name}}
+                </li>
+            </ol> 
+        <h2>How to level up?</h2>
+            <p>There is an always growing list of things you can do,
+                 to support your environment
+                and earn points to level up at the same time.
+                 You can get a different amount of points
+                for differnet actions you can see in the list below:
+            </p>
+            <table style="width:100%">
+                <tr>
+                    <th>points </th>
+                    <th>action</th>
+                </tr>
+                <tr *ngFor= "let action of actionlist.actions">
+                    <td>{{action.points}}</td>
+                    <td>{{action.name}}</td>
+                </tr>
+            </table>
+        </div>
+    <div id="profilecontainer" *ngIf="profileNotFound">
+            <h1>Profile not found :(</h1>
+    </div>
+  </div>
+  

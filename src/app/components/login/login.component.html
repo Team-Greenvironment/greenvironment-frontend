@@ -12,6 +12,7 @@
         </tr>
     </table>
       <button type="loginbutton" (click)="onClickSubmit(email.value,password.value)">Login</button>
+      <p *ngIf="errorOccurred">{{errorMessage}}</p>
       <br>
     <a href="/register">You aren´t part of greenvironment yet? - join us here</a>
   </div>
