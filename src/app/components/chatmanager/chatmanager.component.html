@@ -1,6 +1,9 @@
 <div *ngIf="showChatlist">
-  <chatmanager-chatlist (showChatEvent)="showSpecialChat($event)"></chatmanager-chatlist>
+  <chatmanager-chatlist (showChatEvent)="showSpecialChat($event)" (showCreateChatEvent)="showNewChat($event)"></chatmanager-chatlist>
 </div>
 <div *ngIf="showChat">
     <chatmanager-chat (goBackEvent)="goBackToChatlist($event)" [childChat]="parentSelectedChat"></chatmanager-chat>
+</div>
+<div *ngIf="showCreateNewChat">
+    <chatmanager-chatcontacts (goBackEvent)="goBackToChatlist($event)"></chatmanager-chatcontacts>
 </div>

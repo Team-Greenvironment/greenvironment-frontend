@@ -1,17 +1,19 @@
-export class Post {
-    id: string
-    username: string
-    handle: string
-    message: string
-    date: string
-    votes: number
+import { Author } from "./author"
 
-    constructor(pId: string, pUsername: string, pHandle: string, pMessage: string, pDate: string, pVotes: number) {
+export class Post {
+    id: number
+    content: string
+    date: string
+    upvotes: number
+    downvotes: number
+    author: Author
+
+    constructor(pId: number, pContent: string, pUpvotes: number, pDownvotes: number, pDate: string, pAuthor: Author) {
         this.id = pId
-        this.username = pUsername
-        this.handle = pHandle
-        this.message = pMessage
+        this.content = pContent
+        this.upvotes = pUpvotes
+        this.downvotes = pDownvotes
         this.date = pDate
-        this.votes = pVotes
+        this.author = pAuthor
     }
 }

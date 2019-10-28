@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Post } from 'src/app/models/post';
+import { FeedService } from 'src/app/services/feed/feed.service';
 
 @Component({
   selector: 'feed-postlist',
@@ -9,10 +10,20 @@ import { Post } from 'src/app/models/post';
 export class PostlistComponent implements OnInit {
 
   @Input() childPostList: Array<Post>
+  selectedPost: Post
 
-  constructor() { }
+  constructor(private feedService: FeedService) { }
 
   ngOnInit() {
+  }
+
+  voteUp(pPost: Post){
+    this.feedService.voteUp(pPost.id)
+    console.log("UPVOTE", pPost.id)
+  }
+
+  voteDown(pPost: Post){
+    this.feedService.voteDown(pPost.id)
   }
 
 }
