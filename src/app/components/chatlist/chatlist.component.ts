@@ -13,6 +13,7 @@ export class ChatlistComponent implements OnInit {
   new Chatinfo("David", "23.06.19 12:50"), new Chatinfo("Bruno", "23.06.19 12:50")]
 
   @Output() showChatEvent = new EventEmitter<Chatinfo>();
+  @Output() showCreateChatEvent = new EventEmitter<boolean>();
   selectedChat: Chatinfo;
 
   constructor(private chatService: ChatService) { }
@@ -20,8 +21,8 @@ export class ChatlistComponent implements OnInit {
   ngOnInit() {
   }
 
-  newChat() {
-    this.chatService.getSelfName()
+  showNewChat() {
+    this.showCreateChatEvent.emit(true)
   }
 
   showChat(pChat: Chatinfo) {
