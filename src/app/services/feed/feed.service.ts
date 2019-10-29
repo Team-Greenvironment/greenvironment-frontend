@@ -99,7 +99,7 @@ export class FeedService {
 
   getBodyForGetAllChats() {
     const body =  {query: `query {
-        getPosts (first: 1000, offset: 0) {id, content, upvotes, downvotes, author{name, handle, id}, createdAt}
+        getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, author{name, handle, id}, createdAt}
       }`
       }
 
@@ -111,12 +111,13 @@ export class FeedService {
     for(let post of pResponse.data.getPosts) {
       let id: number = post.id
       let content: string = post.content
+      let htmlContent: string = post.htmlContent
       let upvotes: number = post.upvotes
       let downvotes: number = post.downvotes
       let author = new Author(post.author.id, post.author.name, post.author.handle)
       let date = post.createdAt
 
-      posts.push(new Post(id, content, upvotes, downvotes, date, author))
+      posts.push(new Post(id, content, htmlContent, upvotes, downvotes, date, author))
     }
     return posts
   }
