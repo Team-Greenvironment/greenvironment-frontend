@@ -4,7 +4,7 @@
         <span class='title'>{{childChat.memberName}}</span>
     </div>
     <div id='messagecontainer'>
-        <div class="chatmessage" *ngFor="let message of childChat.messages">
+        <div class="chatmessage" *ngFor="let message of messages">
             <div *ngIf="message.myself == true" id='ownmessage'><span>{{message.content}}</span></div>
             <div *ngIf="message.myself == false" id='foreignmessage'><span>{{message.content}}</span></div>
         </div>
