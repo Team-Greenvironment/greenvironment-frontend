@@ -3,6 +3,7 @@ import { DatasharingService } from 'src/app/services/datasharing.service';
 import { Http } from '@angular/http';
 import { FriendInfo } from 'src/app/models/friendinfo';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'social-friends',
@@ -24,7 +25,7 @@ export class FriendsComponent implements OnInit {
 
   getFriendsNames() {
     for(let id of this.friendIDs) {
-      let url = 'https://greenvironment.net/graphql'
+      let url = environment.graphQLUrl
       let headers = new Headers();
       headers.set('Content-Type', 'application/json');
   

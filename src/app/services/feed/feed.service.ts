@@ -29,7 +29,7 @@ export class FeedService {
   }
 
   public createPost2(pContent: String){
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
@@ -43,7 +43,7 @@ export class FeedService {
   }
 
   public upvote(pPostID: number): any {
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
@@ -58,7 +58,7 @@ export class FeedService {
   }
 
   public downvote(pPostID: number): any {
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
@@ -73,7 +73,7 @@ export class FeedService {
   }
 
   public getAllPosts(): Array<Post> {
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
@@ -87,7 +87,7 @@ export class FeedService {
   }
 
   public getAllPostsRaw(): any {
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')

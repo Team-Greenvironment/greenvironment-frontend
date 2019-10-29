@@ -50,7 +50,7 @@ export class ChatService {
     console.log("Getting chats by ID..")
 
     for(let chatId of pChatIDs) {
-      let url = 'https://greenvironment.net/graphql'
+      let url = environment.graphQLUrl
   
       let headers = new Headers()
       headers.set('Content-Type', 'application/json')
@@ -81,7 +81,7 @@ export class ChatService {
   }
 
   public createNewChat(pUserID: number) {
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
@@ -90,7 +90,7 @@ export class ChatService {
   }
 
   public requestAllChatPartners(): Array<FriendInfo> {
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
     let chatPartners: Array<FriendInfo>
     let temp
  
@@ -118,7 +118,7 @@ export class ChatService {
   }
 
   public sendMessage(pChatID: number, pContent: string): any {
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
@@ -128,7 +128,7 @@ export class ChatService {
 
   public getMessages(pChatID): Array<Chatmessage> {
     let messages: Array<Chatmessage>
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
