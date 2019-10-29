@@ -12,30 +12,25 @@ export class FeedComponent implements OnInit {
   viewNew: boolean = true
   viewMostLiked: boolean = false
 
-  feedNew: Array<Post>/* = [
-    new Post("1", "Niklas", "@nick123", "This is a test message", "01.10.2019 10:00 Uhr", 10),
-    new Post("2", "Niklas", "@nick123", "This is a test message", "01.10.2019 10:00 Uhr", 10),
-    new Post("3", "Niklas", "@nick123", "This is a test message", "01.10.2019 10:00 Uhr", 10),
-    new Post("4", "Niklas", "@nick123", "This is a test message", "01.10.2019 10:00 Uhr", 10),
-    new Post("5", "Niklas", "@nick123", "This is a test message", "01.10.2019 10:00 Uhr", 10),
-    new Post("6", "Niklas", "@nick123", "This is a test message", "01.10.2019 10:00 Uhr", 10),
-    new Post("7", "Niklas", "@nick123", "This is a test message", "01.10.2019 10:00 Uhr", 10)
-  ]*/
-  feedMostLiked: Array<Post>/* = [
-    new Post("1", "Max", "@max123", "This is a test message", "01.10.2019 10:00 Uhr", 50),
-    new Post("2", "Max", "@max123", "This is a test message", "01.10.2019 10:00 Uhr", 50),
-    new Post("3", "Max", "@max123", "This is a test message", "01.10.2019 10:00 Uhr", 50),
-    new Post("4", "Max", "@max123", "This is a test message", "01.10.2019 10:00 Uhr", 50),
-    new Post("5", "Max", "@max123", "This is a test message", "01.10.2019 10:00 Uhr", 50)
-  ]*/
+  feedNew: Array<Post>
+  feedMostLiked: Array<Post>
 
-  parentSelectedPostList: Array<Post> = this.feedNew
+  parentSelectedPostList: Array<Post>
 
   constructor(private feedService: FeedService) { }
 
   ngOnInit() {
-    this.feedNew = this.feedService.getAllPosts()
-    this.feedMostLiked = this.feedService.getAllPosts()
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.feedNew = this.feedService.renderAllPosts(response.json())
+      console.log(response)
+      this.parentSelectedPostList = this.feedNew
+      this.feedMostLiked = this.feedNew
+    })
+  }
+
+  createPost(pContent: string){
+    this.feedService.createPost(pContent)
+    console.log(pContent)
   }
 
   showNew() {

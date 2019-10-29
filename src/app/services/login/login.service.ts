@@ -32,7 +32,7 @@ export class LoginService {
   public loginSuccess(){
     console.log('alles supi dupi');
     //do routing
-    this.router.navigateByUrl('');
+    this.router.navigateByUrl(''); 
   }
 
   public updateUserInfo(response : any){

@@ -4,7 +4,9 @@
     <button id="invitations" type="submit"><span><i class="fa fa-envelope-o fa-3x" aria-hidden="true"></i></span></button>
 </div>
 <div id="groupslist">
-    <div class="groupitem" *ngFor="let group of groups"> 
-      <div class="groupname">{{group}}</div>
+    <div class="groupitem" *ngFor="let group of groups"
+    [class.selected]="group === selectedGroup" (click)="showGroup(group)"> 
+      <div class="picture">Pic</div>
+      <div class="name"><span>{{group.name}}</span></div>
     </div>
 </div>
