@@ -18,14 +18,14 @@ export class PostlistComponent implements OnInit {
   ngOnInit() {
   }
 
-  voteUp(pPost: Post){
-    this.feedService.upvote(pPost.id)
-    this.voteEvent.emit(true)
+  voteUp(pPost: Post) {
+    this.feedService.upvote(pPost.id).subscribe(response => {
+        this.voteEvent.emit(true)})
   }
 
-  voteDown(pPost: Post){
-    this.feedService.downvote(pPost.id)
-    this.voteEvent.emit(true)
+  voteDown(pPost: Post) {
+    this.feedService.downvote(pPost.id).subscribe(response => {
+        this.voteEvent.emit(true)})
   }
 
 }
