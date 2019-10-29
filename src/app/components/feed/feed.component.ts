@@ -22,15 +22,18 @@ export class FeedComponent implements OnInit {
   ngOnInit() {
     this.feedService.getAllPostsRaw().subscribe(response => {
       this.feedNew = this.feedService.renderAllPosts(response.json())
-      console.log(response)
       this.parentSelectedPostList = this.feedNew
       this.feedMostLiked = this.feedNew
     })
   }
 
-  createPost(pContent: string){
-    this.feedService.createPost(pContent)
-    console.log(pContent)
+  createPost(pElement){
+    this.feedService.createPost(pElement.value)
+    pElement.value = ""
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.feedNew = this.feedService.renderAllPosts(response.json())
+      this.parentSelectedPostList = this.feedNew
+      this.feedMostLiked = this.feedNew})
   }
 
   showNew() {
