@@ -24,7 +24,6 @@ export class AppScaffoldComponent implements OnInit {
   profileUrl: string;
 
   dropdownShown: boolean = false
-  constructor(private data: DatasharingService) { }
 
   constructor(private data: DatasharingService,private selfservice: SelfService, private http: Http, private router: Router) { }
 
