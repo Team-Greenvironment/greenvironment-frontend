@@ -106,6 +106,7 @@ export class FeedService {
 
   public renderAllPosts(pResponse: any): Array<Post> {
     let posts = new Array<Post>()
+    //let options = {year: 'numeric', month: 'short', day: 'numeric', hour: '' }
     for(let post of pResponse.data.getPosts) {
       let id: number = post.id
       let content: string = post.content
@@ -114,7 +115,7 @@ export class FeedService {
       let downvotes: number = post.downvotes
       let author = new Author(post.author.id, post.author.name, post.author.handle)
       let temp = new Date(Number(post.createdAt))
-      let date = temp.toDateString()
+      let date = temp.toLocaleString("en-GB")
 
       posts.push(new Post(id, content, htmlContent, upvotes, downvotes, date, author))
     }
