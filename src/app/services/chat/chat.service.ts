@@ -229,7 +229,7 @@ export class ChatService {
   }
 
   getBodyForSendMessage(pchatID: number, pContent: string) {
-    const body =  {query: `mutation($chatID: number, $content: string) {
+    const body =  {query: `mutation($chatID: ID!, $content: String!) {
         sendMessage(chatId: $chatID, content: $content) {id} 
       }`, variables: {
           chatId: pchatID,

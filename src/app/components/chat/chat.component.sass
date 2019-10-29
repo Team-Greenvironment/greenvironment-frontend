@@ -81,3 +81,11 @@
     resize: none
   #send
     @include gridPosition(1, 2, 2, 3)
+  button
+    background-color: $cFeedChooserBackground
+    color: $cFontWhite
+    border: none
+    border-radius: 0.5em
+  button:hover
+    background-color: lighten($cFeedChooserBackground, 10%)
+    cursor: pointer

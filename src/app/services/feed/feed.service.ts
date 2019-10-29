@@ -42,7 +42,7 @@ export class FeedService {
         console.log(response.text())})
   }
 
-  public upvote(pPostID: number): void {
+  public upvote(pPostID: number): any {
     let url = 'https://greenvironment.net/graphql'
  
     let headers = new Headers()
@@ -54,11 +54,10 @@ export class FeedService {
           postId: pPostID
       }}
  
-    this.http.post(url, body).subscribe(response => {
-        console.log(response.text())})
+    return this.http.post(url, body)
   }
 
-  public downvote(pPostID: number): void {
+  public downvote(pPostID: number): any {
     let url = 'https://greenvironment.net/graphql'
  
     let headers = new Headers()
@@ -70,8 +69,7 @@ export class FeedService {
           postId: pPostID
       }}
  
-    this.http.post(url, body).subscribe(response => {
-        console.log(response.text())})
+    return this.http.post(url, body)
   }
 
   public getAllPosts(): Array<Post> {
