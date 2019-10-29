@@ -46,6 +46,10 @@ h1
   margin-left: 2em
   span
     margin-left: 1em
+  #symbol
+    span:hover
+      background-color: lighten($cHeadPrimaryBackground, 10%)
+      cursor: pointer
   #dropdown-content
     position: absolute
     background-color: $cHeadPrimaryBackground
@@ -54,11 +58,6 @@ h1
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2)
     padding: 12px 16px
     z-index: 1
-  div:hover
-    background-color: lighten($cHeadPrimaryBackground, 10%)
-    cursor: pointer
-    #dropdown-content
-      //display: block
 
 #logoutbutton
   @include gridPosition(1, 2, 8, 9)

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { FeedService } from 'src/app/services/feed/feed.service';
 
@@ -10,6 +10,7 @@ import { FeedService } from 'src/app/services/feed/feed.service';
 export class PostlistComponent implements OnInit {
 
   @Input() childPostList: Array<Post>
+  @Output() voteEvent = new EventEmitter<boolean>()
   selectedPost: Post
 
   constructor(private feedService: FeedService) { }
@@ -19,11 +20,12 @@ export class PostlistComponent implements OnInit {
 
   voteUp(pPost: Post){
     this.feedService.upvote(pPost.id)
-    console.log("UPVOTE", pPost.id)
+    this.voteEvent.emit(true)
   }
 
   voteDown(pPost: Post){
     this.feedService.downvote(pPost.id)
+    this.voteEvent.emit(true)
   }
 
 }

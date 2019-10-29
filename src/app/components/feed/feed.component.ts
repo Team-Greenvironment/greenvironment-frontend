@@ -22,29 +22,42 @@ export class FeedComponent implements OnInit {
   ngOnInit() {
     this.feedService.getAllPostsRaw().subscribe(response => {
       this.feedNew = this.feedService.renderAllPosts(response.json())
-      console.log(response)
       this.parentSelectedPostList = this.feedNew
       this.feedMostLiked = this.feedNew
     })
   }
 
-  createPost(pContent: string){
-    this.feedService.createPost(pContent)
-    console.log(pContent)
+  createPost(pElement){
+    this.feedService.createPost(pElement.value)
+    pElement.value = ""
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.feedNew = this.feedService.renderAllPosts(response.json())
+      this.parentSelectedPostList = this.feedNew
+      this.feedMostLiked = this.feedNew})
   }
 
   showNew() {
-    this.feedNew = this.feedService.getAllPosts()
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.feedNew = this.feedService.renderAllPosts(response.json())
+      this.parentSelectedPostList = this.feedNew})
     this.viewNew = true
     this.viewMostLiked = false
-    this.parentSelectedPostList = this.feedNew
   }
 
   showMostLiked() {
-    this.feedMostLiked = this.feedService.getAllPosts()
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.feedMostLiked = this.feedService.renderAllPosts(response.json())
+      this.parentSelectedPostList = this.feedMostLiked})
     this.viewNew = false
     this.viewMostLiked = true
-    this.parentSelectedPostList = this.feedMostLiked
+  }
+
+  
+  refresh($event) {
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.parentSelectedPostList = this.feedService.renderAllPosts(response.json())
+      console.log("Refresh")
+    })
   }
 
 }

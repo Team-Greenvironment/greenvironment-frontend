@@ -6,7 +6,7 @@
   <button id="tab-login" routerLink="/login" *ngIf="loggedIn != true">Login</button>
   <div id="dropdown" *ngIf="loggedIn">
     <div>
-      <span (click)="showDropdown()"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+      <span id="symbol" (click)="showDropdown()"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
       <span>{{username}}</span>
     </div>
     <div id="dropdown-content" *ngIf="dropdownShown">
