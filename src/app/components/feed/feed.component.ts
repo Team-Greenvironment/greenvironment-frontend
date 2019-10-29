@@ -37,17 +37,27 @@ export class FeedComponent implements OnInit {
   }
 
   showNew() {
-    this.feedNew = this.feedService.getAllPosts()
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.feedNew = this.feedService.renderAllPosts(response.json())
+      this.parentSelectedPostList = this.feedNew})
     this.viewNew = true
     this.viewMostLiked = false
-    this.parentSelectedPostList = this.feedNew
   }
 
   showMostLiked() {
-    this.feedMostLiked = this.feedService.getAllPosts()
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.feedMostLiked = this.feedService.renderAllPosts(response.json())
+      this.parentSelectedPostList = this.feedMostLiked})
     this.viewNew = false
     this.viewMostLiked = true
-    this.parentSelectedPostList = this.feedMostLiked
+  }
+
+  
+  refresh($event) {
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.parentSelectedPostList = this.feedService.renderAllPosts(response.json())
+      console.log("Refresh")
+    })
   }
 
 }
