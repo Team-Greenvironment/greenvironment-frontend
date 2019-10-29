@@ -19,11 +19,18 @@ export class PostlistComponent implements OnInit {
 
   voteUp(pPost: Post){
     this.feedService.upvote(pPost.id)
-    console.log("UPVOTE", pPost.id)
+    this.refresh()
   }
 
   voteDown(pPost: Post){
     this.feedService.downvote(pPost.id)
+    this.refresh()
+  }
+
+  refresh() {
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.childPostList = this.feedService.renderAllPosts(response.json())
+    })
   }
 
 }
