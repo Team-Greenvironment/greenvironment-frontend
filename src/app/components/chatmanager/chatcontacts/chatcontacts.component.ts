@@ -27,4 +27,8 @@ export class ChatcontactsComponent implements OnInit {
     this.goBack()
   }
 
+  contactList() {
+    console.error("Not Imlemented!")
+  }
+
 }
