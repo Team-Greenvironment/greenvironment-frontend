@@ -5,20 +5,28 @@
 #friendslist
   overflow: auto
   @include gridPosition(2, 3, 1, 2)
+  div:hover
+    background-color: darken($cPrimaryBackground, 10%)
+    cursor: pointer
   .frienditem
     background-color: $cPrimaryBackground
     height: 3em
     margin: 0.2em
     padding: 0.25em
     border-radius: 0.25em
-    border: solid
-    display: flex;
-    .friendname
+    //border: solid
+    display: grid
+    grid-template: 100% / 20% 60% 20%
+    .picture
+      @include gridPosition(1, 2, 1, 2)
+      border: solid
+    .name, .date
+      margin-top: auto
+      margin-bottom: auto
+    .name
+      @include gridPosition(1, 2, 2, 3)
       font-weight: bold
       text-align: left
-      border: solid
-      width: 60%
-      padding-left: 1em
-      margin: auto
+      padding-left: 0.5em
       span
         font-size: 125%

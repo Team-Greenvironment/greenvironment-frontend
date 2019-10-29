@@ -4,6 +4,7 @@ import { Chat } from 'src/app/models/chat';
 import { responsePathAsArray } from 'graphql';
 import { Chatmessage } from 'src/app/models/chatmessage';
 import { FriendInfo } from 'src/app/models/friendinfo';
+import { DatasharingService } from '../datasharing.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,15 @@ export class ChatService {
 
   arr: number[]
   ownID: number
-  chats: Array<Chat>
+  chats: Array<Chat> = []
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private data: DatasharingService) {
+    this.data.currentUserInfo.subscribe(user => {
+      this.ownID = user.userID})
+   }
 
   public getAllChats(): Array<Chat> {
+    console.log("Getting all chats ..")
     let url = 'https://greenvironment.net/graphql'
  
     let headers = new Headers()
@@ -26,6 +31,24 @@ export class ChatService {
     .subscribe(response => {
         this.chats = this.updateAllChats(response.json())
       });
+    return this.chats
+  }
+
+  public getChatsByID(pChatIDs: number[]): Array<Chat> {
+    this.chats = []
+    console.log("Getting chats by ID..")
+
+    for(let chatId of pChatIDs) {
+      let url = 'https://greenvironment.net/graphql'
+  
+      let headers = new Headers()
+      headers.set('Content-Type', 'application/json')
+
+      this.http.post(url, this.getBodyForGetChatsByID(chatId))
+      .subscribe(response => {
+        this.updateChat(response.json())
+      })
+    }
     return this.chats
   }
 
@@ -72,11 +95,38 @@ export class ChatService {
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
  
-    this.http.post(url, this.getBodyForSendMessage(pChatID, pContent))
+    this.http.post(url, this.getBodyForSendMessage(pChatID, pContent)).subscribe(response => console.log("Message sent"))
+  }
+
+  public getMessages(pChatID): Array<Chatmessage> {
+    let messages: Array<Chatmessage>
+    let url = 'https://greenvironment.net/graphql'
+ 
+    let headers = new Headers()
+    headers.set('Content-Type', 'application/json')
+ 
+    this.http.post(url, this.getBodyForGetMessagesInChat(pChatID)).subscribe(response => 
+      {
+        console.log("Downloading messages ...")
+        messages = this.updateMessages(response.json())
+      })
+    return messages
+  }
+
+  updateMessages(pResponse: any): Array<Chatmessage> {
+    let messages = new Array<Chatmessage>()
+      for(let message of pResponse.data.getChat.messages) {
+        if(message.author.id == this.ownID) {
+          messages.push(new Chatmessage(message.content, message.createdAt, true))
+        } else {
+          messages.push(new Chatmessage(message.content, message.createdAt, false))
+        }
+      }
+    return messages
   }
 
   updateAllChats(pResponse: any): Array<Chat> {
-    let chats: Array<Chat>
+    let chats = Array<Chat>()
     for(let chat of pResponse.data.getSelf.chats) {
       let memberID: number
       let memberName: string
@@ -86,7 +136,7 @@ export class ChatService {
           memberName = member.name
         }
       }
-      let messages: Array<Chatmessage>
+      let messages = new Array<Chatmessage>()
       for(let message of chat.messages) {
         if(message.author.id == this.ownID) {
           messages.push(new Chatmessage(message.content, message.createdAt, true))
@@ -97,6 +147,27 @@ export class ChatService {
       chats.push(new Chat(chat.id, memberID, memberName, messages))
     }
     return chats
+  }
+
+  updateChat(pResponse: any) {
+    let id = pResponse.data.getChat.id
+    let memberId : number
+    let memberName: string
+    for(let member of pResponse.data.getChat.members) {
+      if(member.id != this.ownID) {
+        memberId = member.id
+        memberName = member.name
+      }
+    }
+    let messages = new Array<Chatmessage>()
+    for(let message of pResponse.data.getChat.messages) {
+      if(message.author.id == this.ownID) {
+        messages.push(new Chatmessage(message.content, message.createdAt, true))
+      } else {
+        messages.push(new Chatmessage(message.content, message.createdAt, false))
+      }
+    }
+    this.chats.push(new Chat(id, memberId, memberName, messages))
   }
 
   getBodyForNewChat(pUserID: number) {
@@ -133,11 +204,34 @@ export class ChatService {
 
   getBodyForGetAllChats() {
     const body =  {query: `query {
-        getSelf {
+        getUser {
           chats(first: 1000, offset: 0) {id, members{name, id}, 
           messages(first: 1000, offset: 0) {author {id}, createdAt, content}}
         }
       }`
       }
+    return body
+  }
+
+  getBodyForGetChatsByID(pChatID: number) {
+    const body =  {query: `query($chatID: ID!) {
+        getChat(chatId: $chatID) {id, members{name, id}, 
+          messages(first: 1000, offset: 0) {author {id}, createdAt, content}}
+        }
+      }`, variables: {
+          chatId: pChatID
+      }}
+    return body
+  }
+
+  getBodyForGetMessagesInChat(pChatID: number) {
+    const body =  {query: `query($chatID: ID!) {
+        getChat(chatId: $chatID) {
+          messages(first: 1000, offset: 0) {author {id}, createdAt, content}
+        }
+      }`, variables: {
+          chatId: pChatID
+      }}
+    return body
   }
 }

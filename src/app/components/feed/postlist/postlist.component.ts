@@ -18,12 +18,12 @@ export class PostlistComponent implements OnInit {
   }
 
   voteUp(pPost: Post){
-    this.feedService.voteUp(pPost.id)
+    this.feedService.upvote(pPost.id)
     console.log("UPVOTE", pPost.id)
   }
 
   voteDown(pPost: Post){
-    this.feedService.voteDown(pPost.id)
+    this.feedService.downvote(pPost.id)
   }
 
 }

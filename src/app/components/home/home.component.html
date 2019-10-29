@@ -1,5 +1,5 @@
 <div id="content">
-    <home-chatmanager id="chatcontainer"></home-chatmanager>
+    <home-chatmanager id="chatcontainer" *ngIf="loggedIn"></home-chatmanager>
     <home-feed id="feedcontainer"></home-feed>
-    <home-social id="socialcontainer"></home-social>
+    <home-social id="socialcontainer" *ngIf="loggedIn"></home-social>
 </div>
