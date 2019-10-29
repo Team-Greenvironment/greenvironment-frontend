@@ -116,13 +116,13 @@ export class ChatService {
     return chatPartners
   }
 
-  public sendMessage(pChatID: number, pContent: string) {
+  public sendMessage(pChatID: number, pContent: string): any {
     let url = 'https://greenvironment.net/graphql'
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
  
-    this.http.post(url, this.getBodyForSendMessage(pChatID, pContent)).subscribe(response => console.log("Message sent"))
+    return this.http.post(url, this.getBodyForSendMessage(pChatID, pContent))
   }
 
   public getMessages(pChatID): Array<Chatmessage> {
@@ -265,8 +265,8 @@ export class ChatService {
   }
 
   getBodyForGetMessagesInChat(pChatID: number) {
-    const body =  {query: `query($chatID: ID!) {
-        getChat(chatId: $chatID) {
+    const body =  {query: `query($chatId: ID!) {
+        getChat(chatId: $chatId) {
           messages(first: 1000, offset: 0) {author {id}, createdAt, content}
         }
       }`, variables: {

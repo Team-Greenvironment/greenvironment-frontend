@@ -113,7 +113,8 @@ export class FeedService {
       let upvotes: number = post.upvotes
       let downvotes: number = post.downvotes
       let author = new Author(post.author.id, post.author.name, post.author.handle)
-      let date = new Date(post.createdAt).toDateString()
+      let temp = new Date(Number(post.createdAt))
+      let date = temp.toDateString()
 
       posts.push(new Post(id, content, htmlContent, upvotes, downvotes, date, author))
     }
