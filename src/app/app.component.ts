@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     this.data.currentUserInfo.subscribe(user => {
       this.userInfo = user;
       console.log(this.userInfo);
-      this.data.changeChatIDs(this.chatIDs)
+      this.data.changeChatIDs(user.chatIDs)
     })
   }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DatasharingService } from 'src/app/services/datasharing.service';
+import { FeedService } from 'src/app/services/feed/feed.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  loggedIn: boolean
+
+  constructor(private data: DatasharingService, private feedService: FeedService) { }
 
   ngOnInit() {
+    this.data.currentUserInfo.subscribe(user => {
+      this.loggedIn = user.loggedIn;
+    })
+    this.feedService.getAllPosts()
   }
 
 }

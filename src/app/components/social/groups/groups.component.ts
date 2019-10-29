@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GroupInfo } from 'src/app/models/groupinfo';
 
 @Component({
   selector: 'social-groups',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./groups.component.sass']
 })
 export class GroupsComponent implements OnInit {
-  groups: Array<String> = ["Group 1", "Group 2", "Group 3", "Group 4", "Group 5", "Group 6"]
+  groups: Array<GroupInfo> = [new GroupInfo(1,"Group 1",[]), new GroupInfo(1,"Group 2",[]), new GroupInfo(1,"Group 3",[]), new GroupInfo(1,"Group 4",[])]
   constructor() { }
 
   ngOnInit() {

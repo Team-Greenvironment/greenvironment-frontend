@@ -4,7 +4,9 @@
   <button id="invitations" type="submit"><span><i class="fa fa-envelope-o fa-3x" aria-hidden="true"></i></span></button>
 </div>
 <div id="friendslist">
-    <div class="frienditem" *ngFor="let friend of friends"> 
-      <div class="friendname">{{friend}}</div>
+    <div class="frienditem" *ngFor="let friend of friends"
+    [class.selected]="friend === selectedFriend" (click)="showFriendProfile(friend)"> 
+      <div class="picture">Pic</div>
+      <div class="name"><span>{{friend.name}}</span></div>
     </div>
 </div>

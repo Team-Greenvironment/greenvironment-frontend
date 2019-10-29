@@ -33,6 +33,8 @@ export class LoginComponent implements OnInit {
     const md5 = new Md5();
     this.login.passwordHash = md5.appendStr(pPasswordHash).end() as string
 
+    console.log(this.login.passwordHash)
+
     this.loginService.login(this.login, error => this.loginError(error.json()));
   }
 

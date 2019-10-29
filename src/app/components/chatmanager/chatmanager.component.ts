@@ -3,6 +3,7 @@ import { ChatService } from '../../services/chat/chat.service'
 import { ChatComponent } from '../chat/chat.component';
 import { Chatinfo } from 'src/app/models/chatinfo';
 import { DatasharingService } from 'src/app/services/datasharing.service';
+import { Chat } from 'src/app/models/chat';
 
 @Component({
   selector: 'home-chatmanager',
@@ -14,16 +15,17 @@ export class ChatmanagerComponent implements OnInit {
   showChatlist: boolean = true
   showChat: boolean = false
   showCreateNewChat: boolean = false
-  parentSelectedChat: Chatinfo
+  parentSelectedChat: Chat
 
-  chatIDs: number[]
+  chatIds: number[] = []
 
-  constructor(private data: DatasharingService) { }
+  constructor(private data: DatasharingService, private chatService: ChatService) { }
 
   ngOnInit() {
     this.data.currentChatIDs.subscribe(chatIDs => {
-      this.chatIDs = chatIDs
+      this.chatIds = chatIDs
     })
+    this.chatService.getChatsByID(this.chatIds)
   }
 
   goBackToChatlist($event) {

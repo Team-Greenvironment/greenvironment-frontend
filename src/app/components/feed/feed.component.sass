@@ -8,20 +8,27 @@
   grid-template: 100% /80% 10% 10%
   #input
     @include gridPosition(1, 2, 1, 2)
-    border-radius: 0.25em
-    border: 1px solid $cFeedInputBorder
+    border-radius: 0.5em
     padding: 0.125em
     resize: none
   #attach
     @include gridPosition(1, 2, 2, 3)
   #submit
     @include gridPosition(1, 2, 3, 4)
+  button
+    background-color: $cFeedChooserBackground
+    color: $cFontWhite
+    border: none
+    border-radius: 0.5em
+  button:hover
+    background-color: lighten($cFeedChooserBackground, 10%)
+    cursor: pointer
     
 #completeFeed
   @include gridPosition(2, 3, 1, 2)
   display: grid
   grid-template: 5% 95% /100%
-  background-color: $cFeedBackground
+  background-color: $cFontWhite
 
   #feedchooser
     @include gridPosition(1, 2, 1, 2)
@@ -35,6 +42,7 @@
       border: none
       font-size: 1.5em
       color: $cFontWhite
+      border-radius: 0.5em
     button:hover
       background-color: lighten($cFeedChooserBackground, 10%)
       cursor: pointer

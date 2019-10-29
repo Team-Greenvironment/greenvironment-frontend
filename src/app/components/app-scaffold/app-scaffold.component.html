@@ -6,11 +6,18 @@
   <button id="tab-imprint" routerLink="/imprint">Imprint</button>
   <div id="dropdown" *ngIf="loggedIn">
     <div>
-      <span><i class="fa fa-caret-down" aria-hidden="true"></i></span>
-      <span> Niklas Lampe</span>
+      <span (click)="showDropdown()"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
+      <span>{{username}}</span>
     </div>
-    <div id="dropdown-content">
-      Hallo
+    <div id="dropdown-content" *ngIf="dropdownShown">
+      <div>
+        <span>Rang:</span>
+        <span>{{level}}</span>
+      </div>
+      <div>
+        <span>Punkte:</span>
+        <span>{{points}}</span>
+      </div>
     </div>
   </div>
-  <button id="logoutbutton" *ngIf="loggedIn"><span><i class="fa fa-sign-out-alt fa-2x" aria-hidden="true"></i></span></button>
+  <button id="logoutbutton" *ngIf="loggedIn" (click)="logout()"><span><i class="fa fa-sign-out-alt fa-2x" aria-hidden="true"></i></span></button>

@@ -32,7 +32,7 @@
     "graphql-tag": "^2.10.0",
     "ngx-socket-io": "^2.0.0",
     "rxjs": "~6.3.3",
-    "ts-md5": "^1.2.6",
+    "ts-md5": "^1.2.7",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
