@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Post } from 'src/app/models/post';
 import { Author } from 'src/app/models/author';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,7 @@ export class FeedService {
   constructor(private http: Http) { }
 
   public createPost(pContent: String){
-    let url = 'https://greenvironment.net/graphql'
- 
+    let url = environment.graphQLUrl
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
 

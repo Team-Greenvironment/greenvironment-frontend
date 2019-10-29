@@ -5,6 +5,7 @@ import { responsePathAsArray } from 'graphql';
 import { Chatmessage } from 'src/app/models/chatmessage';
 import { FriendInfo } from 'src/app/models/friendinfo';
 import { DatasharingService } from '../datasharing.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class ChatService {
 
   public getAllChats(): Array<Chat> {
     console.log("Getting all chats ..")
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')

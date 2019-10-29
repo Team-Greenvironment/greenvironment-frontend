@@ -5,6 +5,7 @@ import { User } from 'src/app/models/user';
 import { DatasharingService } from '../datasharing.service';
 import { userInfo } from 'os';
 import {Router} from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class SelfService {
 
   public checkIfLoggedIn() {
     console.log('check if logged in...');
-    //let url = './graphql'
-    let url = 'https://greenvironment.net/graphql'
+
+    let url = environment.graphQLUrl;
  
     let headers = new Headers();
     headers.set('Content-Type', 'application/json');
@@ -38,8 +39,6 @@ export class SelfService {
 
   public notLoggedIn(){
     console.log('user was not logged in');
-    //do routing
-    //this.router.navigateByUrl('/login');
   }
 
   public updateUserInfo(response : any){
