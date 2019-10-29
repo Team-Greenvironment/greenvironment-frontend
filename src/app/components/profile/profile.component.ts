@@ -4,6 +4,7 @@ import {Http, URLSearchParams, Headers} from '@angular/http';
 import { User } from 'src/app/models/user';
 import { Actionlist } from 'src/app/models/actionlist';
 import { Levellist } from 'src/app/models/levellist';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.id = this.router.url.substr(this.router.url.lastIndexOf("/") + 1);
     //let url = './graphql'
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
     let headers = new Headers();
     headers.set('Content-Type', 'application/json');
  

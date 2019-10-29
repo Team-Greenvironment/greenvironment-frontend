@@ -6,6 +6,7 @@ import { Levellist } from 'src/app/models/levellist';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-scaffold',
@@ -49,7 +50,7 @@ export class AppScaffoldComponent implements OnInit {
   }
 
   logout() {
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
