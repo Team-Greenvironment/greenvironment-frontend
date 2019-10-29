@@ -8,6 +8,7 @@
   </div>
   <div class="itembody">
     <div class='text'>
+        <p *ngIf="post.htmlContent.length() > 0">{{post.htmlContent}}</p>
         <p>{{post.content}}</p>
     </div>
     <div class="vote">
