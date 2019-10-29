@@ -8,8 +8,7 @@
   </div>
   <div class="itembody">
     <div class='text'>
-        <p *ngIf="post.htmlContent.length() > 0">{{post.htmlContent}}</p>
-        <p>{{post.content}}</p>
+        <p [innerHTML]="post.htmlContent"></p>
     </div>
     <div class="vote">
         <button id="down" type='submit'><span><i class="fa fa-thumbs-o-down fa-2x" aria-hidden="true" (click)="voteDown(post)"></i></span></button>
