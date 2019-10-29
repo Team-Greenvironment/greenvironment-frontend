@@ -52,6 +52,7 @@ export class ChatmanagerComponent implements OnInit {
   refresh() {
     this.chatService.getAllChatsRaw()
     .subscribe(response => {
+        console.log(response)
         this.parentChats = this.chatService.renderAllChats(response.json())
       })
   }
