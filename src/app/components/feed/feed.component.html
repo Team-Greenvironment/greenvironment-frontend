@@ -10,10 +10,10 @@
   </div>
   <div id="feedlist">
     <div *ngIf = "viewNew">
-      <feed-postlist [childPostList]="parentSelectedPostList"></feed-postlist>
+      <feed-postlist (voteEvent)="refresh($event)" [childPostList]="parentSelectedPostList"></feed-postlist>
     </div>
     <div *ngIf = "viewMostLiked">
-      <feed-postlist [childPostList]="parentSelectedPostList"></feed-postlist>
+      <feed-postlist (voteEvent)="refresh($event)" [childPostList]="parentSelectedPostList"></feed-postlist>
     </div>
 <!--
     <div class="feeditem">
