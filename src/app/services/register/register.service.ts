@@ -4,6 +4,7 @@ import { Registration } from '../../models/registration';
 import {Router} from '@angular/router';
 import { DatasharingService } from '../datasharing.service';
 import { User } from 'src/app/models/user';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class RegisterService {
   public register(registration: Registration, errorCb: any) {
  
     //let url = './graphql'
-    let url = 'https://greenvironment.net/graphql'
+    let url = environment.graphQLUrl
  
     let headers = new Headers();
     headers.set('Content-Type', 'application/json');
