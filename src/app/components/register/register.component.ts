@@ -4,6 +4,7 @@ import {Registration} from '../../models/registration';
 import {Router} from '@angular/router';
 import {Md5} from 'ts-md5/dist/md5';
 import { parseWebDriverCommand } from 'blocking-proxy/built/lib/webdriver_commands';
+import * as sha512 from 'js-sha512';
 
 @Component({
   selector: 'registration',
@@ -31,8 +32,7 @@ export class RegisterComponent implements OnInit {
     if(this.passwordSame(pPasswordHash,pPasswordHashRepeat)){
       this.registration.username = pUsername
       this.registration.email = pEmail
-      const md5 = new Md5();
-      this.registration.passwordHash = md5.appendStr(pPasswordHash).end() as string
+      this.registration.passwordHash = sha512.sha512(pPasswordHash);
       this.registerService.register(this.registration, error => this.registerError(error.json()));
     }
   }

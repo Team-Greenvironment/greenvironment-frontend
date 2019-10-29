@@ -29,4 +29,8 @@ export class ChatlistComponent implements OnInit {
     this.showChatEvent.emit(this.selectedChat)
   }
 
+
+  newChat() {
+    console.error("not implemented")
+  }
 }

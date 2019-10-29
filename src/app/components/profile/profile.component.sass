@@ -5,14 +5,16 @@
   background-color:  $cSecondaryBackground
   grid-template: 3% 94% 3% / 10% 80% 10% 
   display: grid
-  min-height: 100vh
-  max-height: 100vh
+  min-height: 90vh
+  max-height: 90vh
+  
 
 #profilecontainer
   @include gridPosition(2, 2,2,2)
   //grid-template: 15% 15% 15% 15% 15% 15% / 100%
   background-color: $cPrimaryBackground
   padding: 1em
+  overflow: auto
 
 th
   text-align: left

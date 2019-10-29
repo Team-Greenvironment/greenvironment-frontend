@@ -55,7 +55,7 @@ export class LoginService {
 
   public buildJson(login: Login): any {
     const body =  {query: `mutation($email: String, $pwHash: String) {
-      login(email: $email, passwordHash: $pwHash) {id, name, handle, points, level, friends{id}, groups{id},chats{id}} 
+      login(email: $email, passwordHash: $pwHash) {id, name,email, handle, points, level, friends{id}, groups{id},chats{id}} 
     }`, variables: {
         email: login.email,
         pwHash: login.passwordHash,

@@ -4,22 +4,25 @@
 #content
   grid-template: 100%/ 25% 50% 25%
   display: grid
-  min-height: 100vh
-  max-height: 100vh
+  min-height: 90vh
+  max-height: 90vh
   background-color: $cFontWhite
 
 #chatcontainer
   @include gridPosition(1, 3, 1, 2)
   background-color: $cBoxBodyBackground
+  overflow: auto
 
 #feedcontainer
   @include gridPosition(1, 3, 2, 3)
   display: grid
   grid-template: 10% 90% /100%
   background-color: $cFontWhite
+  overflow: auto
 
 #socialcontainer
   @include gridPosition(1, 3, 3, 4)
   display: grid
   grid-template: 50% 50% /100%
   background-color: $cBoxBodyBackground
+  overflow: auto

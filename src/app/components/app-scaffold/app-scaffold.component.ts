@@ -24,6 +24,7 @@ export class AppScaffoldComponent implements OnInit {
   profileUrl: string;
 
   dropdownShown: boolean = false
+  constructor(private data: DatasharingService) { }
 
   constructor(private data: DatasharingService,private selfservice: SelfService, private http: Http, private router: Router) { }
 
@@ -36,13 +37,7 @@ export class AppScaffoldComponent implements OnInit {
       this.level = this.levellist.getLevelName(user.level)
       this.points = user.points
       this.profileUrl = '/profile/' + this.userId;
-      console.log(user.loggedIn);
-    })
-    if(this.loggedIn != true){
-      console.log('user is not logged in');
-      this.selfservice.checkIfLoggedIn;
-    };
-    console.log('loggedIn is ' + this.loggedIn)
+    })    
   }
 
   showDropdown() {
