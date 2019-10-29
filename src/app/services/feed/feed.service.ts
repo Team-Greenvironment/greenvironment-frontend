@@ -78,7 +78,7 @@ export class FeedService {
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
  
-    this.http.post(url, this.getBodyForGetAllChats())
+    this.http.post(url, this.getBodyForGetAllPosts())
     .subscribe(response => {
         this.posts = this.renderAllPosts(response.json())
         console.log(response)
@@ -92,10 +92,10 @@ export class FeedService {
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
  
-    return this.http.post(url, this.getBodyForGetAllChats())
+    return this.http.post(url, this.getBodyForGetAllPosts())
   }
 
-  getBodyForGetAllChats() {
+  getBodyForGetAllPosts() {
     const body =  {query: `query {
         getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, author{name, handle, id}, createdAt}
       }`
@@ -113,7 +113,7 @@ export class FeedService {
       let upvotes: number = post.upvotes
       let downvotes: number = post.downvotes
       let author = new Author(post.author.id, post.author.name, post.author.handle)
-      let date = post.createdAt
+      let date = new Date(post.createdAt).toDateString()
 
       posts.push(new Post(id, content, htmlContent, upvotes, downvotes, date, author))
     }
