@@ -16,6 +16,7 @@ export class ChatComponent implements OnInit {
   new Chatmessage("Hallo", "01.01.",true)]
 
   @Output() goBackEvent = new EventEmitter<boolean>();
+  @Output() refreshEvent = new EventEmitter<boolean>()
   @Input() childChat: Chat;
 
   constructor(private chatService: ChatService) { }
@@ -25,12 +26,12 @@ export class ChatComponent implements OnInit {
 
   goBack() {
     this.goBackEvent.emit(true)
-    this.chatService.getAllChats()
   }
 
-  sendMessage(pContent: string) {
-    this.chatService.sendMessage(this.childChat.id, pContent)
-    this.chatService.getMessages(this.childChat.id)
+  sendMessage(pElement) {
+    this.chatService.sendMessage(this.childChat.id, pElement.value)
+    this.refreshEvent.emit(true)
+    pElement.value = ""
   }
 
 }
