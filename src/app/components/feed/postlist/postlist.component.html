@@ -11,10 +11,10 @@
         <p [innerHTML]="post.htmlContent" id="content"></p>
     </div>
     <div class="vote">
-        <button id="down" type='submit'><span><i class="fa fa-thumbs-o-down fa-2x" aria-hidden="true" (click)="voteDown(post)"></i></span></button>
-        <button id="up" type='submit'><span><i class="fa fa-thumbs-o-up fa-2x" aria-hidden="true" (click)="voteUp(post)"></i></span></button>
-        <span id="downvotes">{{post.downvotes}}</span>
-        <span id="upvotes">{{post.upvotes}}</span>
+      <button id="down" type='submit'><span><i class="fa fa-thumbs-o-down fa-2x" aria-hidden="true" (click)="voteDown(post)"></i></span></button>
+      <span id="downvotes">{{post.downvotes}}</span>
+      <button id="up" type='submit'><span><i class="fa fa-thumbs-o-up fa-2x" aria-hidden="true" (click)="voteUp(post)"></i></span></button>
+      <span id="upvotes">{{post.upvotes}}</span>
     </div>
   </div>
 </div>
