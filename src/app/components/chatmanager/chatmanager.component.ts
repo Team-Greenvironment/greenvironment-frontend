@@ -15,23 +15,25 @@ export class ChatmanagerComponent implements OnInit {
   showChatlist: boolean = true
   showChat: boolean = false
   showCreateNewChat: boolean = false
-  parentSelectedChat: Chat
 
-  chatIds: number[] = []
+  parentSelectedChat: Chat
+  parentChats: Array<Chat>
 
   constructor(private data: DatasharingService, private chatService: ChatService) { }
 
   ngOnInit() {
-    this.data.currentChatIDs.subscribe(chatIDs => {
-      this.chatIds = chatIDs
-    })
-    this.chatService.getChatsByID(this.chatIds)
+    /*this.data.currentChatIDs.subscribe(chatIDs => {
+      this.parentChatIds = chatIDs
+    })*/
+    this.refresh()
   }
 
   goBackToChatlist($event) {
     this.showChatlist = $event
     this.showChat = false
     this.showCreateNewChat = false
+
+    this.refresh()
   }
 
   showSpecialChat($event) {
@@ -45,6 +47,14 @@ export class ChatmanagerComponent implements OnInit {
     this.showChatlist = false
     this.showChat = false
     this.showCreateNewChat = $event
+  }
+
+  refresh() {
+    this.chatService.getAllChatsRaw()
+    .subscribe(response => {
+        console.log(response)
+        this.parentChats = this.chatService.renderAllChats(response.json())
+      })
   }
 
 }

@@ -11,9 +11,7 @@ import { Chat } from 'src/app/models/chat';
 })
 export class ChatComponent implements OnInit {
 
-  messages:Array<Chatmessage> = [new Chatmessage("Hallo", "01.01.",true), new Chatmessage("Hallo", "01.01.",true), 
-  new Chatmessage("Hallo", "01.01.",true), new Chatmessage("Hallo", "01.01.",true), new Chatmessage("Hallo", "01.01.",true), 
-  new Chatmessage("Hallo", "01.01.",true)]
+  messages:Array<Chatmessage>
 
   @Output() goBackEvent = new EventEmitter<boolean>();
   @Input() childChat: Chat;
@@ -21,16 +19,29 @@ export class ChatComponent implements OnInit {
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
+    this.refresh()
   }
 
   goBack() {
     this.goBackEvent.emit(true)
-    this.chatService.getAllChats()
   }
 
-  sendMessage(pContent: string) {
-    this.chatService.sendMessage(this.childChat.id, pContent)
-    this.chatService.getMessages(this.childChat.id)
+  sendMessage(pElement) {
+    this.chatService.sendMessage(this.childChat.id, pElement.value)
+    .subscribe(response => {
+      console.log("Message sent")
+      pElement.value = ""
+      this.refresh()
+    })
+  }
+
+  refresh() {
+    this.chatService.getMessagesRaw(this.childChat.id)
+    .subscribe(response => 
+      {
+        console.log("Downloading messages ...")
+        this.messages = this.chatService.renderMessages(response.json())
+      })
   }
 
 }

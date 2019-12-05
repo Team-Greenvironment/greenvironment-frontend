@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class FriendsComponent implements OnInit {
 
-  friendIDs: number[] = [1,2,3,4,5,6]
+  friendIDs: number[] = [29, 27, 30, 31]
   friends = new Array<FriendInfo>() //= ["Friend 1", "Friend 2", "Friend 3", "Friend 4", "Friend 5", "Friend 6"]
 
   constructor(private data: DatasharingService, private http: Http, private router: Router) { }

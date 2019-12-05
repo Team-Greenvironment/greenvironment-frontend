@@ -30,9 +30,19 @@ export class ChatService {
  
     this.http.post(url, this.getBodyForGetAllChats())
     .subscribe(response => {
-        this.chats = this.updateAllChats(response.json())
+        this.chats = this.renderAllChats(response.json())
       });
     return this.chats
+  }
+
+  public getAllChatsRaw(): any {
+    console.log("Getting all chats ..")
+    let url = 'https://greenvironment.net/graphql'
+ 
+    let headers = new Headers()
+    headers.set('Content-Type', 'application/json')
+ 
+    return this.http.post(url, this.getBodyForGetAllChats())
   }
 
   public getChatsByID(pChatIDs: number[]): Array<Chat> {
@@ -41,6 +51,23 @@ export class ChatService {
 
     for(let chatId of pChatIDs) {
       let url = environment.graphQLUrl
+  
+      let headers = new Headers()
+      headers.set('Content-Type', 'application/json')
+
+      this.http.post(url, this.getBodyForGetChatsByID(chatId))
+      .subscribe(response => {
+        this.updateChat(response.json())
+      })
+    }
+    return this.chats
+  }
+
+  public getChatsByIDRaw(pChatIDs: number[]): any {
+    console.log("Getting chats by ID..")
+
+    for(let chatId of pChatIDs) {
+      let url = 'https://greenvironment.net/graphql'
   
       let headers = new Headers()
       headers.set('Content-Type', 'application/json')
@@ -90,13 +117,13 @@ export class ChatService {
     return chatPartners
   }
 
-  public sendMessage(pChatID: number, pContent: string) {
+  public sendMessage(pChatID: number, pContent: string): any {
     let url = environment.graphQLUrl
  
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
  
-    this.http.post(url, this.getBodyForSendMessage(pChatID, pContent)).subscribe(response => console.log("Message sent"))
+    return this.http.post(url, this.getBodyForSendMessage(pChatID, pContent))
   }
 
   public getMessages(pChatID): Array<Chatmessage> {
@@ -109,12 +136,21 @@ export class ChatService {
     this.http.post(url, this.getBodyForGetMessagesInChat(pChatID)).subscribe(response => 
       {
         console.log("Downloading messages ...")
-        messages = this.updateMessages(response.json())
+        messages = this.renderMessages(response.json())
       })
     return messages
   }
 
-  updateMessages(pResponse: any): Array<Chatmessage> {
+  public getMessagesRaw(pChatID): any {
+    let url = 'https://greenvironment.net/graphql'
+ 
+    let headers = new Headers()
+    headers.set('Content-Type', 'application/json')
+ 
+    return this.http.post(url, this.getBodyForGetMessagesInChat(pChatID))
+  }
+
+  public renderMessages(pResponse: any): Array<Chatmessage> {
     let messages = new Array<Chatmessage>()
       for(let message of pResponse.data.getChat.messages) {
         if(message.author.id == this.ownID) {
@@ -126,7 +162,7 @@ export class ChatService {
     return messages
   }
 
-  updateAllChats(pResponse: any): Array<Chat> {
+  public renderAllChats(pResponse: any): Array<Chat> {
     let chats = Array<Chat>()
     for(let chat of pResponse.data.getSelf.chats) {
       let memberID: number
@@ -193,8 +229,8 @@ export class ChatService {
   }
 
   getBodyForSendMessage(pchatID: number, pContent: string) {
-    const body =  {query: `mutation($chatID: number, $content: string) {
-        sendMessage(chatId: $chatID, content: $content) {id} 
+    const body =  {query: `mutation($chatId: ID!, $content: String!) {
+        sendMessage(chatId: $chatId, content: $content) {id} 
       }`, variables: {
           chatId: pchatID,
           content: pContent
@@ -205,9 +241,13 @@ export class ChatService {
 
   getBodyForGetAllChats() {
     const body =  {query: `query {
-        getUser {
-          chats(first: 1000, offset: 0) {id, members{name, id}, 
-          messages(first: 1000, offset: 0) {author {id}, createdAt, content}}
+        getSelf {
+          chats(first: 1000, offset: 0) {
+            id, members{name, id}, 
+            messages(first: 1000, offset: 0) {
+              author {id}, createdAt, content
+            }
+          }
         }
       }`
       }
@@ -226,8 +266,8 @@ export class ChatService {
   }
 
   getBodyForGetMessagesInChat(pChatID: number) {
-    const body =  {query: `query($chatID: ID!) {
-        getChat(chatId: $chatID) {
+    const body =  {query: `query($chatId: ID!) {
+        getChat(chatId: $chatId) {
           messages(first: 1000, offset: 0) {author {id}, createdAt, content}
         }
       }`, variables: {

@@ -42,7 +42,7 @@ export class FeedService {
         console.log(response.text())})
   }
 
-  public upvote(pPostID: number): void {
+  public upvote(pPostID: number): any {
     let url = environment.graphQLUrl
  
     let headers = new Headers()
@@ -54,11 +54,10 @@ export class FeedService {
           postId: pPostID
       }}
  
-    this.http.post(url, body).subscribe(response => {
-        console.log(response.text())})
+    return this.http.post(url, body)
   }
 
-  public downvote(pPostID: number): void {
+  public downvote(pPostID: number): any {
     let url = environment.graphQLUrl
  
     let headers = new Headers()
@@ -70,8 +69,7 @@ export class FeedService {
           postId: pPostID
       }}
  
-    this.http.post(url, body).subscribe(response => {
-        console.log(response.text())})
+    return this.http.post(url, body)
   }
 
   public getAllPosts(): Array<Post> {
@@ -80,7 +78,7 @@ export class FeedService {
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
  
-    this.http.post(url, this.getBodyForGetAllChats())
+    this.http.post(url, this.getBodyForGetAllPosts())
     .subscribe(response => {
         this.posts = this.renderAllPosts(response.json())
         console.log(response)
@@ -94,10 +92,10 @@ export class FeedService {
     let headers = new Headers()
     headers.set('Content-Type', 'application/json')
  
-    return this.http.post(url, this.getBodyForGetAllChats())
+    return this.http.post(url, this.getBodyForGetAllPosts())
   }
 
-  getBodyForGetAllChats() {
+  getBodyForGetAllPosts() {
     const body =  {query: `query {
         getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, author{name, handle, id}, createdAt}
       }`
@@ -108,6 +106,7 @@ export class FeedService {
 
   public renderAllPosts(pResponse: any): Array<Post> {
     let posts = new Array<Post>()
+    //let options = {year: 'numeric', month: 'short', day: 'numeric', hour: '' }
     for(let post of pResponse.data.getPosts) {
       let id: number = post.id
       let content: string = post.content
@@ -115,7 +114,8 @@ export class FeedService {
       let upvotes: number = post.upvotes
       let downvotes: number = post.downvotes
       let author = new Author(post.author.id, post.author.name, post.author.handle)
-      let date = post.createdAt
+      let temp = new Date(Number(post.createdAt))
+      let date = temp.toLocaleString("en-GB")
 
       posts.push(new Post(id, content, htmlContent, upvotes, downvotes, date, author))
     }

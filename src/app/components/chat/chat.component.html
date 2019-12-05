@@ -4,13 +4,13 @@
         <span class='title'>{{childChat.memberName}}</span>
     </div>
     <div id='messagecontainer'>
-        <div class="chatmessage" *ngFor="let message of childChat.messages">
+        <div class="chatmessage" *ngFor="let message of messages">
             <div *ngIf="message.myself == true" id='ownmessage'><span>{{message.content}}</span></div>
             <div *ngIf="message.myself == false" id='foreignmessage'><span>{{message.content}}</span></div>
         </div>
     </div>
     <div id="newmessage">
-            <textarea id='input' placeholder="Write message here ..." rows='3' wrap="soft"></textarea>
-            <button id="send" type='submit'><span><i class="fa fa-send-o fa-2x" aria-hidden="true"></i></span></button>
+            <textarea #content id='input' placeholder="Write message here ..." rows='3' wrap="soft"></textarea>
+            <button id="send" type='submit' (click)="sendMessage(content)"><span><i class="fa fa-send-o fa-2x" aria-hidden="true"></i></span></button>
     </div>
 </div>
