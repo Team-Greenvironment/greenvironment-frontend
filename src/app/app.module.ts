@@ -26,6 +26,25 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ImprintComponent } from './components/imprint/imprint.component';
 import { AboutComponent } from './components/about/about.component';
 import { ChatcontactsComponent } from './components/chatmanager/chatcontacts/chatcontacts.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatSliderModule } from '@angular/material/slider';
+import { MatFormFieldModule  } from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { ReactiveFormsModule} from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MainNavigationComponent } from './components/main-navigation/main-navigation.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
@@ -58,7 +77,8 @@ const appRoutes: Routes = [
     PostlistComponent,
     ImprintComponent,
     AboutComponent,
-    ProfileComponent
+    ProfileComponent,
+    MainNavigationComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +89,22 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(
       appRoutes
-    )
+    ),
+    MatIconModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatFormFieldModule ,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    FlexLayoutModule,
+    MatTabsModule,
+    LayoutModule,
+    MatButtonModule,
+    MatListModule,
+    MatCardModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

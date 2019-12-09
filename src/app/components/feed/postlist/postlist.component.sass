@@ -1,67 +1,13 @@
 @import '../../../../styles/mixins.sass'
 @import '../../../../styles/vars.sass'
 
-.feeditem
-    background-color: $cFeedItemBackground
-    min-height: 2em
-    //max-heigth: 5em
-    margin: 0.5em
-    padding: 0.25em
-    border-radius: 0.25em
+.post
+    box-sizing: border-box
+    width: 100%
+    margin-top: 0.5em
+    
 
-.itemhead
-    display: grid
-    grid-template: 100% /70% 30%
-    .usertag
-        @include gridPosition(1, 2, 1, 2)
-    .title, .handle, .date
-        margin: 0.125em
-    .title
-        font-weight: bold
-    .date
-        @include gridPosition(1, 2, 2, 3)
-        text-align: right
-    .handle, .date
-        color: $cInactiveText
-    .handle a
-        text-decoration: none
-        color: $cInactiveText
-        font-style: normal
-    .handle a:hover
-        text-decoration: underline
-.itembody
-    display: grid
-    grid-template: 100% /85% 15%
-    .text
-        @include gridPosition(1, 2, 1, 2)
-        overflow-x: hidden
-        ::ng-deep img
-            max-width: 100%
-            height: auto
+::ng-deep .mat-card-header-text
+    margin: 0px
 
-    .vote
-        @include gridPosition(1, 2, 2, 3)
-        display: grid
-        grid-template: 70% 30% /50% 50%
-        height: 3em
-        button
-            background-color: $cFeedItemBackground
-            border: none
-        button:hover
-            cursor: pointer
-        #up
-            @include gridPosition(1, 2, 2, 3)
-            color: $cFeedUpVote
-        #up:hover
-            color: darken($cFeedUpVote, 10%)
-        #down
-            @include gridPosition(1, 2, 1, 2)
-            color: $cFeedDownVote
-        #down:hover
-            color: darken($cFeedDownVote, 10%)
-        #downvotes
-            @include gridPosition(2, 3, 1, 2)
-            text-align: center
-        #upvotes
-            @include gridPosition(2, 3, 2, 3)
-            text-align: center
+ 

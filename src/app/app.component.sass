@@ -1,11 +1,9 @@
 @import '../styles/mixins.sass'
 @import '../styles/vars.sass'
-/*
-  #content
-    grid-template: 7.5% 92.5% / 25% 50% 25%
-    display: grid
-    min-height: 100vh
-    max-height: 100vh*/
+
+html, body
+  margin: 0
+  height: 100%
 
 #imprint
   background-color:  $cSecondaryBackground
@@ -21,25 +19,5 @@
   min-height: 100vh
   max-height: 100vh
 
-#login
-  background-color:  $cSecondaryBackground
-  grid-template: 15% 70% 15% / 15% 70% 15% 
-  display: grid
-  min-height: 100vh
-  max-height: 100vh
 
-#register
-  background-color:  $cSecondaryBackground
-  grid-template: 15% 70% 15% / 15% 70% 15% 
-  display: grid
-  min-height: 100vh
-  max-height: 100vh
-
-#headerbar
-  height: 10vh
-  @include gridPosition(1, 1, 1, 4)
-  display: grid
-  grid-template: 100% /30% 10% 10% 10% 10% 10% 15% 5%
-  background-color: $cHeadPrimaryBackground
-  color: $cHeadFontColor
 

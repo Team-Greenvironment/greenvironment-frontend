@@ -1,28 +1,33 @@
 <div id="register">
-  <div id="registercontainer">
-      <h1>Register</h1>
-      <table style="width:100%" (keyup.enter)="onClickSubmit(username.value,email.value,password.value, repeatpassword.value)">
-          <tr>
-            <td>username: </td>
-            <td><input #username type="text" name="username" username.value=''><br></td>
-          </tr>
-          <tr>
-            <td>email:</td>
-            <td><input #email type="text" name="email"><br></td>
-          </tr>
-          <tr>
-              <td>password:</td>
-              <td> <input #password type="password" name="password"><br></td>
-            </tr>
-          <tr>
-              <td>repeat password:</td>
-              <td> <input #repeatpassword type="password" name="repeatpassword"><br></td>
-          </tr>
-        </table>
-    <button type="registerbutton" (click)="onClickSubmit(username.value,email.value,password.value, repeatpassword.value)">Register</button>
-    <p *ngIf="errorOccurred">{{errorMessage}}</p>
-    <br>
-    <br>
-    <a href="/login">You are already part of greenvironment? - login</a>
-  </div>
-</div>
+    <mat-card style="text-align: center;" >   
+        <mat-card-title>
+          Register
+        </mat-card-title>   
+        <mat-card-content>
+    <div class="example-container" (keyup.enter)="onClickSubmit(username.value,email.value,password.value, repeatpassword.value)">
+        <mat-error *ngIf="errorOccurred">{{errorMessage}}</mat-error>
+        <mat-form-field>
+            <input matInput placeholder="Enter your email" #email  >
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Enter your username" #username  >
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Enter your password" [type]="hide1 ? 'password' : 'text'" #password>
+          <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide1">
+          <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Repeat your password" [type]="hide2 ? 'password' : 'text'" #repeatpassword>
+          <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+          <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="primary" (click)="onClickSubmit(username.value,email.value,password.value, repeatpassword.value)">Register</button>
+      <p>You are already part of greenvironment?</p>
+      <a mat-stroked-button color="primary" routerLink="/login">Login</a>
+    </mat-card-content>
+  </mat-card>
+    </div>

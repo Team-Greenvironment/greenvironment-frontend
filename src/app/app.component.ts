@@ -9,6 +9,7 @@ import { SelfService } from './services/selfservice/self.service';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
+
   constructor(private data: DatasharingService, private selfservice: SelfService) { }
 
   userInfo: User
@@ -37,4 +38,5 @@ export class AppComponent implements OnInit {
       this.selfservice.checkIfLoggedIn();
     }
   }
+
 }
