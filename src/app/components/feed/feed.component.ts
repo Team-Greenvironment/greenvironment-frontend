@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { FeedService } from 'src/app/services/feed/feed.service';
+import { Actionlist } from 'src/app/models/actionlist';
 
 @Component({
   selector: 'home-feed',
@@ -16,6 +17,8 @@ export class FeedComponent implements OnInit {
   feedMostLiked: Array<Post>
 
   parentSelectedPostList: Array<Post>
+
+  actionlist: Actionlist = new Actionlist();
 
   constructor(private feedService: FeedService) { }
 

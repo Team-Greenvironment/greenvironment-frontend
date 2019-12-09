@@ -4,17 +4,29 @@
   <button id="submit" type='submit' (click)=createPost(content)><span><i class="fa fa-send-o fa-2x" aria-hidden="true"></i></span></button>
 </div>-->
 <div id="home">
-<mat-card style="text-align: center;">      
+<mat-card >      
   <mat-card-content>
   <mat-form-field id="input">
     <textarea matInput #content type="text" mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
     <button mat-button matSuffix mat-icon-button (click)="value=''">
       <mat-icon>add</mat-icon>
     </button>
-    <button mat-button matSuffix mat-icon-button (click)=createPost(content)>
-      <mat-icon>send</mat-icon>
-    </button>
   </mat-form-field>
+  <p id="check">
+    <mat-checkbox color="primary" [(ngModel)]="checked">I protected the environment.</mat-checkbox>
+  </p>
+  <mat-form-field id="action-chooser" *ngIf="checked">
+    <mat-label>Did you support the environment?</mat-label>
+    <mat-select [(ngModel)]="selectedValue" name="action">
+      <mat-option>the next time ;)</mat-option>
+      <mat-option *ngFor="let action of actionlist.actions" [value]="action.points">
+        {{action.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" id="post-button" (click)=createPost(content)>
+    POST
+  </button>
 </mat-card-content>
 </mat-card>
 <div id="chooser-div" style="text-align: center; margin-top: 1em;">
