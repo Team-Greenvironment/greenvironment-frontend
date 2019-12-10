@@ -40,6 +40,9 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { OverlayModule} from '@angular/cdk/overlay';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MainNavigationComponent } from './components/main-navigation/main-navigation.component';
@@ -108,7 +111,10 @@ const appRoutes: Routes = [
     MatCardModule,
     MatButtonToggleModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    OverlayModule,
+    MatSlideToggleModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

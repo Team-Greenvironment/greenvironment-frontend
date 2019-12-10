@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding  } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { Levellist } from 'src/app/models/levellist';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
+import { OverlayContainer} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-main-navigation',
@@ -16,14 +17,16 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./main-navigation.component.sass']
 })
 export class MainNavigationComponent implements OnInit {
-  loggedIn: boolean = false;
-  userId: number;
+  loggedIn: boolean = false
+  userId: number
   username: string
   user: User
   levellist: Levellist = new Levellist()
   level: string
   points: number
-  profileUrl: string;
+  profileUrl: string
+
+  lighttheme : boolean = true
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -32,7 +35,7 @@ export class MainNavigationComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private data: DatasharingService,private selfservice: SelfService,private breakpointObserver: BreakpointObserver, private http: Http, private router: Router) {}
+  constructor(public overlayContainer: OverlayContainer, private data: DatasharingService,private selfservice: SelfService,private breakpointObserver: BreakpointObserver, private http: Http, private router: Router) {}
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user
@@ -57,7 +60,22 @@ export class MainNavigationComponent implements OnInit {
     { path: '/login', label: 'Login' },
     { path: '/register', label: 'Register' },
   ];
+  
+  public toggletheme(){
+    if(this.lighttheme){
+      this.onSetTheme("dark-theme");
+      this.lighttheme = false;
+    } else{
+      this.onSetTheme("light-theme");
+      this.lighttheme = true;
+    } 
+  }
 
+  @HostBinding('class') componentCssClass;
+  onSetTheme(theme) {
+    this.overlayContainer.getContainerElement().classList.add(theme);
+    this.componentCssClass = theme;
+  }
   logout() {
     let url = environment.graphQLUrl
  

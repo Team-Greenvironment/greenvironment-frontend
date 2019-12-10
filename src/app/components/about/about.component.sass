@@ -1,22 +1,30 @@
 @import '../../../styles/mixins.sass'
 @import '../../../styles/vars.sass'
+@import '~@angular/material/theming'
+@import '../../../styles/greenvironment-material-theme.scss'
 
-#about
-  background-color:  $cSecondaryBackground
-  grid-template: 15% 70% 15% / 15% 70% 15% 
-  display: grid
-  min-height: 90vh
-  max-height: 90vh
+#text0, #text2
+  padding: 2em
+  max-width: 100%
+  min-height: 50%
+  background-color: mat-color($primary)
+  p, h1, h2 
+    color: white
+
+#text1
+  padding: 2em
+  min-height: 50%
+  max-width: 100%
+  p, h1, h2 
     
-#aboutcontainer
-    @include gridPosition(2, 2,2,2)
-    background-color: $cPrimaryBackground
-    padding: 1em
-    overflow: auto
+.white-icon
+  color: white
+  transform: scale(3)
 
-input
-    margin: 0.25em
-#header
-    @include gridPosition(1, 2, 1, 2)
-a
-  color: $cHeadPrimaryBackground
+p 
+  font-size: 2em
+
+.link-button
+  width: 100%
+  max-width: 30em
+  margin-bottom: 1em

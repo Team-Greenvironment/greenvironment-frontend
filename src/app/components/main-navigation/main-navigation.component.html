@@ -30,9 +30,9 @@
       </button>
       <span>Greenvironment</span>
         <!--The following menu items will be hidden on both SM and XS screen sizes -->
-       <nav mat-tab-nav-bar backgroundColor="primary" fxShow="true" fxHide.lt-md="true">
+      <nav mat-tab-nav-bar backgroundColor="primary" fxShow="true" fxHide.lt-md="true">
         <div *ngIf="loggedIn">
-        <a mat-tab-link
+        <a mat-tab-link class="link"
               *ngFor="let link of navLinksLoggedIn"
               [routerLink]="link.path"
               (click)="activeLink = link"
@@ -44,7 +44,7 @@
           <a mat-tab-link (click)="logout()" >log out</a>
           </div>
           <div *ngIf="!loggedIn">
-          <a mat-tab-link
+          <a mat-tab-link class="link"
           *ngFor="let link of navLinks"
           [routerLink]="link.path"
           (click)="activeLink = link"
@@ -54,7 +54,31 @@
           {{link.label}}
           </a>
         </div>
-       </nav>
+      </nav>
+      <!--neuer shit jooooooooooooooooooooooooooooooooooooooooooooooooo--->
+      <div id="menu-button-box">
+      <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      </div>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+        <mat-slide-toggle
+          color="primary"
+          class="theme-button"
+          (click)="toggletheme()">
+          dark mode
+        </mat-slide-toggle>
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon>voicemail</mat-icon>
+          <span>Check voice mail</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>notifications_off</mat-icon>
+          <span>Disable alerts</span>
+        </button>
+      </mat-menu>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
