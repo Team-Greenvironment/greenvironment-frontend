@@ -16,9 +16,9 @@
     <mat-checkbox color="primary" [(ngModel)]="checked">I protected the environment.</mat-checkbox>
   </p>
   <mat-form-field id="action-chooser" *ngIf="checked">
-    <mat-label>Did you support the environment?</mat-label>
+    <mat-label>What did you do?</mat-label>
     <mat-select [(ngModel)]="selectedValue" name="action">
-      <mat-option>the next time ;)</mat-option>
+      <mat-option>nothing ;)</mat-option>
       <mat-option *ngFor="let action of actionlist.actions" [value]="action.points">
         {{action.name}}
       </mat-option>

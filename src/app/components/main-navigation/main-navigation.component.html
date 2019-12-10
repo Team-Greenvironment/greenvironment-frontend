@@ -55,28 +55,19 @@
           </a>
         </div>
       </nav>
-      <!--neuer shit jooooooooooooooooooooooooooooooooooooooooooooooooo--->
       <div id="menu-button-box">
       <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button">
         <mat-icon>more_vert</mat-icon>
       </button>
       </div>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="$event.stopPropagation();">
         <mat-slide-toggle
           color="primary"
           class="theme-button"
-          (click)="toggletheme()">
+          (change)="toggleTheme()"><!--stays white when dragged-->
           dark mode
         </mat-slide-toggle>
-        </button>
-        <button mat-menu-item disabled>
-          <mat-icon>voicemail</mat-icon>
-          <span>Check voice mail</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>notifications_off</mat-icon>
-          <span>Disable alerts</span>
         </button>
       </mat-menu>
     </mat-toolbar>

@@ -27,7 +27,7 @@ export class MainNavigationComponent implements OnInit {
   profileUrl: string
 
   lighttheme : boolean = true
-
+  overlay;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -35,7 +35,9 @@ export class MainNavigationComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(public overlayContainer: OverlayContainer, private data: DatasharingService,private selfservice: SelfService,private breakpointObserver: BreakpointObserver, private http: Http, private router: Router) {}
+  constructor(public overlayContainer: OverlayContainer, private data: DatasharingService,private selfservice: SelfService,private breakpointObserver: BreakpointObserver, private http: Http, private router: Router) {
+    this.overlay = overlayContainer.getContainerElement();
+  }
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user
@@ -61,15 +63,20 @@ export class MainNavigationComponent implements OnInit {
     { path: '/register', label: 'Register' },
   ];
   
-  public toggletheme(){
-    if(this.lighttheme){
-      this.onSetTheme("dark-theme");
-      this.lighttheme = false;
-    } else{
-      this.onSetTheme("light-theme");
-      this.lighttheme = true;
-    } 
-  }
+  toggleTheme() {
+    if (this.overlay.classList.contains("dark-theme")) {
+        this.overlay.classList.remove("dark-theme");
+        this.overlay.classList.add("light-theme");
+        this.onSetTheme("light-theme");
+    } else if (this.overlay.classList.contains("light-theme")) {
+        this.overlay.classList.remove("light-theme");
+        this.overlay.classList.add("dark-theme");
+        this.onSetTheme("dark-theme");
+    } else {
+        this.overlay.classList.add("dark-theme");
+        this.onSetTheme("dark-theme");
+    }
+}
 
   @HostBinding('class') componentCssClass;
   onSetTheme(theme) {
