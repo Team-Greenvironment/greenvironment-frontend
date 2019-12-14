@@ -27,6 +27,7 @@ export class FeedComponent implements OnInit {
       this.feedNew = this.feedService.renderAllPosts(response.json())
       this.parentSelectedPostList = this.feedNew
       this.feedMostLiked = this.feedNew
+      console.log(this.feedNew)
     })
   }
 
