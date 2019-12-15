@@ -1,12 +1,22 @@
-<div id="header">
+<!--<div id="header">
   <span class="title">Friends</span>
   <button id="new" type="submit"><span><i class="fa fa-plus fa-3x" aria-hidden="true"></i></span></button>
   <button id="invitations" type="submit"><span><i class="fa fa-envelope-o fa-3x" aria-hidden="true"></i></span></button>
-</div>
-<div id="friendslist">
-    <div class="frienditem" *ngFor="let friend of friends"
+</div>-->
+<mat-toolbar><span>Friends</span></mat-toolbar>
+<div id="friendlist">
+    <!--<div class="frienditem" *ngFor="let friend of friends"
     [class.selected]="friend === selectedFriend" (click)="showFriendProfile(friend)"> 
       <div class="picture">Pic</div>
       <div class="name"><span>{{friend.name}}</span></div>
-    </div>
+    </div>-->
+    <mat-card class="friend-card" *ngFor="let friend of friends" 
+    [class.selected]="friend === selectedFriend" (click)="showFriendProfile(friend)"
+    tabindex="0">
+      <mat-card-header>
+        <div mat-card-avatar class="profile-picture"></div>
+        <mat-card-title>{{friend.name}}</mat-card-title>
+        <mat-card-subtitle>{{friend.rankname}}</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
 </div>

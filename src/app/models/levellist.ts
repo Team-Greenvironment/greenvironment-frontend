@@ -11,11 +11,8 @@ export class Levellist{
 
   getLevelName(lev:number): any{
     var name: string = 'not defined';
-    console.log(lev);
     this.levels.forEach(rank => {
-      console.log(rank.level);
       if(lev == rank.level){
-        console.log('found matching level');
         name = rank.name;
       } 
     });

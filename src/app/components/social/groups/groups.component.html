@@ -1,12 +1,20 @@
-<div id="header">
+<!--<div id="header">
     <span class="title">Groups</span>
     <button id="new" type="submit"><span><i class="fa fa-plus fa-3x" aria-hidden="true"></i></span></button>
     <button id="invitations" type="submit"><span><i class="fa fa-envelope-o fa-3x" aria-hidden="true"></i></span></button>
-</div>
-<div id="groupslist">
-    <div class="groupitem" *ngFor="let group of groups"
+</div>-->
+<mat-toolbar><span>Groups</span></mat-toolbar>
+<div id="grouplist">
+    <!--<div class="groupitem" *ngFor="let group of groups"
     [class.selected]="group === selectedGroup" (click)="showGroup(group)"> 
       <div class="picture">Pic</div>
       <div class="name"><span>{{group.name}}</span></div>
-    </div>
+    </div>-->
+    <mat-card class="group-card" *ngFor="let group of groups" 
+    [class.selected]="group === selectedGroup" (click)="showGroup(group)">
+      <mat-card-header>
+        <div mat-card-avatar class="group-picture"></div>
+        <mat-card-title>{{group.name}}</mat-card-title>
+      </mat-card-header>
+    </mat-card>
 </div>

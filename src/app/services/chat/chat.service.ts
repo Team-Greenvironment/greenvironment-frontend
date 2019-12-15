@@ -105,13 +105,15 @@ export class ChatService {
     for(let chat of temp.data.getSelf.chats) {
       let memberID: number
       let memberName: string
+      let memberLevel: number
       for(let member of chat.members) {
         if(member.id != this.ownID) {
           memberID = member.id
           memberName = member.name
+          memberLevel = member.level
         }
       }
-      chatPartners.push(new FriendInfo(memberID, memberName))
+      chatPartners.push(new FriendInfo(memberID, memberName, memberLevel))
     }
 
     return chatPartners
@@ -221,7 +223,7 @@ export class ChatService {
   getBodyForRequestOfAllChatPartners() {
     const body =  {query: `query {
         getSelf {
-          chats(first: 1000, offset: 0) {members{name, id}}
+          chats(first: 1000, offset: 0) {members{name, id, level}}
         }}`
       }
 
@@ -243,7 +245,7 @@ export class ChatService {
     const body =  {query: `query {
         getSelf {
           chats(first: 1000, offset: 0) {
-            id, members{name, id}, 
+            id, members{name, id, level}, 
             messages(first: 1000, offset: 0) {
               author {id}, createdAt, content
             }
@@ -256,7 +258,7 @@ export class ChatService {
 
   getBodyForGetChatsByID(pChatID: number) {
     const body =  {query: `query($chatID: ID!) {
-        getChat(chatId: $chatID) {id, members{name, id}, 
+        getChat(chatId: $chatID) {id, members{name, id, level}, 
           messages(first: 1000, offset: 0) {author {id}, createdAt, content}}
         }
       }`, variables: {

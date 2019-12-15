@@ -2,28 +2,30 @@
 @import '../../../styles/vars.sass'
 
 #content
-  grid-template: 100%/ 25% 50% 25%
-  display: grid
-  min-height: 90vh
-  max-height: 90vh
+  position: fixed
+  width: 100%
+  height: calc(100% - 56px)
 
-#chatcontainer
-  @include gridPosition(1, 3, 1, 2)
-  background-color: $cBoxBodyBackground
-  overflow: auto
+#chat
+  box-sizing: content-box
+  height: 100%
+  width: 25%
+  float: left
+  overflow-y: auto
+  
+#feed
+  box-sizing: content-box
+  height: 100%
+  width: 50%
+  float: left
+  overflow-y: auto
 
-#feedcontainer
-  @include gridPosition(1, 3, 2, 3)
-  display: grid
-  grid-template: 10% 90% /100%
-  overflow: auto
-
-#socialcontainer
-  @include gridPosition(1, 3, 3, 4)
-  display: grid
-  grid-template: 50% 50% /100%
-  background-color: $cBoxBodyBackground
-  overflow: auto
+#social
+  box-sizing: content-box
+  height: 100%
+  width: 25%
+  float: left
+  overflow-y: auto
 
 .mat-toolbar.mat-primary 
   width: 100%
@@ -36,7 +38,6 @@
 
 .bottom-menu
   position: fixed
-  
   width: 100%
   height: calc(100% - 56px)
 

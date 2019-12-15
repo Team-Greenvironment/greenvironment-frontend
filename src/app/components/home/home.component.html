@@ -1,7 +1,7 @@
 <div id="content" fxShow="true" fxHide.lt-md="true">
-    <home-chatmanager id="chatcontainer" *ngIf="loggedIn"></home-chatmanager>
-    <home-feed id="feedcontainer"></home-feed>
-    <home-social id="socialcontainer" *ngIf="loggedIn"></home-social>
+    <div id="chat"><home-chatmanager id="chatcontainer" *ngIf="!loggedIn"></home-chatmanager></div>
+    <div id="feed"><home-feed id="feedcontainer"></home-feed></div>
+    <div id="social"><home-social id="socialcontainer" *ngIf="!loggedIn"></home-social></div>
 </div>
 <!--
 <mat-tab-group headerPosition="below" position="0" id="bottom-menu" fxShow="true" fxHide.gt-sm="true">
