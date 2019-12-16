@@ -12,7 +12,8 @@
     </div>-->
     <mat-card class="friend-card" *ngFor="let friend of friends" 
     [class.selected]="friend === selectedFriend" (click)="showFriendProfile(friend)"
-    tabindex="0">
+    tabindex="0"
+    matRipple>
       <mat-card-header>
         <div mat-card-avatar class="profile-picture"></div>
         <mat-card-title>{{friend.name}}</mat-card-title>

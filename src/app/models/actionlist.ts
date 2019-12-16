@@ -1,5 +1,13 @@
+
+export interface Action {
+  id: number
+  name: string;
+  points: number;
+}
+
 export class Actionlist{
-    actions: { id: number, name: string, points: number}[] = [
+
+     Actions: Action[] = [
       { id: 0, name: "collect a lot of trash",points: 25},
       { id: 1, name: "collect a bit of trash",points: 10 },
       { id: 2, name: "do trash seperation", points: 5 },

@@ -19,7 +19,7 @@
     <mat-label>What did you do?</mat-label>
     <mat-select [(ngModel)]="selectedValue" name="action">
       <mat-option>nothing ;)</mat-option>
-      <mat-option *ngFor="let action of actionlist.actions" [value]="action.points">
+      <mat-option *ngFor="let action of actionlist.Actions" [value]="action.points">
         {{action.name}}
       </mat-option>
     </mat-select>

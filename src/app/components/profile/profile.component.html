@@ -1,7 +1,6 @@
-
+<mat-toolbar color="primary">Profile</mat-toolbar>
 <div id="profile">
-    <div id="profilecontainer" *ngIf="profileNotFound == false">
-        <h1>Profile</h1>
+    <div id="profilecontainer" [hidden]="profileNotFound">
         <table style="width:100%">
             <tr>
                 <td>name: </td>
@@ -39,7 +38,26 @@
                  You can get a different amount of points
                 for differnet actions you can see in the list below:
             </p>
-            <table style="width:100%">
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                <!--- Note that these columns can be defined in any order.
+                        The actual rendered columns are set as a property on the row definition" -->
+                
+                <!-- Position Column -->
+                <ng-container matColumnDef="points">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> points </th>
+                    <td mat-cell *matCellDef="let action"> {{action.points}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> action </th>
+                    <td mat-cell *matCellDef="let action"> {{action.name}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <!--<table style="width:100%">
                 <tr>
                     <th>points </th>
                     <th>action</th>
@@ -48,7 +66,7 @@
                     <td>{{action.points}}</td>
                     <td>{{action.name}}</td>
                 </tr>
-            </table>
+            </table>-->
         </div>
     <div id="profilecontainer" *ngIf="profileNotFound">
             <h1>Profile not found :(</h1>
