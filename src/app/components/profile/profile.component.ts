@@ -15,15 +15,17 @@ import {MatTableDataSource} from '@angular/material/table';
 })
 
 export class ProfileComponent implements OnInit {
-  actionlist: Actionlist = new Actionlist();
+  actionlist: Actionlist = new Actionlist()
   
-  levellist: Levellist = new Levellist();
+  levellist: Levellist = new Levellist()
   user: User = new User()
   id : string
-  rankname: string;
-  profileNotFound : boolean = false;
-  displayedColumns = ['points', 'name'];
-  dataSource = new MatTableDataSource(this.actionlist.Actions);
+  rankname: string
+  profileNotFound : boolean = false
+  displayedColumns = ['points', 'name']
+  dataSource = new MatTableDataSource(this.actionlist.Actions)
+  displayedLevelColumns = ['level', 'name']
+  levelSource = this.levellist.levels
   constructor(private router: Router,private http: Http) { }
   
   @ViewChild(MatSort, {static: true}) sort: MatSort;
