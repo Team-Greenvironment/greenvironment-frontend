@@ -11,32 +11,32 @@ import { environment } from 'src/environments/environment';
 })
 export class RegisterService {
 
-  constructor(private http: Http, private data: DatasharingService,private router: Router) { }
+  constructor(private http: Http, private data: DatasharingService, private router: Router) { }
 
   public register(registration: Registration, errorCb: any) {
- 
-    //let url = './graphql'
-    let url = environment.graphQLUrl
- 
-    let headers = new Headers();
+
+    // let url = './graphql'
+    const url = environment.graphQLUrl;
+
+    const headers = new Headers();
     headers.set('Content-Type', 'application/json');
- 
+
     return this.http.post(url, this.buildJson(registration))
       .subscribe(response => {
         console.log(response.text());
         this.registerSuccess();
-        this.updateUserInfo(response.json())
+        this.updateUserInfo(response.json());
       }, errorCb
       );
   }
 
-  public registerSuccess(){
+  public registerSuccess() {
     console.log('alles supi dupi');
-    //do routing
+    // do routing
     this.router.navigateByUrl('');
   }
 
-  public updateUserInfo(response : any){
+  public updateUserInfo(response: any) {
     const user: User = new User();
     user.loggedIn = true;
     user.userID = response.data.register.id;
@@ -50,13 +50,13 @@ export class RegisterService {
     user.chatIDs = response.data.register.chats;
     user.requestIDs = response.data.register.requests;
 
-    this.data.changeUserInfo(user)
-    
+    this.data.changeUserInfo(user);
+
   }
 
   public buildJson(registration: Registration): any {
     const body =  {query: `mutation($username: String, $email: String, $pwHash: String) {
-      register(username: $username, email: $email, passwordHash: $pwHash) {id, name, handle, points, level, friends{id}, groups{id},chats{id}} 
+      register(username: $username, email: $email, passwordHash: $pwHash) {id, name, handle, points, level, friends{id}, groups{id},chats{id}}
     }`, variables: {
         email: registration.email,
         pwHash: registration.passwordHash,

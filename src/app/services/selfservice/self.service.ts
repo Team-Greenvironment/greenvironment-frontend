@@ -12,36 +12,36 @@ import { environment } from 'src/environments/environment';
 })
 export class SelfService {
 
-  constructor(private http: Http, private data: DatasharingService,private router: Router) { }
+  constructor(private http: Http, private data: DatasharingService, private router: Router) { }
 
   public checkIfLoggedIn() {
     console.log('check if logged in...');
 
-    let url = environment.graphQLUrl;
- 
-    let headers = new Headers();
+    const url = environment.graphQLUrl;
+
+    const headers = new Headers();
     headers.set('Content-Type', 'application/json');
- 
+
     return this.http.post(url, this.buildJson())
       .subscribe(response => {
         console.log(response.text());
         this.stillLoggedIn();
-        this.updateUserInfo(response.json())
+        this.updateUserInfo(response.json());
       }, error => {
-        this.notLoggedIn()
-        console.log(error.text())
+        this.notLoggedIn();
+        console.log(error.text());
       }
       );
   }
-  public stillLoggedIn(){
+  public stillLoggedIn() {
     console.log('user was logged in');
   }
 
-  public notLoggedIn(){
+  public notLoggedIn() {
     console.log('user was not logged in');
   }
 
-  public updateUserInfo(response : any){
+  public updateUserInfo(response: any) {
     const user: User = new User();
     user.loggedIn = true;
     user.userID = response.data.getSelf.id;
@@ -55,14 +55,14 @@ export class SelfService {
     user.chatIDs = response.data.getSelf.chats;
     user.requestIDs = response.data.getSelf.requests;
 
-    this.data.changeUserInfo(user)
+    this.data.changeUserInfo(user);
   }
 
   public buildJson(): any {
     const body =  {query: `{
-      getSelf{id, name,email, handle, points, level, friends{id}, groups{id},chats{id}} 
+      getSelf{id, name,email, handle, points, level, friends{id}, groups{id},chats{id}}
     }`, variables: {
       }};
     return body;
   }
-}//add ,receivedRequests{id} later
+}// add ,receivedRequests{id} later

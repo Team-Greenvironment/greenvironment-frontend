@@ -10,7 +10,7 @@ import { ChatService } from 'src/app/services/chat/chat.service';
 })
 export class ChatlistComponent implements OnInit {
 
-  @Input() childChats: Array<Chat>
+  @Input() childChats: Array<Chat>;
   @Output() showChatEvent = new EventEmitter<Chat>();
   @Output() showCreateChatEvent = new EventEmitter<boolean>();
   selectedChat: Chat;
@@ -18,20 +18,20 @@ export class ChatlistComponent implements OnInit {
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
-    
+
   }
 
   showNewChat() {
-    this.showCreateChatEvent.emit(true)
+    this.showCreateChatEvent.emit(true);
   }
 
   showChat(pChat: Chat) {
-    this.selectedChat = pChat
-    this.showChatEvent.emit(this.selectedChat)
+    this.selectedChat = pChat;
+    this.showChatEvent.emit(this.selectedChat);
   }
 
 
   newChat() {
-    console.error("not implemented")
+    console.error('not implemented');
   }
 }

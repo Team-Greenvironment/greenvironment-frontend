@@ -12,30 +12,30 @@ import { environment } from 'src/environments/environment';
 })
 export class FriendsComponent implements OnInit {
 
-  friendIDs: number[] = [29, 27, 30, 31]
-  friends = new Array<FriendInfo>() //= ["Friend 1", "Friend 2", "Friend 3", "Friend 4", "Friend 5", "Friend 6"]
+  friendIDs: number[] = [29, 27, 30, 31];
+  friends = new Array<FriendInfo>(); // = ["Friend 1", "Friend 2", "Friend 3", "Friend 4", "Friend 5", "Friend 6"]
 
   constructor(private data: DatasharingService, private http: Http, private router: Router) { }
 
   ngOnInit() {
-    //this.data.currentUserInfo.subscribe(user => {
+    // this.data.currentUserInfo.subscribe(user => {
     //  this.friendIDs = user.friendIDs})
-    this.getFriendsNames()
+    this.getFriendsNames();
   }
 
   getFriendsNames() {
-    for(let id of this.friendIDs) {
-      let url = environment.graphQLUrl
-      let headers = new Headers();
+    for (const id of this.friendIDs) {
+      const url = environment.graphQLUrl;
+      const headers = new Headers();
       headers.set('Content-Type', 'application/json');
-  
+
       this.http.post(url, this.buildJson(id))
-        .subscribe(response => {this.readOutFriendsNames(id, response.json())})
+        .subscribe(response => {this.readOutFriendsNames(id, response.json()); });
       }
   }
 
-  readOutFriendsNames(pId: number, pResponse : any) {
-    this.friends.push(new FriendInfo(pId, pResponse.data.getUser.name,pResponse.data.getUser.level ))
+  readOutFriendsNames(pId: number, pResponse: any) {
+    this.friends.push(new FriendInfo(pId, pResponse.data.getUser.name, pResponse.data.getUser.level ));
   }
 
   buildJson(pId: number): any {
@@ -45,14 +45,14 @@ export class FriendsComponent implements OnInit {
         level
       }
     }`, variables: {
-        userId: pId 
-      }}
+        userId: pId
+      }};
 
-    return body
+    return body;
   }
 
-  public showFriendProfile(pFriend: FriendInfo){
-    this.router.navigate(['profile/' + pFriend.id])
+  public showFriendProfile(pFriend: FriendInfo) {
+    this.router.navigate(['profile/' + pFriend.id]);
   }
 
 }

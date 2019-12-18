@@ -12,212 +12,211 @@ import { environment } from 'src/environments/environment';
 })
 export class ChatService {
 
-  arr: number[]
-  ownID: number
-  chats: Array<Chat> = []
+  arr: number[];
+  ownID: number;
+  chats: Array<Chat> = [];
 
   constructor(private http: Http, private data: DatasharingService) {
     this.data.currentUserInfo.subscribe(user => {
-      this.ownID = user.userID})
+      this.ownID = user.userID; });
    }
 
   public getAllChats(): Array<Chat> {
-    console.log("Getting all chats ..")
-    let url = environment.graphQLUrl
- 
-    let headers = new Headers()
-    headers.set('Content-Type', 'application/json')
- 
+    console.log('Getting all chats ..');
+    const url = environment.graphQLUrl;
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
     this.http.post(url, this.getBodyForGetAllChats())
     .subscribe(response => {
-        this.chats = this.renderAllChats(response.json())
+        this.chats = this.renderAllChats(response.json());
       });
-    return this.chats
+    return this.chats;
   }
 
   public getAllChatsRaw(): any {
-    console.log("Getting all chats ..")
-    let url = 'https://greenvironment.net/graphql'
- 
-    let headers = new Headers()
-    headers.set('Content-Type', 'application/json')
- 
-    return this.http.post(url, this.getBodyForGetAllChats())
+    console.log('Getting all chats ..');
+    const url = 'https://greenvironment.net/graphql';
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
+    return this.http.post(url, this.getBodyForGetAllChats());
   }
 
   public getChatsByID(pChatIDs: number[]): Array<Chat> {
-    this.chats = []
-    console.log("Getting chats by ID..")
+    this.chats = [];
+    console.log('Getting chats by ID..');
 
-    for(let chatId of pChatIDs) {
-      let url = environment.graphQLUrl
-  
-      let headers = new Headers()
-      headers.set('Content-Type', 'application/json')
+    for (const chatId of pChatIDs) {
+      const url = environment.graphQLUrl;
+
+      const headers = new Headers();
+      headers.set('Content-Type', 'application/json');
 
       this.http.post(url, this.getBodyForGetChatsByID(chatId))
       .subscribe(response => {
-        this.updateChat(response.json())
-      })
+        this.updateChat(response.json());
+      });
     }
-    return this.chats
+    return this.chats;
   }
 
   public getChatsByIDRaw(pChatIDs: number[]): any {
-    console.log("Getting chats by ID..")
+    console.log('Getting chats by ID..');
 
-    for(let chatId of pChatIDs) {
-      let url = 'https://greenvironment.net/graphql'
-  
-      let headers = new Headers()
-      headers.set('Content-Type', 'application/json')
+    for (const chatId of pChatIDs) {
+      const url = 'https://greenvironment.net/graphql';
+
+      const headers = new Headers();
+      headers.set('Content-Type', 'application/json');
 
       this.http.post(url, this.getBodyForGetChatsByID(chatId))
       .subscribe(response => {
-        this.updateChat(response.json())
-      })
+        this.updateChat(response.json());
+      });
     }
-    return this.chats
+    return this.chats;
   }
 
   public createNewChat(pUserID: number) {
-    let url = environment.graphQLUrl
- 
-    let headers = new Headers()
-    headers.set('Content-Type', 'application/json')
- 
-    this.http.post(url, this.getBodyForNewChat(pUserID))
+    const url = environment.graphQLUrl;
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
+    this.http.post(url, this.getBodyForNewChat(pUserID));
   }
 
   public requestAllChatPartners(): Array<FriendInfo> {
-    let url = environment.graphQLUrl
-    let chatPartners: Array<FriendInfo>
-    let temp
- 
-    let headers = new Headers()
-    headers.set('Content-Type', 'application/json')
- 
+    const url = environment.graphQLUrl;
+    let chatPartners: Array<FriendInfo>;
+    let temp;
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
     this.http.post(url, this.getBodyForRequestOfAllChatPartners())
     .subscribe(response => {
-      temp = response.json()
-    })
+      temp = response.json();
+    });
 
-    for(let chat of temp.data.getSelf.chats) {
-      let memberID: number
-      let memberName: string
-      let memberLevel: number
-      for(let member of chat.members) {
-        if(member.id != this.ownID) {
-          memberID = member.id
-          memberName = member.name
-          memberLevel = member.level
+    for (const chat of temp.data.getSelf.chats) {
+      let memberID: number;
+      let memberName: string;
+      let memberLevel: number;
+      for (const member of chat.members) {
+        if (member.id != this.ownID) {
+          memberID = member.id;
+          memberName = member.name;
+          memberLevel = member.level;
         }
       }
-      chatPartners.push(new FriendInfo(memberID, memberName, memberLevel))
+      chatPartners.push(new FriendInfo(memberID, memberName, memberLevel));
     }
 
-    return chatPartners
+    return chatPartners;
   }
 
   public sendMessage(pChatID: number, pContent: string): any {
-    let url = environment.graphQLUrl
- 
-    let headers = new Headers()
-    headers.set('Content-Type', 'application/json')
- 
-    return this.http.post(url, this.getBodyForSendMessage(pChatID, pContent))
+    const url = environment.graphQLUrl;
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
+    return this.http.post(url, this.getBodyForSendMessage(pChatID, pContent));
   }
 
   public getMessages(pChatID): Array<Chatmessage> {
-    let messages: Array<Chatmessage>
-    let url = environment.graphQLUrl
- 
-    let headers = new Headers()
-    headers.set('Content-Type', 'application/json')
- 
-    this.http.post(url, this.getBodyForGetMessagesInChat(pChatID)).subscribe(response => 
-      {
-        console.log("Downloading messages ...")
-        messages = this.renderMessages(response.json())
-      })
-    return messages
+    let messages: Array<Chatmessage>;
+    const url = environment.graphQLUrl;
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
+    this.http.post(url, this.getBodyForGetMessagesInChat(pChatID)).subscribe(response => {
+        console.log('Downloading messages ...');
+        messages = this.renderMessages(response.json());
+      });
+    return messages;
   }
 
   public getMessagesRaw(pChatID): any {
-    let url = 'https://greenvironment.net/graphql'
- 
-    let headers = new Headers()
-    headers.set('Content-Type', 'application/json')
- 
-    return this.http.post(url, this.getBodyForGetMessagesInChat(pChatID))
+    const url = 'https://greenvironment.net/graphql';
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
+    return this.http.post(url, this.getBodyForGetMessagesInChat(pChatID));
   }
 
   public renderMessages(pResponse: any): Array<Chatmessage> {
-    let messages = new Array<Chatmessage>()
-      for(let message of pResponse.data.getChat.messages) {
-        if(message.author.id == this.ownID) {
-          messages.push(new Chatmessage(message.content, message.createdAt, true))
+    const messages = new Array<Chatmessage>();
+      for (const message of pResponse.data.getChat.messages) {
+        if (message.author.id == this.ownID) {
+          messages.push(new Chatmessage(message.content, message.createdAt, true));
         } else {
-          messages.push(new Chatmessage(message.content, message.createdAt, false))
+          messages.push(new Chatmessage(message.content, message.createdAt, false));
         }
       }
-    return messages
+    return messages;
   }
 
   public renderAllChats(pResponse: any): Array<Chat> {
-    let chats = Array<Chat>()
-    for(let chat of pResponse.data.getSelf.chats) {
-      let memberID: number
-      let memberName: string
-      for(let member of chat.members) {
-        if(member.id != this.ownID) {
-          memberID = member.id
-          memberName = member.name
+    const chats = Array<Chat>();
+    for (const chat of pResponse.data.getSelf.chats) {
+      let memberID: number;
+      let memberName: string;
+      for (const member of chat.members) {
+        if (member.id != this.ownID) {
+          memberID = member.id;
+          memberName = member.name;
         }
       }
-      let messages = new Array<Chatmessage>()
-      for(let message of chat.messages) {
-        if(message.author.id == this.ownID) {
-          messages.push(new Chatmessage(message.content, message.createdAt, true))
+      const messages = new Array<Chatmessage>();
+      for (const message of chat.messages) {
+        if (message.author.id == this.ownID) {
+          messages.push(new Chatmessage(message.content, message.createdAt, true));
         } else {
-          messages.push(new Chatmessage(message.content, message.createdAt, false))
+          messages.push(new Chatmessage(message.content, message.createdAt, false));
         }
       }
-      chats.push(new Chat(chat.id, memberID, memberName, messages))
+      chats.push(new Chat(chat.id, memberID, memberName, messages));
     }
-    return chats
+    return chats;
   }
 
   updateChat(pResponse: any) {
-    let id = pResponse.data.getChat.id
-    let memberId : number
-    let memberName: string
-    for(let member of pResponse.data.getChat.members) {
-      if(member.id != this.ownID) {
-        memberId = member.id
-        memberName = member.name
+    const id = pResponse.data.getChat.id;
+    let memberId: number;
+    let memberName: string;
+    for (const member of pResponse.data.getChat.members) {
+      if (member.id != this.ownID) {
+        memberId = member.id;
+        memberName = member.name;
       }
     }
-    let messages = new Array<Chatmessage>()
-    for(let message of pResponse.data.getChat.messages) {
-      if(message.author.id == this.ownID) {
-        messages.push(new Chatmessage(message.content, message.createdAt, true))
+    const messages = new Array<Chatmessage>();
+    for (const message of pResponse.data.getChat.messages) {
+      if (message.author.id == this.ownID) {
+        messages.push(new Chatmessage(message.content, message.createdAt, true));
       } else {
-        messages.push(new Chatmessage(message.content, message.createdAt, false))
+        messages.push(new Chatmessage(message.content, message.createdAt, false));
       }
     }
-    this.chats.push(new Chat(id, memberId, memberName, messages))
+    this.chats.push(new Chat(id, memberId, memberName, messages));
   }
 
   getBodyForNewChat(pUserID: number) {
-    this.arr = [pUserID]
+    this.arr = [pUserID];
     const body =  {query: `mutation($userID: number[]) {
-        createChat(members: $userID) {id} 
+        createChat(members: $userID) {id}
       }`, variables: {
           members: this.arr
       }};
 
-      return body
+      return body;
   }
 
   getBodyForRequestOfAllChatPartners() {
@@ -225,46 +224,46 @@ export class ChatService {
         getSelf {
           chats(first: 1000, offset: 0) {members{name, id, level}}
         }}`
-      }
+      };
 
-      return body
+      return body;
   }
 
   getBodyForSendMessage(pchatID: number, pContent: string) {
     const body =  {query: `mutation($chatId: ID!, $content: String!) {
-        sendMessage(chatId: $chatId, content: $content) {id} 
+        sendMessage(chatId: $chatId, content: $content) {id}
       }`, variables: {
           chatId: pchatID,
           content: pContent
       }};
 
-      return body
+      return body;
   }
 
   getBodyForGetAllChats() {
     const body =  {query: `query {
         getSelf {
           chats(first: 1000, offset: 0) {
-            id, members{name, id, level}, 
+            id, members{name, id, level},
             messages(first: 1000, offset: 0) {
               author {id}, createdAt, content
             }
           }
         }
       }`
-      }
-    return body
+      };
+    return body;
   }
 
   getBodyForGetChatsByID(pChatID: number) {
     const body =  {query: `query($chatID: ID!) {
-        getChat(chatId: $chatID) {id, members{name, id, level}, 
+        getChat(chatId: $chatID) {id, members{name, id, level},
           messages(first: 1000, offset: 0) {author {id}, createdAt, content}}
         }
       }`, variables: {
           chatId: pChatID
-      }}
-    return body
+      }};
+    return body;
   }
 
   getBodyForGetMessagesInChat(pChatID: number) {
@@ -274,7 +273,7 @@ export class ChatService {
         }
       }`, variables: {
           chatId: pChatID
-      }}
-    return body
+      }};
+    return body;
   }
 }

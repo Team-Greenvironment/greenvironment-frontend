@@ -12,40 +12,40 @@ import * as sha512 from 'js-sha512';
   styleUrls: ['./register.component.sass']
 })
 export class RegisterComponent implements OnInit {
-  registration: Registration 
-  errorOccurred: boolean = false;
+  registration: Registration;
+  errorOccurred = false;
   errorMessage: string;
   hide1 = true;
   hide2 = true;
- 
+
   constructor(private registerService: RegisterService) {
     this.registration = {username: null, passwordHash: null, email: null};
   }
 
-  public registerError(error : any){
+  public registerError(error: any) {
     console.log(error.errors[0].message);
     this.errorOccurred = true;
     this.errorMessage = error.errors[0].message;
   }
 
-  onClickSubmit(pUsername: string, pEmail: string, pPasswordHash: string,pPasswordHashRepeat: string ) {
+  onClickSubmit(pUsername: string, pEmail: string, pPasswordHash: string, pPasswordHashRepeat: string ) {
     this.errorOccurred = false;
-    this.errorMessage = " ";
-    if(this.passwordSame(pPasswordHash,pPasswordHashRepeat)){
-      this.registration.username = pUsername.trim()
-      this.registration.email = pEmail.trim()
+    this.errorMessage = ' ';
+    if (this.passwordSame(pPasswordHash, pPasswordHashRepeat)) {
+      this.registration.username = pUsername.trim();
+      this.registration.email = pEmail.trim();
       this.registration.passwordHash = sha512.sha512(pPasswordHash);
       this.registerService.register(this.registration, error => this.registerError(error.json()));
     }
   }
 
-  passwordSame(pwd: string,pwd2: string){
-    if(pwd == pwd2){
-      console.log('password same'); 
+  passwordSame(pwd: string, pwd2: string) {
+    if (pwd == pwd2) {
+      console.log('password same');
       return true;
-    } else{
+    } else {
       this.errorOccurred = true;
-      this.errorMessage = "not the same password";
+      this.errorMessage = 'not the same password';
       return false;
     }
   }

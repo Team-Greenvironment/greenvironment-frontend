@@ -63,7 +63,7 @@ const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'about', component: AboutComponent },
   { path: 'imprint', component: ImprintComponent },
-]
+];
 
 @NgModule({
   declarations: [

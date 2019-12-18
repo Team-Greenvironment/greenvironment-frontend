@@ -11,7 +11,7 @@ import * as sha512 from 'js-sha512';
   styleUrls: ['./login.component.sass']
 })
 export class LoginComponent implements OnInit {
-  login: Login
+  login: Login;
   hide = true;
   errorOccurred: boolean = false;
   errorMessage: string;
@@ -31,14 +31,14 @@ export class LoginComponent implements OnInit {
   }
 
   onClickSubmit(pEmail: string, pPasswordHash: string) {
-    console.log('try to login with mail adress:' + pEmail); 
+    console.log('try to login with mail adress:' + pEmail);
     this.errorOccurred = false;
     this.errorMessage = " ";
-    this.login.email = pEmail.trim()
+    this.login.email = pEmail.trim();
     this.login.passwordHash = sha512.sha512(pPasswordHash);
     console.log(this.login.passwordHash);
 
-    console.log(this.login.passwordHash)
+    console.log(this.login.passwordHash);
 
     this.loginService.login(this.login, error => this.loginError(error.json()));
   }
