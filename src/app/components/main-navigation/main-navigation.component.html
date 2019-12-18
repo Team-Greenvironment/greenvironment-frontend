@@ -32,7 +32,7 @@
       <span>Greenvironment</span>
         <!--The following menu items will be hidden on both SM and XS screen sizes -->
       <nav mat-tab-nav-bar backgroundColor="primary" fxShow="true" fxHide.lt-md="true">
-        <div *ngIf="loggedIn">
+        <div [hidden]="!loggedIn">
         <a mat-tab-link class="link"
               *ngFor="let link of navLinksLoggedIn"
               [routerLink]="link.path"
@@ -42,9 +42,8 @@
               [active]="activeLink == link">
               {{link.label}}
           </a>
-          <a mat-tab-link (click)="logout()" >log out</a>
           </div>
-          <div *ngIf="!loggedIn">
+          <div [hidden]="loggedIn">
           <a mat-tab-link class="link"
           *ngFor="let link of navLinks"
           [routerLink]="link.path"
@@ -54,6 +53,10 @@
           [active]="rla.isActive">
           {{link.label}}
           </a>
+          <a mat-tab-link class="link" id="login-button" routerLink="/login" (click)="activeLink = link"
+          routerLinkActive #rla="routerLinkActive"
+          [routerLinkActiveOptions]="{exact:true}"
+          [active]="rla.isActive">Login</a>
         </div>
       </nav>
       <div id="menu-button-box">
@@ -63,13 +66,19 @@
       </div>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="$event.stopPropagation();">
-        <mat-slide-toggle
-          color="primary"
-          class="theme-button"
-          (change)="toggleTheme()"><!--stays white when dragged-->
-          dark mode
-        </mat-slide-toggle>
+          <mat-slide-toggle
+            color="primary"
+            class="theme-button"
+            (change)="toggleTheme()"><!--stays white when dragged-->
+            dark mode
+          </mat-slide-toggle>
         </button>
+        <div  [hidden]="!loggedIn">
+          <button mat-menu-item (click)="logout()" >
+            <mat-icon>exit_to_app</mat-icon>
+            <span>log out</span>
+          </button> 
+        </div>
       </mat-menu>
     </mat-toolbar>
     <router-outlet></router-outlet>

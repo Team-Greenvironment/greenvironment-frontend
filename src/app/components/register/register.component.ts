@@ -32,8 +32,8 @@ export class RegisterComponent implements OnInit {
     this.errorOccurred = false;
     this.errorMessage = " ";
     if(this.passwordSame(pPasswordHash,pPasswordHashRepeat)){
-      this.registration.username = pUsername
-      this.registration.email = pEmail
+      this.registration.username = pUsername.trim()
+      this.registration.email = pEmail.trim()
       this.registration.passwordHash = sha512.sha512(pPasswordHash);
       this.registerService.register(this.registration, error => this.registerError(error.json()));
     }

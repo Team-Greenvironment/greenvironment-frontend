@@ -59,8 +59,6 @@ export class MainNavigationComponent implements OnInit {
     { path: '', label: 'Home' },
     { path: '/about', label: 'About' },
     { path: '/imprint', label: 'Imprint' },
-    { path: '/login', label: 'Login' },
-    { path: '/register', label: 'Register' },
   ];
   
   toggleTheme() {
