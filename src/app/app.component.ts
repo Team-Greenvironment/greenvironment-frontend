@@ -12,29 +12,29 @@ export class AppComponent implements OnInit {
 
   constructor(private data: DatasharingService, private selfservice: SelfService) { }
 
-  userInfo: User
+  userInfo: User;
 
-  loggedIn : boolean = false;
-  userID : number;
-  username : string;
-  handle : string;
-  email : string;
-  points : number;
-  level : number;
+  loggedIn = false;
+  userID: number;
+  username: string;
+  handle: string;
+  email: string;
+  points: number;
+  level: number;
 
-  friendIDs : number[];
-  groupIDs : number[];
-  chatIDs : number[];
+  friendIDs: number[];
+  groupIDs: number[];
+  chatIDs: number[];
 
-  requestIDs : number[];
+  requestIDs: number[];
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       this.userInfo = user;
       console.log(this.userInfo);
-      this.data.changeChatIDs(user.chatIDs)
-    })
-    if(this.loggedIn != true){
+      this.data.changeChatIDs(user.chatIDs);
+    });
+    if (this.loggedIn != true) {
       this.selfservice.checkIfLoggedIn();
     }
   }

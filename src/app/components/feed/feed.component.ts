@@ -9,16 +9,16 @@ import { Actionlist } from 'src/app/models/actionlist';
   styleUrls: ['./feed.component.sass']
 })
 export class FeedComponent implements OnInit {
-  checked: boolean //if the "I protected the environment."-box is checked
- //points value of the green action
-  value: any
-  viewNew: boolean = true
-  viewMostLiked: boolean = false
+  checked: boolean; // if the "I protected the environment."-box is checked
+ // points value of the green action
+  value: any;
+  viewNew = true;
+  viewMostLiked = false;
 
-  feedNew: Array<Post>
-  feedMostLiked: Array<Post>
+  feedNew: Array<Post>;
+  feedMostLiked: Array<Post>;
 
-  parentSelectedPostList: Array<Post>
+  parentSelectedPostList: Array<Post>;
 
   actionlist: Actionlist = new Actionlist();
 
@@ -26,46 +26,46 @@ export class FeedComponent implements OnInit {
 
   ngOnInit() {
     this.feedService.getAllPostsRaw().subscribe(response => {
-      this.feedNew = this.feedService.renderAllPosts(response.json())
-      this.parentSelectedPostList = this.feedNew
-      this.feedMostLiked = this.feedNew
-      console.log(this.feedNew)
-    })
+      this.feedNew = this.feedService.renderAllPosts(response.json());
+      this.parentSelectedPostList = this.feedNew;
+      this.feedMostLiked = this.feedNew;
+      console.log(this.feedNew);
+    });
   }
 
-  createPost(pElement){
-    this.feedService.createPost(pElement.value)
-    pElement.value = ""
+  createPost(pElement) {
+    this.feedService.createPost(pElement.value);
+    pElement.value = '';
     this.feedService.getAllPostsRaw().subscribe(response => {
-      this.feedNew = this.feedService.renderAllPosts(response.json())
-      this.parentSelectedPostList = this.feedNew
-      this.feedMostLiked = this.feedNew})
+      this.feedNew = this.feedService.renderAllPosts(response.json());
+      this.parentSelectedPostList = this.feedNew;
+      this.feedMostLiked = this.feedNew; });
   }
 
   showNew() {
-    console.log("showNew()")
+    console.log('showNew()');
     this.feedService.getAllPostsRaw().subscribe(response => {
-      this.feedNew = this.feedService.renderAllPosts(response.json())
-      this.parentSelectedPostList = this.feedNew})
-    this.viewNew = true
-    this.viewMostLiked = false
+      this.feedNew = this.feedService.renderAllPosts(response.json());
+      this.parentSelectedPostList = this.feedNew; });
+    this.viewNew = true;
+    this.viewMostLiked = false;
   }
 
   showMostLiked() {
-    console.log("showMostLiked()")
+    console.log('showMostLiked()');
     this.feedService.getAllPostsRaw().subscribe(response => {
-      this.feedMostLiked = this.feedService.renderAllPosts(response.json())
-      this.parentSelectedPostList = this.feedMostLiked})
-    this.viewNew = false
-    this.viewMostLiked = true
+      this.feedMostLiked = this.feedService.renderAllPosts(response.json());
+      this.parentSelectedPostList = this.feedMostLiked; });
+    this.viewNew = false;
+    this.viewMostLiked = true;
   }
 
-  
+
   refresh($event) {
     this.feedService.getAllPostsRaw().subscribe(response => {
-      this.parentSelectedPostList = this.feedService.renderAllPosts(response.json())
-      console.log("Refresh")
-    })
+      this.parentSelectedPostList = this.feedService.renderAllPosts(response.json());
+      console.log('Refresh');
+    });
   }
 
 }
