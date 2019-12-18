@@ -9,15 +9,15 @@ import { FeedService } from 'src/app/services/feed/feed.service';
 })
 export class HomeComponent implements OnInit {
 
-  loggedIn: boolean
+  loggedIn: boolean;
 
   constructor(private data: DatasharingService, private feedService: FeedService) { }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       this.loggedIn = user.loggedIn;
-    })
-    this.feedService.getAllPosts()
+    });
+    this.feedService.getAllPosts();
   }
 
 }

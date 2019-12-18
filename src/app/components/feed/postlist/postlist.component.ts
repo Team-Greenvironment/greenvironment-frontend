@@ -9,9 +9,9 @@ import { FeedService } from 'src/app/services/feed/feed.service';
 })
 export class PostlistComponent implements OnInit {
 
-  @Input() childPostList: Array<Post>
-  @Output() voteEvent = new EventEmitter<boolean>()
-  selectedPost: Post
+  @Input() childPostList: Array<Post>;
+  @Output() voteEvent = new EventEmitter<boolean>();
+  selectedPost: Post;
 
   constructor(private feedService: FeedService) { }
 
@@ -20,12 +20,12 @@ export class PostlistComponent implements OnInit {
 
   voteUp(pPost: Post) {
     this.feedService.upvote(pPost.id).subscribe(response => {
-        this.voteEvent.emit(true)})
+        this.voteEvent.emit(true); });
   }
 
   voteDown(pPost: Post) {
     this.feedService.downvote(pPost.id).subscribe(response => {
-        this.voteEvent.emit(true)})
+        this.voteEvent.emit(true); });
   }
 
 }

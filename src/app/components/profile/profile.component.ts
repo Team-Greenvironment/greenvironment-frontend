@@ -15,28 +15,28 @@ import {MatTableDataSource} from '@angular/material/table';
 })
 
 export class ProfileComponent implements OnInit {
-  actionlist: Actionlist = new Actionlist()
-  
-  levellist: Levellist = new Levellist()
-  user: User = new User()
-  id : string
-  rankname: string
-  profileNotFound : boolean = false
-  displayedColumns = ['points', 'name']
-  dataSource = new MatTableDataSource(this.actionlist.Actions)
-  displayedLevelColumns = ['level', 'name']
-  levelSource = this.levellist.levels
-  constructor(private router: Router,private http: Http) { }
-  
+  actionlist: Actionlist = new Actionlist();
+
+  levellist: Levellist = new Levellist();
+  user: User = new User();
+  id: string;
+  rankname: string;
+  profileNotFound = false;
+  displayedColumns = ['points', 'name'];
+  dataSource = new MatTableDataSource(this.actionlist.Actions);
+  displayedLevelColumns = ['level', 'name'];
+  levelSource = this.levellist.levels;
+  constructor(private router: Router, private http: Http) { }
+
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   ngOnInit() {
     this.dataSource.sort = this.sort;
-    this.id = this.router.url.substr(this.router.url.lastIndexOf("/") + 1);
-    //let url = './graphql'
-    let url = environment.graphQLUrl
-    let headers = new Headers();
+    this.id = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
+    // let url = './graphql'
+    const url = environment.graphQLUrl;
+    const headers = new Headers();
     headers.set('Content-Type', 'application/json');
- 
+
     return this.http.post(url, this.buildJson(this.id))
       .subscribe(response => {
         console.log(response.text());
@@ -45,8 +45,8 @@ export class ProfileComponent implements OnInit {
       );
   }
 
-  public updateUserInfo(response : any){
-    if(response.data.getUser != null){
+  public updateUserInfo(response: any) {
+    if (response.data.getUser != null) {
       this.profileNotFound = false;
       this.user.loggedIn = true;
       this.user.userID = response.data.getUser.id;
@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
       this.user.level = response.data.getUser.level;
       this.rankname = this.levellist.getLevelName(this.user.level);
       this.user.friendIDs = response.data.getUser.friends;
-    } else{
+    } else {
       this.profileNotFound = true;
     }
   }
@@ -69,17 +69,17 @@ export class ProfileComponent implements OnInit {
         name
         profilePicture
         points
-        level    
+        level
         friendCount
         friends{
           id
         }
         posts{
           content
-        }   
+        }
       }
     }`, variables: {
-        userId: this.id 
+        userId: this.id
       }};
     return body;
   }

@@ -3,7 +3,7 @@ export class Chatinfo {
     date: string;
 
     constructor(pId: string, pDate: string) {
-        this.id = pId
-        this.date = pDate
+        this.id = pId;
+        this.date = pDate;
     }
 }

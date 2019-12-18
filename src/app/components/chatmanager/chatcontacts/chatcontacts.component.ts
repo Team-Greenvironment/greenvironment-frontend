@@ -10,7 +10,7 @@ import { ChatService } from 'src/app/services/chat/chat.service';
 export class ChatcontactsComponent implements OnInit {
 
   @Output() goBackEvent = new EventEmitter<boolean>();
-  selectedContact: FriendInfo
+  selectedContact: FriendInfo;
 
   constructor(private chatService: ChatService) { }
 
@@ -18,17 +18,17 @@ export class ChatcontactsComponent implements OnInit {
   }
 
   goBack() {
-    this.goBackEvent.emit(true)
+    this.goBackEvent.emit(true);
   }
 
   createChat(pFriendInfo: FriendInfo) {
-    this.selectedContact = pFriendInfo
-    this.chatService.createNewChat(pFriendInfo.id)
-    this.goBack()
+    this.selectedContact = pFriendInfo;
+    this.chatService.createNewChat(pFriendInfo.id);
+    this.goBack();
   }
 
   contactList() {
-    console.error("Not Imlemented!")
+    console.error('Not Imlemented!');
   }
 
 }

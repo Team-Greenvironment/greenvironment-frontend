@@ -4,6 +4,7 @@
   ],
   "rules": {
     "arrow-return-shorthand": true,
+    "brace-style": "1tbs",
     "callable-types": true,
     "class-name": true,
     "comment-format": [
@@ -11,6 +12,7 @@
       "check-space"
     ],
     "curly": true,
+    "cyclomatic-complexity": true,
     "deprecation": {
       "severity": "warn"
     },
@@ -23,13 +25,15 @@
     "import-spacing": true,
     "indent": [
       true,
-      "spaces"
+      "spaces",
+      4
     ],
     "interface-over-type-literal": true,
     "label-position": true,
+    "max-classes-per-file": true,
     "max-line-length": [
       true,
-      140
+      120
     ],
     "member-access": false,
     "member-ordering": [
@@ -43,6 +47,7 @@
         ]
       }
     ],
+    "new-parens": true,
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [
@@ -74,6 +79,7 @@
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
     "no-use-before-declare": true,
+    "no-var-requires": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "one-line": [
@@ -89,10 +95,7 @@
       "single"
     ],
     "radix": true,
-    "semicolon": [
-      true,
-      "always"
-    ],
+    "semicolon": true,
     "triple-equals": [
       true,
       "allow-null-check"
@@ -121,6 +124,7 @@
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
+    "no-internal-module": true,
     "no-input-rename": true,
     "no-output-rename": true,
     "use-life-cycle-interface": true,

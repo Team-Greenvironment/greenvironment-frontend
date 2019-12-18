@@ -17,16 +17,20 @@ import { OverlayContainer} from '@angular/cdk/overlay';
   styleUrls: ['./main-navigation.component.sass']
 })
 export class MainNavigationComponent implements OnInit {
-  loggedIn: boolean = false
-  userId: number
-  username: string
-  user: User
-  levellist: Levellist = new Levellist()
-  level: string
-  points: number
-  profileUrl: string = "/profile/1"
 
-  lighttheme : boolean = true
+  constructor(public overlayContainer: OverlayContainer, private data: DatasharingService, private selfservice: SelfService, private breakpointObserver: BreakpointObserver, private http: Http, private router: Router) {
+    this.overlay = overlayContainer.getContainerElement();
+  }
+  loggedIn = false;
+  userId: number;
+  username: string;
+  user: User;
+  levellist: Levellist = new Levellist();
+  level: string;
+  points: number;
+  profileUrl = '/profile/1';
+
+  lighttheme = true;
   overlay;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -34,22 +38,6 @@ export class MainNavigationComponent implements OnInit {
       map(result => result.matches),
       shareReplay()
     );
-
-  constructor(public overlayContainer: OverlayContainer, private data: DatasharingService,private selfservice: SelfService,private breakpointObserver: BreakpointObserver, private http: Http, private router: Router) {
-    this.overlay = overlayContainer.getContainerElement();
-  }
-  ngOnInit() {
-    this.data.currentUserInfo.subscribe(user => {
-      this.user = user
-      this.loggedIn = user.loggedIn;
-      this.userId = user.userID;
-      this.username = user.username
-      this.level = this.levellist.getLevelName(user.level)
-      this.points = user.points
-      this.profileUrl = '/profile/' + this.userId;
-      this.updateLinks();
-    })    
-  }
   navLinksLoggedIn = [
     { path: '', label: 'Home' },
     { path: this.profileUrl, label: 'Profile' },
@@ -62,22 +50,36 @@ export class MainNavigationComponent implements OnInit {
     { path: '/imprint', label: 'Imprint' },
     { path: '/login', label: 'Login' },
   ];
-  
+
+  @HostBinding('class') componentCssClass;
+  ngOnInit() {
+    this.data.currentUserInfo.subscribe(user => {
+      this.user = user;
+      this.loggedIn = user.loggedIn;
+      this.userId = user.userID;
+      this.username = user.username;
+      this.level = this.levellist.getLevelName(user.level);
+      this.points = user.points;
+      this.profileUrl = '/profile/' + this.userId;
+      this.updateLinks();
+    });
+  }
+
   toggleTheme() {
-    if (this.overlay.classList.contains("dark-theme")) {
-        this.overlay.classList.remove("dark-theme");
-        this.overlay.classList.add("light-theme");
-        this.onSetTheme("light-theme");
-    } else if (this.overlay.classList.contains("light-theme")) {
-        this.overlay.classList.remove("light-theme");
-        this.overlay.classList.add("dark-theme");
-        this.onSetTheme("dark-theme");
+    if (this.overlay.classList.contains('dark-theme')) {
+        this.overlay.classList.remove('dark-theme');
+        this.overlay.classList.add('light-theme');
+        this.onSetTheme('light-theme');
+    } else if (this.overlay.classList.contains('light-theme')) {
+        this.overlay.classList.remove('light-theme');
+        this.overlay.classList.add('dark-theme');
+        this.onSetTheme('dark-theme');
     } else {
-        this.overlay.classList.add("dark-theme");
-        this.onSetTheme("dark-theme");
+        this.overlay.classList.add('dark-theme');
+        this.onSetTheme('dark-theme');
     }
   }
-  updateLinks(){
+  updateLinks() {
     this.navLinksLoggedIn = [
       { path: '', label: 'Home' },
       { path: this.profileUrl, label: 'Profile' },
@@ -85,28 +87,26 @@ export class MainNavigationComponent implements OnInit {
       { path: '/imprint', label: 'Imprint' },
     ];
   }
-
-  @HostBinding('class') componentCssClass;
   onSetTheme(theme) {
     this.overlayContainer.getContainerElement().classList.add(theme);
     this.componentCssClass = theme;
   }
   logout() {
-    let url = environment.graphQLUrl
- 
-    let headers = new Headers()
-    headers.set('Content-Type', 'application/json')
+    const url = environment.graphQLUrl;
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
 
     const body = {query: `mutation {
         logout
-      }`}
- 
+      }`};
+
     this.http.post(url, body).subscribe(response => {
-        console.log(response.text())})
-    this.loggedIn = false
-    let user = new User()
-    user.loggedIn = false
-    this.data.changeUserInfo(user)
-    this.router.navigate(['login'])
+        console.log(response.text()); });
+    this.loggedIn = false;
+    const user = new User();
+    user.loggedIn = false;
+    this.data.changeUserInfo(user);
+    this.router.navigate(['login']);
   }
 }
