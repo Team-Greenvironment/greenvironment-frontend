@@ -33,23 +33,22 @@ export class LoginService {
     this.router.navigateByUrl('');
   }
 
-  public updateUserInfo(response: any) {
-    const loginData = response.data.login;
-    const user: User = new User(
-      loginData.login.id,
-      true,
-      loginData.name,
-      loginData.handle,
-      loginData.email,
-      loginData.points,
-      loginData.level,
-      loginData.friends,
-      loginData.groups,
-      loginData.chats,
-      loginData.requests,
-    );
+  public updateUserInfo(response : any){
+    const user: User = new User();
+    user.loggedIn = true;
+    user.userID = response.data.login.id;
+    user.username = response.data.login.name;
+    user.handle = response.data.login.handle;
+    user.email = response.data.login.email;
+    user.points = response.data.login.points;
+    user.level = response.data.login.level;
+    user.friendIDs = response.data.login.friends;
+    user.groupIDs = response.data.login.groups;
+    user.chatIDs = response.data.login.chats;
+    user.requestIDs = response.data.login.requests;
 
-    this.data.changeUserInfo(user);
+    this.data.changeUserInfo(user)
+    
   }
 
   public buildJson(login: Login): any {

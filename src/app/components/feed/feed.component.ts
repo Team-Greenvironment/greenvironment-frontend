@@ -34,7 +34,7 @@ export class FeedComponent implements OnInit {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
-      this.userId = user.userID;
+      if(this.loggedIn) this.userId = user.userID;
     });
     this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
       this.feedNew = this.feedService.renderAllPosts(response.json());
