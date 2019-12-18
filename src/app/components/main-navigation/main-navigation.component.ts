@@ -24,7 +24,7 @@ export class MainNavigationComponent implements OnInit {
   levellist: Levellist = new Levellist()
   level: string
   points: number
-  profileUrl: string
+  profileUrl: string = "/profile/1"
 
   lighttheme : boolean = true
   overlay;
@@ -47,11 +47,12 @@ export class MainNavigationComponent implements OnInit {
       this.level = this.levellist.getLevelName(user.level)
       this.points = user.points
       this.profileUrl = '/profile/' + this.userId;
+      this.updateLinks();
     })    
   }
   navLinksLoggedIn = [
     { path: '', label: 'Home' },
-    { path: 'profile/1', label: 'Profile' },
+    { path: this.profileUrl, label: 'Profile' },
     { path: '/about', label: 'About' },
     { path: '/imprint', label: 'Imprint' },
   ];
@@ -75,7 +76,15 @@ export class MainNavigationComponent implements OnInit {
         this.overlay.classList.add("dark-theme");
         this.onSetTheme("dark-theme");
     }
-}
+  }
+  updateLinks(){
+    this.navLinksLoggedIn = [
+      { path: '', label: 'Home' },
+      { path: this.profileUrl, label: 'Profile' },
+      { path: '/about', label: 'About' },
+      { path: '/imprint', label: 'Imprint' },
+    ];
+  }
 
   @HostBinding('class') componentCssClass;
   onSetTheme(theme) {
