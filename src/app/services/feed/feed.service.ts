@@ -117,9 +117,18 @@ export class FeedService {
     return this.http.post(url, this.getBodyForGetAllPostsByUserId(userId));
   }
 
-  getBodyForGetAllPostsByUserId(pUserId: number) {
+  /*getBodyForGetAllPostsByUserId(pUserId: number) {
     const body =  {query: `query ($userId: ID) {
         getPosts (first: 1000, offset: 0, userId: $userId) {id, content, htmlContent, upvotes, downvotes, userVote, author{name, handle, id}, createdAt}
+      }`, variables: {
+        userId: pUserId
+      }};
+      return body
+  }*/
+  
+  getBodyForGetAllPostsByUserId(pUserId: number) {
+    const body =  {query: `query ($userId: ID) {
+        getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, userVote(userId: $userId), author{name, handle, id}, createdAt}
       }`, variables: {
         userId: pUserId
       }};
@@ -127,7 +136,7 @@ export class FeedService {
   }
   getBodyForGetAllPosts() {
     const body =  {query: `query {
-        getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, userVote, author{name, handle, id}, createdAt}
+        getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, author{name, handle, id}, createdAt}
       }`
       }
       return body
