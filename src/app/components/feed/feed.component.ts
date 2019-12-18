@@ -9,7 +9,8 @@ import { Actionlist } from 'src/app/models/actionlist';
   styleUrls: ['./feed.component.sass']
 })
 export class FeedComponent implements OnInit {
-
+  checked: boolean //if the "I protected the environment."-box is checked
+  value: number //points value of the green action
   viewNew: boolean = true
   viewMostLiked: boolean = false
 
