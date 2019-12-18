@@ -24,8 +24,8 @@
   <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>
       {{post.author.name}}
-      <a mat-button routerLink="/profile/{{post.author.id}}">@{{post.author.handle}}</a>
-        <p class="mat-card-subtitle">{{post.date}}</p>
+      <a class="mat-card-subtitle" routerLink="/profile/{{post.author.id}}">@{{post.author.handle}}</a>
+      <p class="mat-card-subtitle">&nbsp; {{post.date}}</p>
     </mat-card-title>
     <mat-card-subtitle>
     </mat-card-subtitle>
