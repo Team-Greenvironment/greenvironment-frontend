@@ -24,10 +24,10 @@
   <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>
       {{post.author.name}}
-      <a mat-button class="handle" routerLink="/profile/{{post.author.id}}">@{{post.author.handle}}</a>
+      <a mat-button routerLink="/profile/{{post.author.id}}">@{{post.author.handle}}</a>
+        <p class="mat-card-subtitle">{{post.date}}</p>
     </mat-card-title>
     <mat-card-subtitle>
-      <p>{{post.date}}</p>
     </mat-card-subtitle>
   </mat-card-header>
   <!--<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
