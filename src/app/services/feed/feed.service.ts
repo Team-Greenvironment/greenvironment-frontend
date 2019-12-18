@@ -127,7 +127,7 @@ export class FeedService {
   }*/
   
   getBodyForGetAllPostsByUserId(pUserId: number) {
-    const body =  {query: `query ($userId: ID) {
+    const body =  {query: `query ($userId: ID!) {
         getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, userVote(userId: $userId), author{name, handle, id}, createdAt}
       }`, variables: {
         userId: pUserId
