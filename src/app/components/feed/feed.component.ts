@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { FeedService } from 'src/app/services/feed/feed.service';
 import { Actionlist } from 'src/app/models/actionlist';
+import { DatasharingService } from '../../services/datasharing.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'home-feed',
@@ -22,10 +24,19 @@ export class FeedComponent implements OnInit {
 
   actionlist: Actionlist = new Actionlist();
 
-  constructor(private feedService: FeedService) { }
+  loggedIn = false;
+  userId: number;
+  user: User;
+
+  constructor(private feedService: FeedService,private data: DatasharingService) { }
 
   ngOnInit() {
-    this.feedService.getAllPostsRaw().subscribe(response => {
+    this.data.currentUserInfo.subscribe(user => {
+      this.user = user;
+      this.loggedIn = user.loggedIn;
+      if(this.loggedIn) this.userId = user.userID;
+    });
+    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
       this.feedNew = this.feedService.renderAllPosts(response.json());
       this.parentSelectedPostList = this.feedNew;
       this.feedMostLiked = this.feedNew;
@@ -44,7 +55,7 @@ export class FeedComponent implements OnInit {
 
   showNew() {
     console.log('showNew()');
-    this.feedService.getAllPostsRaw().subscribe(response => {
+    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
       this.feedNew = this.feedService.renderAllPosts(response.json());
       this.parentSelectedPostList = this.feedNew; });
     this.viewNew = true;
@@ -53,7 +64,7 @@ export class FeedComponent implements OnInit {
 
   showMostLiked() {
     console.log('showMostLiked()');
-    this.feedService.getAllPostsRaw().subscribe(response => {
+    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
       this.feedMostLiked = this.feedService.renderAllPosts(response.json());
       this.parentSelectedPostList = this.feedMostLiked; });
     this.viewNew = false;
@@ -62,7 +73,7 @@ export class FeedComponent implements OnInit {
 
 
   refresh($event) {
-    this.feedService.getAllPostsRaw().subscribe(response => {
+    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
       this.parentSelectedPostList = this.feedService.renderAllPosts(response.json());
       console.log('Refresh');
     });
