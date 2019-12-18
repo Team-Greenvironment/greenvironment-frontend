@@ -10,7 +10,8 @@ import { Actionlist } from 'src/app/models/actionlist';
 })
 export class FeedComponent implements OnInit {
   checked: boolean //if the "I protected the environment."-box is checked
-  value: number //points value of the green action
+ //points value of the green action
+  value: any
   viewNew: boolean = true
   viewMostLiked: boolean = false
 
