@@ -11,12 +11,21 @@
 // hue. Available color palettes: https://material.io/design/color/
 $primary: mat-palette($mat-green);
 $accent:  mat-palette($mat-pink, A200, A100, A400);
-
+$background-color: map_get($mat-grey, 50);
 // The warn palette is optional (defaults to red).
 $warn:    mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $light-theme: mat-light-theme($primary, $accent, $warn);
+
+// Set custom background color
+$background-color: map_get($mat-blue-grey, 50);
+
+$background: map-get($light-theme, background);
+$background: map_merge($background, (background: $background-color));
+$light-theme: map_merge($light-theme, (background: $background));
+
+
 
 $dark-primary: mat-palette($mat-green);
 $dark-accent:  mat-palette($mat-pink, A200, A100, A400);
@@ -26,6 +35,7 @@ $dark-warn:    mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
 
 .dark-theme {
     @include angular-material-theme($dark-theme);
