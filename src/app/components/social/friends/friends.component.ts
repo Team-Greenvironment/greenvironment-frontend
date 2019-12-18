@@ -35,13 +35,14 @@ export class FriendsComponent implements OnInit {
   }
 
   readOutFriendsNames(pId: number, pResponse : any) {
-    this.friends.push(new FriendInfo(pId, pResponse.data.getUser.name))
+    this.friends.push(new FriendInfo(pId, pResponse.data.getUser.name,pResponse.data.getUser.level ))
   }
 
   buildJson(pId: number): any {
     const body =  {query: `query($userId: ID) {
       getUser(userId:$userId) {
         name
+        level
       }
     }`, variables: {
         userId: pId 

@@ -15,6 +15,8 @@ export class RegisterComponent implements OnInit {
   registration: Registration 
   errorOccurred: boolean = false;
   errorMessage: string;
+  hide1 = true;
+  hide2 = true;
  
   constructor(private registerService: RegisterService) {
     this.registration = {username: null, passwordHash: null, email: null};

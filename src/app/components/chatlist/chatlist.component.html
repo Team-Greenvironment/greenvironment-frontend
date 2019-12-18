@@ -1,8 +1,9 @@
 <div id='chatlist'>
-  <div id="header">
+  <!--<div id="header">
     <span class="title">Chats</span>
     <button id="newchat" (click)="newChat()"><span><i class="fa fa-plus fa-3x" aria-hidden="true"></i></span></button>
-  </div>
+  </div>-->
+  <mat-toolbar><span>Chat</span></mat-toolbar>
   <div id="chats">
     <div class="chatitem" *ngFor="let chat of childChats" 
     [class.selected]="chat === selectedChat" (click)="showChat(chat)">

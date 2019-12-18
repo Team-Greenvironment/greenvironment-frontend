@@ -2,43 +2,13 @@
 @import '../../../styles/vars.sass'
 
 #friendscontainer
-    @include gridPosition(1, 2, 1, 2)
-    display: grid
-    grid-template: 15% 85% /100%
+  box-sizing: content-box
+  height: 50%
+  width: 100%
+  overflow: auto
     
 #groupscontainer
-    @include gridPosition(2, 3, 1, 2)
-    display: grid
-    grid-template: 15% 85% /100%
-
-#header
-  @include gridPosition(1, 2, 1, 2)
-  background-color: $cBoxHeaderBackground
-  display: grid
-  grid-template: 100% /60% 20% 20%
-
-  span
-    color: $cFontWhite
-  span.title
-      @include gridPosition(1, 2, 1, 2)
-      margin-top: 0.25em
-      margin-left: 0.25em
-      line-height: 100%
-      font-size: 2em
-    
-  button
-    background-color: $cBoxHeaderBackground
-    border: none
-  
-  button:hover
-    background-color: lighten($cBoxHeaderBackground, 10%)
-    cursor: pointer
-
-  button:active
-    background-color: darken($cBoxHeaderBackground, 5%)
-  
-    #new
-      @include gridPosition(1, 2, 2, 3)
-
-    #invitations
-      @include gridPosition(1, 2, 3, 4)
+  box-sizing: content-box
+  height: 50%
+  width: 100%
+  overflow: auto

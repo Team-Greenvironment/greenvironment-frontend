@@ -2,20 +2,36 @@
 @import '../../../styles/vars.sass'
 
 #register
-  background-color:  $cSecondaryBackground
-  grid-template: 8% 77% 15% / 15% 70% 15% 
-  display: grid
-  min-height: 90vh
-  max-height: 90vh
-    
-#registercontainer
-    @include gridPosition(2, 2,2,2)
-    grid-template: 15% 15% 15% 15% 15% 15% / 100%
-    background-color: $cPrimaryBackground
-    padding: 1em
-    overflow: auto
-input
-    margin: 0.25em
+  padding: 2em
+  max-width: 35em
+  margin: 0 auto
 
-a
-  color: $cHeadPrimaryBackground
+.example-container 
+  display: flex
+  flex-direction: column
+
+.example-container > * 
+  width: 100%
+
+.example-right-align 
+  text-align: right
+
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button 
+  display: none
+
+input.example-right-align 
+  -moz-appearance: textfield
+
+.mat-error
+  margin-bottom: 0.25em
+
+.mat-raised-button
+  margin: 0.25em
+  width: 100%
+
+.mat-button
+  margin: 0.25em
+  
+.mat-stroked-button
+  width: 100%

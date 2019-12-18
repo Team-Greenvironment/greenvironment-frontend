@@ -1,13 +1,45 @@
-<div id="postinput">
+<!--<div id="postinput">
   <textarea #content id='input' placeholder="Post something ..." rows='3' wrap="soft"></textarea>
   <button id="attach" type='submit'><span><i class="fa fa-paperclip fa-2x" aria-hidden="true"></i></span></button>
   <button id="submit" type='submit' (click)=createPost(content)><span><i class="fa fa-send-o fa-2x" aria-hidden="true"></i></span></button>
+</div>-->
+<div id="home">
+<mat-card >      
+  <mat-card-content>
+  <mat-form-field id="input">
+    <textarea matInput #content type="text" mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
+    <button mat-button matSuffix mat-icon-button (click)="value=''">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-form-field>
+  <p id="check">
+    <mat-checkbox color="primary" [(ngModel)]="checked">I protected the environment.</mat-checkbox>
+  </p>
+  <mat-form-field id="action-chooser" *ngIf="checked">
+    <mat-label>What did you do?</mat-label>
+    <mat-select [(ngModel)]="selectedValue" name="action">
+      <mat-option>nothing ;)</mat-option>
+      <mat-option *ngFor="let action of actionlist.Actions" [value]="action.points">
+        {{action.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" id="post-button" (click)=createPost(content)>
+    POST
+  </button>
+</mat-card-content>
+</mat-card>
+<div id="chooser-div" style="text-align: center; margin-top: 1em;">
+    <mat-button-toggle-group id="feedchooser" value="new">
+    <mat-button-toggle (click)="showNew()" value="new">New</mat-button-toggle>
+    <mat-button-toggle (click)="showMostLiked()" value="mostliked">Most Liked</mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
-<div id='completeFeed'>
-  <div id='feedchooser'>
+<div id="complete-feed">
+  <!--<div id='feedchooser'>
     <button id="new" (click)="showNew()">New</button>
     <button id='mostliked' (click)="showMostLiked()">Most Liked</button>
-  </div>
+  </div>-->
   <div id="feedlist">
     <div *ngIf = "viewNew">
       <feed-postlist (voteEvent)="refresh($event)" [childPostList]="parentSelectedPostList"></feed-postlist>
@@ -16,4 +48,5 @@
       <feed-postlist (voteEvent)="refresh($event)" [childPostList]="parentSelectedPostList"></feed-postlist>
     </div>
   </div>
+</div>
 </div>

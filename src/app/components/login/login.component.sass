@@ -2,21 +2,40 @@
 @import '../../../styles/vars.sass'
 
 #login
-  background-color:  $cSecondaryBackground
-  grid-template: 8% 77% 15% / 15% 70% 15% 
-  display: grid
-  height: 90vh
+  padding: 2em
+  max-width: 35em
+  margin: 0 auto
 
-#logincontainer
-  @include gridPosition(2, 2,2,2)
-  background-color: $cPrimaryBackground
-  padding: 1em
-  overflow: auto
+.example-container 
+  display: flex
+  flex-direction: column
 
-input
+.example-container > * 
+  width: 100%
+
+.example-right-align 
+  text-align: right
+
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button 
+  display: none
+
+input.example-right-align 
+  -moz-appearance: textfield
+
+.mat-error
+  margin-bottom: 0.25em
+
+.mat-raised-button
+  margin: 0.25em
+  width: 100%
+
+.mat-button
   margin: 0.25em
 
-a
-  color: $cHeadPrimaryBackground
+.mat-stroked-button
+  width: 100%
+  
+
 
 

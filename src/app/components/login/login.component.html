@@ -1,22 +1,24 @@
-
 <div id="login">
-  <div id="logincontainer">
-    <h1>Login</h1>
-    <table style="width:100%" (keyup.enter)="onClickSubmit(email.value,password.value)">
-      <tr>
-        <td>email: </td>
-        <td><input #email type="text" name="email"><br></td>
-      </tr>
-      <tr>
-          <td>password:</td>
-          <td> <input #password type="password" name="password"><br></td>
-        </tr>
-    </table>
-      <button type="loginbutton" (click)="onClickSubmit(email.value,password.value)">Login</button>
-      <p *ngIf="errorOccurred">{{errorMessage}}</p>
-      <br>
-      <br>
-    <a href="/register">You aren't part of greenvironment yet? - join us here</a>
-  </div>
+<mat-card style="text-align: center;" >   
+  <mat-card-title>
+    Login
+  </mat-card-title>   
+  <mat-card-content>
+    <div class="example-container" (keyup.enter)="onClickSubmit(email.value,password.value)">
+      <mat-error *ngIf="errorOccurred">{{getErrorMessage()}}</mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Enter your email" #email  >
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" #password>
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="onClickSubmit(email.value,password.value)">Login</button>
+    <p>You aren't part of greenvironment yet?</p>
+    <a mat-stroked-button color="primary" routerLink="/register">Register</a>
+  </mat-card-content>
+</mat-card>
 </div>
-

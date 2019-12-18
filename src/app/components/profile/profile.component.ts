@@ -1,27 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {Http, URLSearchParams, Headers} from '@angular/http';
 import { User } from 'src/app/models/user';
 import { Actionlist } from 'src/app/models/actionlist';
 import { Levellist } from 'src/app/models/levellist';
 import { environment } from 'src/environments/environment';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.sass']
 })
+
 export class ProfileComponent implements OnInit {
-  actionlist: Actionlist = new Actionlist();
-  levellist: Levellist = new Levellist();
+  actionlist: Actionlist = new Actionlist()
+  
+  levellist: Levellist = new Levellist()
   user: User = new User()
   id : string
-  rankname: string;
-  profileNotFound : boolean = false;
+  rankname: string
+  profileNotFound : boolean = false
+  displayedColumns = ['points', 'name']
+  dataSource = new MatTableDataSource(this.actionlist.Actions)
+  displayedLevelColumns = ['level', 'name']
+  levelSource = this.levellist.levels
   constructor(private router: Router,private http: Http) { }
   
-
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   ngOnInit() {
+    this.dataSource.sort = this.sort;
     this.id = this.router.url.substr(this.router.url.lastIndexOf("/") + 1);
     //let url = './graphql'
     let url = environment.graphQLUrl

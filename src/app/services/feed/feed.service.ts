@@ -97,7 +97,7 @@ export class FeedService {
 
   getBodyForGetAllPosts() {
     const body =  {query: `query {
-        getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, author{name, handle, id}, createdAt}
+        getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, userVote, author{name, handle, id}, createdAt}
       }`
       }
 
@@ -113,11 +113,12 @@ export class FeedService {
       let htmlContent: string = post.htmlContent
       let upvotes: number = post.upvotes
       let downvotes: number = post.downvotes
+      let userVote: string = post.userVote
       let author = new Author(post.author.id, post.author.name, post.author.handle)
       let temp = new Date(Number(post.createdAt))
       let date = temp.toLocaleString("en-GB")
 
-      posts.push(new Post(id, content, htmlContent, upvotes, downvotes, date, author))
+      posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, date, author))
     }
     return posts
   }

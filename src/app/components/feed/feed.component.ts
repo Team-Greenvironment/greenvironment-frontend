@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { FeedService } from 'src/app/services/feed/feed.service';
+import { Actionlist } from 'src/app/models/actionlist';
 
 @Component({
   selector: 'home-feed',
@@ -17,6 +18,8 @@ export class FeedComponent implements OnInit {
 
   parentSelectedPostList: Array<Post>
 
+  actionlist: Actionlist = new Actionlist();
+
   constructor(private feedService: FeedService) { }
 
   ngOnInit() {
@@ -24,6 +27,7 @@ export class FeedComponent implements OnInit {
       this.feedNew = this.feedService.renderAllPosts(response.json())
       this.parentSelectedPostList = this.feedNew
       this.feedMostLiked = this.feedNew
+      console.log(this.feedNew)
     })
   }
 
@@ -37,6 +41,7 @@ export class FeedComponent implements OnInit {
   }
 
   showNew() {
+    console.log("showNew()")
     this.feedService.getAllPostsRaw().subscribe(response => {
       this.feedNew = this.feedService.renderAllPosts(response.json())
       this.parentSelectedPostList = this.feedNew})
@@ -45,6 +50,7 @@ export class FeedComponent implements OnInit {
   }
 
   showMostLiked() {
+    console.log("showMostLiked()")
     this.feedService.getAllPostsRaw().subscribe(response => {
       this.feedMostLiked = this.feedService.renderAllPosts(response.json())
       this.parentSelectedPostList = this.feedMostLiked})
