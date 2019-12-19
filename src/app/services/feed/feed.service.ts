@@ -85,6 +85,19 @@ export class FeedService {
       });
     return this.posts;
   }
+  public getAllPostsById(userId: number): Array<Post> {
+    const url = environment.graphQLUrl;
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
+    this.http.post(url, this.getBodyForGetAllPostsByUserId(userId))
+    .subscribe(response => {
+        this.posts = this.renderAllPosts(response.json());
+        console.log(response);
+      });
+    return this.posts;
+  }
 
   public getAllPostsRaw(): any {
     const url = environment.graphQLUrl;
@@ -95,13 +108,38 @@ export class FeedService {
     return this.http.post(url, this.getBodyForGetAllPosts());
   }
 
+  public getAllPostsRawByUserId(userId: number): any {
+    const url = environment.graphQLUrl;
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
+    return this.http.post(url, this.getBodyForGetAllPostsByUserId(userId));
+  }
+
+  /*getBodyForGetAllPostsByUserId(pUserId: number) {
+    const body =  {query: `query ($userId: ID) {
+        getPosts (first: 1000, offset: 0, userId: $userId) {id, content, htmlContent, upvotes, downvotes, userVote, author{name, handle, id}, createdAt}
+      }`, variables: {
+        userId: pUserId
+      }};
+      return body
+  }*/
+  
+  getBodyForGetAllPostsByUserId(pUserId: number) {
+    const body =  {query: `query ($userId: ID!) {
+        getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, userVote(userId: $userId), author{name, handle, id}, createdAt}
+      }`, variables: {
+        userId: pUserId
+      }};
+      return body
+  }
   getBodyForGetAllPosts() {
     const body =  {query: `query {
-        getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, userVote, author{name, handle, id}, createdAt}
+        getPosts (first: 1000, offset: 0) {id, content, htmlContent, upvotes, downvotes, author{name, handle, id}, createdAt}
       }`
-      };
-
-      return body;
+      }
+      return body
   }
 
   public renderAllPosts(pResponse: any): Array<Post> {
