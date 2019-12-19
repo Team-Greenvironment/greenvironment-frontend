@@ -28,14 +28,14 @@ export class FeedComponent implements OnInit {
   userId: number;
   user: User;
 
-  constructor(private feedService: FeedService,private data: DatasharingService) { }
+  constructor(private feedService: FeedService, private data: DatasharingService) { }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
-      if(this.loggedIn) this.userId = user.userID;
-      console.log("the userId is " + this.userId);
+      if (this.loggedIn) { this.userId = user.userID; }
+      console.log('the userId is ' + this.userId);
     });
     this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
       this.feedNew = this.feedService.renderAllPosts(response.json());
