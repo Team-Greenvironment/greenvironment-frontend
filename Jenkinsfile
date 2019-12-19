@@ -7,8 +7,8 @@ pipeline {
             echo 'Checking Style...'
             nodejs(nodeJSInstallationName: 'Node 12.x') {
                 sh 'npm i'
-                sh 'npm i tslint --dev'
-                sh 'tslint src/**/*.ts'
+                sh 'npm i typescript tslint'
+                sh 'tslint "src/**/*.ts"'
             }
         }
         }
@@ -16,6 +16,7 @@ pipeline {
             steps {
                 echo 'Building...'
                 nodejs(nodeJSInstallationName: 'Node 12.x') {
+                    sh 'npm i @angular/cli'
                     sh 'ng build --prod'
                 }
             }
