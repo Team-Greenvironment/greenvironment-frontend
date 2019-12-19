@@ -18,7 +18,13 @@ import { OverlayContainer} from '@angular/cdk/overlay';
 })
 export class MainNavigationComponent implements OnInit {
 
-  constructor(public overlayContainer: OverlayContainer, private data: DatasharingService, private selfservice: SelfService, private breakpointObserver: BreakpointObserver, private http: Http, private router: Router) {
+  constructor(
+    public overlayContainer: OverlayContainer,
+    private data: DatasharingService,
+    private selfservice: SelfService,
+    private breakpointObserver: BreakpointObserver,
+    private http: Http, private router: Router
+  ) {
     this.overlay = overlayContainer.getContainerElement();
   }
   loggedIn = false;

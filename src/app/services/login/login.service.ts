@@ -33,7 +33,7 @@ export class LoginService {
     this.router.navigateByUrl('');
   }
 
-  public updateUserInfo(response : any){
+  public updateUserInfo(response: any) {
     const user: User = new User();
     user.loggedIn = true;
     user.userID = response.data.login.id;
@@ -47,8 +47,8 @@ export class LoginService {
     user.chatIDs = response.data.login.chats;
     user.requestIDs = response.data.login.requests;
 
-    this.data.changeUserInfo(user)
-    
+    this.data.changeUserInfo(user);
+
   }
 
   public buildJson(login: Login): any {

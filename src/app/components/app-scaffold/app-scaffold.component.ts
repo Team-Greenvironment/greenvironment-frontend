@@ -26,7 +26,11 @@ export class AppScaffoldComponent implements OnInit {
 
   dropdownShown = false;
 
-  constructor(private data: DatasharingService, private selfservice: SelfService, private http: Http, private router: Router) { }
+  constructor(
+    private data: DatasharingService,
+    private selfservice: SelfService,
+    private http: Http,
+    private router: Router) { }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {

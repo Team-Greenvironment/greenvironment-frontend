@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit {
   }
 
   passwordSame(pwd: string, pwd2: string) {
-    if (pwd == pwd2) {
+    if (pwd === pwd2) {
       console.log('password same');
       return true;
     } else {
