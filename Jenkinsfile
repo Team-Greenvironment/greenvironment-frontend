@@ -1,4 +1,6 @@
 pipeline {
+    agent any
+
     stage('Stylecheck') {
         steps {
             echo 'Checking Style...'
