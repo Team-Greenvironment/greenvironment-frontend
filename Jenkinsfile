@@ -5,7 +5,7 @@ pipeline {
         stage('Stylecheck') {
         steps {
             echo 'Checking Style...'
-            nodejs {
+            nodejs(nodeJSInstallationName: 'Node 12.x') {
                 sh 'npm i'
                 sh 'npm i tslint --dev'
                 sh 'tslint src/**/*.ts'
@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                nodejs {
+                nodejs(nodeJSInstallationName: 'Node 12.x') {
                     sh 'ng build --prod'
                 }
             }
