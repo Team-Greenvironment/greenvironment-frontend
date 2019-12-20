@@ -8,7 +8,6 @@ pipeline {
                 nodejs(nodeJSInstallationName: 'Node 12.x') {
                     sh 'npm i @angular/cli'
                     sh 'npm i'
-                    sh 'tslint "src/**/*.ts"'
                 }
             }
         }
@@ -26,6 +25,8 @@ pipeline {
                 nodejs(nodeJSInstallationName: 'Node 12.x') {
                     sh 'ng build --prod'
                 }
+                sh '/bin/tar -zcvf greenvironment-frontend.tar.gz dist'
+                archiveArtifacts artifacts: 'greenvironment-frontend.tar.gz', fingerprint: true
             }
         }
     }
