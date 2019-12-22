@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
       console.log(this.userInfo);
       this.data.changeChatIDs(user.chatIDs);
     });
-    if (this.loggedIn != true) {
+    if (this.loggedIn !== true) {
       this.selfservice.checkIfLoggedIn();
     }
   }

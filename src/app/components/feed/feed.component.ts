@@ -28,7 +28,7 @@ export class FeedComponent implements OnInit {
   userId: number;
   user: User;
 
-  constructor(private feedService: FeedService,private data: DatasharingService) { }
+  constructor(private feedService: FeedService, private data: DatasharingService) { }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {

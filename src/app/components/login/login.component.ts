@@ -11,20 +11,21 @@ import * as sha512 from 'js-sha512';
   styleUrls: ['./login.component.sass']
 })
 export class LoginComponent implements OnInit {
-  login: Login;
-  hide = true;
-  errorOccurred: boolean = false;
-  errorMessage: string;
 
-  constructor(private loginService: LoginService,private router: Router) {
+  constructor(private loginService: LoginService, private router: Router) {
     this.login = {passwordHash: null, email: null};
   }
+  login: Login;
+  hide = true;
+  errorOccurred = false;
+  errorMessage: string;
+  email = new FormControl('', [Validators.required, Validators.email]);
 
-  public getErrorMessage(){
+  public getErrorMessage() {
     return this.errorMessage;
   }
 
-  public loginError(error : any){
+  public loginError(error: any) {
     console.log(error.errors[0].message);
     this.errorOccurred = true;
     this.errorMessage = error.errors[0].message;
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
   onClickSubmit(pEmail: string, pPasswordHash: string) {
     console.log('try to login with mail adress:' + pEmail);
     this.errorOccurred = false;
-    this.errorMessage = " ";
+    this.errorMessage = ' ';
     this.login.email = pEmail.trim();
     this.login.passwordHash = sha512.sha512(pPasswordHash);
     console.log(this.login.passwordHash);
@@ -42,7 +43,6 @@ export class LoginComponent implements OnInit {
 
     this.loginService.login(this.login, error => this.loginError(error.json()));
   }
-  email = new FormControl('', [Validators.required, Validators.email]);
 
   ngOnInit() {}
 }

@@ -9,13 +9,14 @@ export class Levellist {
       {level: 6, name: 'Intergallactic Superhero', points: 600 },
     ];
 
-  getLevelName(lev: number): any {
+  getLevelName(level: number): any {
     let name = 'not defined';
-    this.levels.forEach(rank => {
-      if (lev == rank.level) {
+
+    for (const rank of this.levels) {
+      if (level === rank.level) {
         name = rank.name;
       }
-    });
+    }
     return name;
   }
 

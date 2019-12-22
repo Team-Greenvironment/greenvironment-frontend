@@ -10,7 +10,17 @@ export class Post {
     userVote: string;
     author: Author;
 
-    constructor(pId: number, pContent: string, pHtmlContent: string, pUpvotes: number, pDownvotes: number, pUserVote: string, pDate: string, pAuthor: Author) {
+    // TODO: constructor properties need normal names
+    constructor(
+      pId: number,
+      pContent: string,
+      pHtmlContent: string,
+      pUpvotes: number,
+      pDownvotes: number,
+      pUserVote: string,
+      pDate: string,
+      pAuthor: Author
+    ) {
         this.id = pId;
         this.content = pContent;
         this.htmlContent = pHtmlContent;

@@ -56,7 +56,16 @@ export class RegisterService {
 
   public buildJson(registration: Registration): any {
     const body =  {query: `mutation($username: String, $email: String, $pwHash: String) {
-      register(username: $username, email: $email, passwordHash: $pwHash) {id, name, handle, points, level, friends{id}, groups{id},chats{id}}
+      register(username: $username, email: $email, passwordHash: $pwHash) {
+        id,
+        name,
+        handle,
+        points,
+        level,
+        friends{id},
+        groups{id},
+        chats{id}
+       }
     }`, variables: {
         email: registration.email,
         pwHash: registration.passwordHash,

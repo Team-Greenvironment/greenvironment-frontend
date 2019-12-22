@@ -89,8 +89,12 @@ export class ChatService {
     this.http.post(url, this.getBodyForNewChat(pUserID));
   }
 
+  /**
+   * TODO: Needs to be used somewhere or it will be removed
+   */
   public requestAllChatPartners(): Array<FriendInfo> {
     const url = environment.graphQLUrl;
+    // tslint:disable-next-line:prefer-const
     let chatPartners: Array<FriendInfo>;
     let temp;
 
@@ -107,7 +111,7 @@ export class ChatService {
       let memberName: string;
       let memberLevel: number;
       for (const member of chat.members) {
-        if (member.id != this.ownID) {
+        if (member.id !== this.ownID) {
           memberID = member.id;
           memberName = member.name;
           memberLevel = member.level;
@@ -154,7 +158,7 @@ export class ChatService {
   public renderMessages(pResponse: any): Array<Chatmessage> {
     const messages = new Array<Chatmessage>();
       for (const message of pResponse.data.getChat.messages) {
-        if (message.author.id == this.ownID) {
+        if (message.author.id === this.ownID) {
           messages.push(new Chatmessage(message.content, message.createdAt, true));
         } else {
           messages.push(new Chatmessage(message.content, message.createdAt, false));
@@ -169,14 +173,14 @@ export class ChatService {
       let memberID: number;
       let memberName: string;
       for (const member of chat.members) {
-        if (member.id != this.ownID) {
+        if (member.id !== this.ownID) {
           memberID = member.id;
           memberName = member.name;
         }
       }
       const messages = new Array<Chatmessage>();
       for (const message of chat.messages) {
-        if (message.author.id == this.ownID) {
+        if (message.author.id === this.ownID) {
           messages.push(new Chatmessage(message.content, message.createdAt, true));
         } else {
           messages.push(new Chatmessage(message.content, message.createdAt, false));
@@ -192,14 +196,14 @@ export class ChatService {
     let memberId: number;
     let memberName: string;
     for (const member of pResponse.data.getChat.members) {
-      if (member.id != this.ownID) {
+      if (member.id !== this.ownID) {
         memberId = member.id;
         memberName = member.name;
       }
     }
     const messages = new Array<Chatmessage>();
     for (const message of pResponse.data.getChat.messages) {
-      if (message.author.id == this.ownID) {
+      if (message.author.id === this.ownID) {
         messages.push(new Chatmessage(message.content, message.createdAt, true));
       } else {
         messages.push(new Chatmessage(message.content, message.createdAt, false));
