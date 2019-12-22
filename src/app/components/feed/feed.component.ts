@@ -34,15 +34,25 @@ export class FeedComponent implements OnInit {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
-      if (this.loggedIn) { this.userId = user.userID; }
-      console.log('the userId is ' + this.userId);
+      if(this.loggedIn){
+        this.userId = user.userID;
+        this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
+          this.feedNew = this.feedService.renderAllPosts(response.json());
+          this.parentSelectedPostList = this.feedNew;
+          this.feedMostLiked = this.feedNew;
+          console.log(this.feedNew);
+        });
+      } else {
+        this.feedService.getAllPostsRaw().subscribe(response => {
+          this.feedNew = this.feedService.renderAllPosts(response.json());
+          this.parentSelectedPostList = this.feedNew;
+          this.feedMostLiked = this.feedNew;
+          console.log(this.feedNew);
+        });
+      } 
+
     });
-    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
-      this.feedNew = this.feedService.renderAllPosts(response.json());
-      this.parentSelectedPostList = this.feedNew;
-      this.feedMostLiked = this.feedNew;
-      console.log(this.feedNew);
-    });
+
   }
 
   createPost(pElement) {
