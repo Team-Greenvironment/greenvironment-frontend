@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
     this.errorMessage = ' ';
     if (this.passwordSame(pPasswordHash, pPasswordHashRepeat)) {
       this.registration.username = pUsername.trim();
-      this.registration.email = pEmail.trim();
+      this.registration.email = pEmail.trim().toLowerCase();
       this.registration.passwordHash = sha512.sha512(pPasswordHash);
       this.registerService.register(this.registration, error => this.registerError(error.json()));
     }
