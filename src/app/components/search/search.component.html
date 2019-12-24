@@ -3,8 +3,11 @@
     <mat-card >      
         <mat-card-content>
         <mat-form-field id="input">
-          <textarea matInput #searchWord type="search" mat-autosize="false" matAutosizeMaxRows="1" placeholder="search something" 
-          [ngModel]="searchWord"
+          <textarea matInput #searchWord type="search" 
+          mat-autosize="false" 
+          matAutosizeMaxRows="1" 
+          placeholder="search something" 
+          [ngModel]="searchWord.value"
           (ngModelChange)="search(searchWord.value)"></textarea>
           <button mat-button matSuffix mat-icon-button>
             <mat-icon>search </mat-icon>

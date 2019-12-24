@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./search.component.sass']
 })
 export class SearchComponent implements OnInit {
-  searchValue: string;
+  searchValue = ' ';
   category = 'username';
   foundUsers: Array<User>;
 
