@@ -1,0 +1,41 @@
+<div id="search">
+    <!--<mat-toolbar><span>Search</span></mat-toolbar>-->
+    <mat-card >      
+        <mat-card-content>
+        <mat-form-field id="input">
+          <textarea matInput #searchWord type="search" mat-autosize="false" matAutosizeMaxRows="1" placeholder="search something" 
+          [ngModel]="searchWord"
+          (ngModelChange)="search(searchWord.value)"></textarea>
+          <button mat-button matSuffix mat-icon-button>
+            <mat-icon>search </mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field id="category-chooser">
+          <mat-label>category</mat-label>
+          <mat-select value="username" #field (selectionChange)="changeCategory($event.value)">
+            <mat-option value="username">username</mat-option>
+            <mat-option value="handle">handle</mat-option>
+            <mat-option value="groupname" disabled>groupname</mat-option>
+            <mat-option value="grouphandle" disabled>grouphandle</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+      </mat-card>
+      <div id="friendlist">
+        <!--<div class="frienditem" *ngFor="let friend of friends"
+        [class.selected]="friend === selectedFriend" (click)="showFriendProfile(friend)"> 
+          <div class="picture">Pic</div>
+          <div class="name"><span>{{friend.name}}</span></div>
+        </div>-->
+        <mat-card class="friend-card" *ngFor="let user of foundUsers" 
+        [class.selected]="user === selectedUser" (click)="showUserProfile(user)"
+        tabindex="0"
+        matRipple>
+          <mat-card-header>
+            <div mat-card-avatar class="profile-picture"></div>
+            <mat-card-title>{{user.username}}</mat-card-title>
+            <mat-card-subtitle>{{user.handle}}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+    </div>
+</div>
