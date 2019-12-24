@@ -12,6 +12,7 @@ import { User } from 'src/app/models/user';
 })
 export class FeedComponent implements OnInit {
   checked: boolean; // if the "I protected the environment."-box is checked
+  empty: boolean;
  // points value of the green action
   value: any;
   viewNew = true;

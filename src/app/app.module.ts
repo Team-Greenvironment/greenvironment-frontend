@@ -52,6 +52,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import {MatSortModule} from '@angular/material/sort';
+import { SearchComponent } from './components/search/search.component';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
@@ -86,7 +87,8 @@ const appRoutes: Routes = [
     ImprintComponent,
     AboutComponent,
     ProfileComponent,
-    MainNavigationComponent
+    MainNavigationComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

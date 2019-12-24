@@ -6,6 +6,7 @@ export class User {
   email: string;
   points: number;
   level: number;
+  profilePicture: string;
 
   friendIDs: number[];
   groupIDs: number[];
