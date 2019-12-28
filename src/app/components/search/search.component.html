@@ -1,29 +1,23 @@
 <div id="search">
-    <!--<mat-toolbar><span>Search</span></mat-toolbar>-->
-    <mat-card >      
-        <mat-card-content>
-        <mat-form-field id="input">
-          <textarea matInput #searchWord type="search" 
-          mat-autosize="false" 
-          matAutosizeMaxRows="1" 
-          placeholder="search something" 
-          [ngModel]="searchWord.value"
-          (ngModelChange)="search(searchWord.value)"></textarea>
-          <button mat-button matSuffix mat-icon-button>
-            <mat-icon>search </mat-icon>
-          </button>
-        </mat-form-field>
-        <mat-form-field id="category-chooser">
-          <mat-label>category</mat-label>
-          <mat-select value="username" #field (selectionChange)="changeCategory($event.value)">
-            <mat-option value="username">username</mat-option>
-            <mat-option value="handle">handle</mat-option>
-            <mat-option value="groupname" disabled>groupname</mat-option>
-            <mat-option value="grouphandle" disabled>grouphandle</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-card-content>
-      </mat-card>
+  <mat-toolbar>
+    <mat-form-field id="input"
+    floatLabel="never" >
+      <input matInput #searchWord
+      placeholder="search something"
+      [ngModel]="searchWord.value"
+      (ngModelChange)="search(searchWord.value)">
+      <button mat-button matSuffix mat-icon-button>
+        <mat-icon>search </mat-icon>
+      </button>
+    </mat-form-field>
+    <!--<mat-form-field id="category-chooser">
+      <mat-label>category</mat-label>
+      <mat-select value="user" #field (selectionChange)="changeCategory($event.value)">
+        <mat-option value="user">user</mat-option>
+        <mat-option value="group" disabled>group</mat-option>
+      </mat-select>
+    </mat-form-field>-->
+  </mat-toolbar>
       <div id="friendlist">
         <!--<div class="frienditem" *ngFor="let friend of friends"
         [class.selected]="friend === selectedFriend" (click)="showFriendProfile(friend)"> 
