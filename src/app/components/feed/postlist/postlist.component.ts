@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { FeedService } from 'src/app/services/feed/feed.service';
 import { Router } from '@angular/router';
-import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'feed-postlist',
