@@ -102,11 +102,9 @@ export class MainNavigationComponent implements OnInit {
 
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-
     const body = {query: `mutation {
         logout
       }`};
-
     this.http.post(url, body).subscribe(response => {
         console.log(response.text()); });
     this.loggedIn = false;
@@ -114,5 +112,12 @@ export class MainNavigationComponent implements OnInit {
     user.loggedIn = false;
     this.data.changeUserInfo(user);
     this.router.navigate(['login']);
+  }
+
+  acceptRequest(id: number) {
+    console.log('accept request with id: ' + id);
+  }
+  denyRequest(id: number) {
+    console.log('deny request with id: ' + id);
   }
 }

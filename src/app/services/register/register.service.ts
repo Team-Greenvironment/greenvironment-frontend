@@ -48,7 +48,9 @@ export class RegisterService {
     user.friendIDs = response.data.register.friends;
     user.groupIDs = response.data.register.groups;
     user.chatIDs = response.data.register.chats;
-    user.requestIDs = response.data.register.requests;
+    for (const request of response.data.register.sentRequests) {
+      user.sentRequestUserIDs.push(request.receiver.id);
+    }
 
     this.data.changeUserInfo(user);
 
@@ -62,6 +64,7 @@ export class RegisterService {
         handle,
         points,
         level,
+        sentRequests{receiver{id}}
         friends{id},
         groups{id},
         chats{id}

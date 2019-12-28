@@ -53,14 +53,16 @@ export class SelfService {
     user.friendIDs = response.data.getSelf.friends;
     user.groupIDs = response.data.getSelf.groups;
     user.chatIDs = response.data.getSelf.chats;
-    user.requestIDs = response.data.getSelf.requests;
+    for (const request of response.data.getSelf.sentRequests) {
+      user.sentRequestUserIDs.push(request.receiver.id);
+    }
 
     this.data.changeUserInfo(user);
   }
 
   public buildJson(): any {
     const body =  {query: `{
-      getSelf{id, name,email, handle, points, level, friends{id}, groups{id},chats{id}}
+      getSelf{id, name, email, handle, points, level, sentRequests{receiver{id}}, friends{id}, groups{id},chats{id}}
     }`, variables: {
       }};
     return body;

@@ -5,6 +5,7 @@ import {Headers, Http} from '@angular/http';
 import { User } from 'src/app/models/user';
 import {environment} from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { DatasharingService } from '../../services/datasharing.service';
 
 @Component({
   selector: 'home-search',
@@ -14,14 +15,19 @@ import { Router } from '@angular/router';
 export class SearchComponent implements OnInit {
   searchValue = ' ';
   category = 'user';
+  user: User;
   foundUsers: Array<User>;
 
   constructor(
     private searchService: SearchService,
     private requestService: RequestService,
     private http: Http,
-    private router: Router) { }
+    private router: Router,
+    private data: DatasharingService) { }
   ngOnInit() {
+    this.data.currentUserInfo.subscribe(user => {
+      this.user = user;
+    });
   }
 
   changeCategory(value: string) {
@@ -47,9 +53,17 @@ export class SearchComponent implements OnInit {
     headers.set('Content-Type', 'application/json');
     this.http.post(environment.graphQLUrl, this.searchService.buildJsonUser(name))
       .subscribe(response => {
-        console.log('response received');
-        console.log(response);
         this.foundUsers = this.searchService.renderUsers(response.json());
+        for (const foundUser of this.foundUsers) {
+          if (!this.user.loggedIn) {foundUser.allowedToSendRequest = false; } else {
+            for (const receiverID of this.user.sentRequestUserIDs) {
+              if (foundUser.userID === receiverID ||
+                foundUser.userID === this.user.userID) {
+                foundUser.allowedToSendRequest = false;
+              }
+            }
+          }
+        }
       });
   }
 
@@ -58,12 +72,11 @@ export class SearchComponent implements OnInit {
   }
 
   public sendFriendRequest(user: User) {
+    user.allowedToSendRequest = false;
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
     this.http.post(environment.graphQLUrl, this.requestService.buildJsonRequest(user.userID, 'FRIENDREQUEST'))
       .subscribe(response => {
-        console.log('response received');
-        console.log(response);
       });
   }
 }

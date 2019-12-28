@@ -45,6 +45,7 @@ import { OverlayModule} from '@angular/cdk/overlay';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatRippleModule} from '@angular/material/core';
+import {MatBadgeModule} from '@angular/material/badge';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MainNavigationComponent } from './components/main-navigation/main-navigation.component';
@@ -122,7 +123,8 @@ const appRoutes: Routes = [
     MatMenuModule,
     MatRippleModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
