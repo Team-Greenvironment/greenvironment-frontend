@@ -14,34 +14,9 @@ export class SearchService {
   constructor(private http: Http, private data: DatasharingService, private router: Router) {
   }
 
-  public findUserByName(name: String): Array<User> {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-
-    this.http.post(environment.graphQLUrl, this.buildJsonName(name))
-      .subscribe(response => {
-        this.users = this.renderUsers(response.json());
-      });
-    return this.users;
-  }
-
-  public findUserByHandle(handle: string) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    return this.http.post(environment.graphQLUrl, this.buildJsonHandle(handle))
-      .subscribe(response => {
-          console.log(response.text());
-        }
-      );
-  }
-
   public renderUsers(pResponse: any): Array<User> {
     const users = new Array<User>();
-    if (pResponse.data.findUser === 'null') {
-      console.log('no user found');
-      return null;
-    } else {
-      for (const user of pResponse.data.findUser) {
+      for (const user of pResponse.data.search.users) {
         const pUser = new User();
         pUser.profilePicture = user.profilePicture;
         pUser.username = user.name;
@@ -53,47 +28,27 @@ export class SearchService {
         users.push(pUser);
       }
       return users;
-    }
   }
 
-  public buildJsonName(name_: String): any {
+  public buildJsonUser(name_: String): any {
     const body = {
-      query: `query($name: String) {
-        findUser(name: $name, first: 100, offset: 0) {
-          profilePicture,
-          name,
-          id,
-          handle,
-          points,
-          level,
-          friends {
-           id
+      query: `query($name: String!) {
+        search(query:$name, first: 100, offset: 0) {
+          users{
+            profilePicture,
+            name,
+            id,
+            handle,
+            points,
+            level,
+            friends {
+            id
+            }
           }
         }
       }`
       , variables: {
         name: name_
-      }
-    };
-    return body;
-  }
-  public buildJsonHandle(handle_: String): any {
-    const body = {
-      query: `query($handle: String) {
-        findUser(handle: $handle, first: 100, offset: 0) {
-          profilePicture,
-          name,
-          id,
-          handle,
-          points,
-          level,
-          friends {
-           id
-          }
-        }
-      }`
-      , variables: {
-        handle: handle_
       }
     };
     return body;

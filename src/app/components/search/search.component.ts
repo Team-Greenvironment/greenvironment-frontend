@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class SearchComponent implements OnInit {
   searchValue = ' ';
-  category = 'username';
+  category = 'user';
   foundUsers: Array<User>;
 
   constructor(private searchService: SearchService, private http: Http, private router: Router) { }
@@ -27,29 +27,23 @@ export class SearchComponent implements OnInit {
   search(searchWord: string) {
     this.foundUsers = Array<User>();
     this.searchValue = searchWord;
-    if (searchWord) {
-      if (this.category === 'username') {
-        this.findUserByName(searchWord);
-      } else if (this.category === 'handle') {
-        this.findUserByHandle(searchWord);
+    if (searchWord) { // if not null or empty
+      if (this.category === 'user') {
+        this.findUser(searchWord);
+      } else if (this.category === 'groupe') {
+        // this.findUserByHandle(searchWord);
+        console.log('search group');
       }
     }
   }
 
-  findUserByName(name: String) {
+  findUser(name: String) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.searchService.buildJsonName(name))
+    this.http.post(environment.graphQLUrl, this.searchService.buildJsonUser(name))
       .subscribe(response => {
-        this.foundUsers = this.searchService.renderUsers(response.json());
-      });
-  }
-
-  findUserByHandle(name: String) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.searchService.buildJsonHandle(name))
-      .subscribe(response => {
+        console.log('response received');
+        console.log(response);
         this.foundUsers = this.searchService.renderUsers(response.json());
       });
   }
