@@ -11,6 +11,8 @@ export class User {
   level: number;
   profilePicture: string;
 
+  darkmode = false;
+
   friends: FriendInfo[] = new Array();
   groupIDs: number[];
   chatIDs: number[];

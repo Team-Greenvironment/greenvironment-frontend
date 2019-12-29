@@ -69,6 +69,9 @@ export class SelfService {
       friendRequest.senderHandle = request.sender.handle;
       user.receivedRequests.push(friendRequest);
     }
+    if (JSON.parse(response.data.login.settings).darkmode === 'true') {
+      user.darkmode = true;
+    }
     this.data.changeUserInfo(user);
   }
   public fakeLogin() {
@@ -114,7 +117,8 @@ export class SelfService {
         },
         chats{
           id
-        }
+        },
+        settings
       }
     }`, variables: {
       }};

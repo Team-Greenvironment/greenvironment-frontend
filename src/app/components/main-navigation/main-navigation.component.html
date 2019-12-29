@@ -58,7 +58,7 @@
         </div>
       </nav>
       <div id="menu-button-box">
-        <span class="mat-button" [hidden]="!loggedIn" fxShow="true" fxHide.lt-md="true" routerLink={{profileUrl}}>Hello, {{user.username}}</span>
+        <span class="mat-button" *ngIf="loggedIn" fxShow="true" fxHide.lt-md="true" routerLink={{profileUrl}}>Hello, {{user.username}}</span>
         <button mat-icon-button [matMenuTriggerFor]="requestMenu" [disabled]="!loggedIn" id="menu-button">
           <mat-icon [matBadge]="user.receivedRequests.length" [matBadgeHidden]="!(user.receivedRequests.length > 0)" matBadgeColor="accent">notifications</mat-icon>
         </button>
@@ -84,11 +84,12 @@
           <mat-slide-toggle
             color="primary"
             class="theme-button"
-            (change)="toggleTheme()">
+            (change)="toggleTheme()"
+            [checked]="darkModeButtonChecked">
             dark mode
           </mat-slide-toggle>
         </button>
-        <div  [hidden]="!loggedIn">
+        <div [hidden]="!loggedIn">
           <button mat-menu-item (click)="logout()" >
             <mat-icon>exit_to_app</mat-icon>
             <span>log out</span>
