@@ -117,32 +117,33 @@ export class MainNavigationComponent implements OnInit {
   }
 
   acceptRequest(id: number) {
-    for (let i = 0; i < this.user.receivedRequests.length; i++) {
-      if (this.user.receivedRequests[i].senderUserID === id) {
-        this.user.receivedRequests.splice(i, 1);
-        return;
-      }
-    }
+    console.log('try to accept request from id: ' + id);
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
     this.http.post(environment.graphQLUrl, this.requestservice.buildJsonAcceptRequest(id))
       .subscribe(response => {
         console.log(response);
+        for (let i = 0; i < this.user.receivedRequests.length; i++) {
+          if (this.user.receivedRequests[i].senderUserID === id) {
+            this.user.receivedRequests.splice(i, 1);
+            return;
+          }
+        }
       });
   }
 
   denyRequest(id: number) {
-    for (let i = 0; i < this.user.receivedRequests.length; i++) {
-      if (this.user.receivedRequests[i].senderUserID === id) {
-        this.user.receivedRequests.splice(i, 1);
-        return;
-      }
-    }
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
     this.http.post(environment.graphQLUrl, this.requestservice.buildJsonDenyRequest(id))
       .subscribe(response => {
         console.log(response);
+        for (let i = 0; i < this.user.receivedRequests.length; i++) {
+          if (this.user.receivedRequests[i].senderUserID === id) {
+            this.user.receivedRequests.splice(i, 1);
+            return;
+          }
+        }
       });
   }
 }
