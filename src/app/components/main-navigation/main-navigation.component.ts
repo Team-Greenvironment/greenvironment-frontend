@@ -3,7 +3,6 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { DatasharingService } from '../../services/datasharing.service';
-import { SelfService } from '../../services/selfservice/self.service';
 import { RequestService } from '../../services/request/request.service';
 import { SettingsService } from '../../services/settings/settings.service';
 import { environment } from 'src/environments/environment';
@@ -23,7 +22,6 @@ export class MainNavigationComponent implements OnInit {
   constructor(
     public overlayContainer: OverlayContainer,
     private data: DatasharingService,
-    private selfservice: SelfService,
     private settingsService: SettingsService,
     private requestservice: RequestService,
     private breakpointObserver: BreakpointObserver,
@@ -75,6 +73,8 @@ export class MainNavigationComponent implements OnInit {
       if (this.user.darkmode === true && this.lighttheme) {
         this.toggleTheme();
         this.darkModeButtonChecked = true;
+      } else if (!this.user.darkmode && !this.lighttheme) {
+        this.settingsService.setDarkModeActive(true);
       }
       this.updateLinks();
     });
@@ -86,28 +86,19 @@ export class MainNavigationComponent implements OnInit {
         this.overlay.classList.add('light-theme');
         this.onSetTheme('light-theme');
         this.lighttheme = true;
-        this.setDarkModeActive(false);
+        this.settingsService.setDarkModeActive(false);
     } else if (this.overlay.classList.contains('light-theme')) {
         this.overlay.classList.remove('light-theme');
         this.overlay.classList.add('dark-theme');
         this.onSetTheme('dark-theme');
         this.lighttheme = false;
-        this.setDarkModeActive(true);
+        this.settingsService.setDarkModeActive(true);
     } else {
         this.overlay.classList.add('dark-theme');
         this.onSetTheme('dark-theme');
         this.lighttheme = false;
-        this.setDarkModeActive(true);
+        this.settingsService.setDarkModeActive(true);
     }
-  }
-
-  setDarkModeActive(active: boolean) {
-    const url = environment.graphQLUrl;
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    const body = this.settingsService.buildJsonDarkMode('darkmode: ' + '\'' + active + '\'');
-    this.http.post(url, body).subscribe(response => {
-        console.log(response.text()); });
   }
 
   updateLinks() {
