@@ -32,8 +32,6 @@ export class SelfService {
       }, error => {
         this.notLoggedIn();
         console.log(error.text());
-        // this.fakeLogin();
-        // console.log('user wurde übergeben');
       }
       );
   }
@@ -70,6 +68,9 @@ export class SelfService {
       friendRequest.senderUsername = request.sender.name;
       friendRequest.senderHandle = request.sender.handle;
       user.receivedRequests.push(friendRequest);
+    }
+    if (JSON.parse(response.data.login.settings).darkmode === 'true') {
+      user.darkmode = true;
     }
     this.data.changeUserInfo(user);
   }
@@ -116,10 +117,11 @@ export class SelfService {
         },
         chats{
           id
-        }
+        },
+        settings
       }
     }`, variables: {
       }};
     return body;
   }
-}// add ,receivedRequests{id} later
+}

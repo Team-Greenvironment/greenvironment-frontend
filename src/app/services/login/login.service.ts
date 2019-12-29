@@ -61,7 +61,9 @@ export class LoginService {
       friendRequest.senderHandle = request.sender.handle;
       user.receivedRequests.push(friendRequest);
     }
-    console.log(user.friends);
+    if (JSON.parse(response.data.login.settings).darkmode === 'true') {
+      user.darkmode = true;
+    }
     this.data.changeUserInfo(user);
   }
 
@@ -87,7 +89,8 @@ export class LoginService {
           },
           chats{
             id
-          }
+          },
+          settings
         }
       }`
       , variables: {

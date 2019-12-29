@@ -5,6 +5,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { DatasharingService } from '../../services/datasharing.service';
 import { SelfService } from '../../services/selfservice/self.service';
 import { RequestService } from '../../services/request/request.service';
+import { SettingsService } from '../../services/settings/settings.service';
 import { environment } from 'src/environments/environment';
 import { Levellist } from 'src/app/models/levellist';
 import { Http } from '@angular/http';
@@ -23,6 +24,7 @@ export class MainNavigationComponent implements OnInit {
     public overlayContainer: OverlayContainer,
     private data: DatasharingService,
     private selfservice: SelfService,
+    private settingsService: SettingsService,
     private requestservice: RequestService,
     private breakpointObserver: BreakpointObserver,
     private http: Http, private router: Router
@@ -38,6 +40,7 @@ export class MainNavigationComponent implements OnInit {
   points: number;
   profileUrl = '/profile/1';
 
+  darkModeButtonChecked = false;
   lighttheme = true;
   overlay;
 
@@ -69,6 +72,10 @@ export class MainNavigationComponent implements OnInit {
       this.level = this.levellist.getLevelName(user.level);
       this.points = user.points;
       this.profileUrl = '/profile/' + this.userId;
+      if (this.user.darkmode === true && this.lighttheme) {
+        this.toggleTheme();
+        this.darkModeButtonChecked = true;
+      }
       this.updateLinks();
     });
   }
@@ -78,15 +85,31 @@ export class MainNavigationComponent implements OnInit {
         this.overlay.classList.remove('dark-theme');
         this.overlay.classList.add('light-theme');
         this.onSetTheme('light-theme');
+        this.lighttheme = true;
+        this.setDarkModeActive(false);
     } else if (this.overlay.classList.contains('light-theme')) {
         this.overlay.classList.remove('light-theme');
         this.overlay.classList.add('dark-theme');
         this.onSetTheme('dark-theme');
+        this.lighttheme = false;
+        this.setDarkModeActive(true);
     } else {
         this.overlay.classList.add('dark-theme');
         this.onSetTheme('dark-theme');
+        this.lighttheme = false;
+        this.setDarkModeActive(true);
     }
   }
+
+  setDarkModeActive(active: boolean) {
+    const url = environment.graphQLUrl;
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    const body = this.settingsService.buildJsonDarkMode('darkmode: ' + '\'' + active + '\'');
+    this.http.post(url, body).subscribe(response => {
+        console.log(response.text()); });
+  }
+
   updateLinks() {
     this.navLinksLoggedIn = [
       { path: '', label: 'Home' },
