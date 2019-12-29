@@ -32,6 +32,8 @@ export class SelfService {
       }, error => {
         this.notLoggedIn();
         console.log(error.text());
+        // this.fakeLogin();
+        // console.log('user wurde übergeben');
       }
       );
   }
@@ -53,7 +55,7 @@ export class SelfService {
     user.email = response.data.getSelf.email;
     user.points = response.data.getSelf.points;
     user.level = response.data.getSelf.level;
-    for (const friend of response.data.login.friends) {
+    for (const friend of response.data.getSelf.friends) {
       user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
     }
     user.groupIDs = response.data.getSelf.groups;
@@ -61,7 +63,7 @@ export class SelfService {
     for (const request of response.data.getSelf.sentRequests) {
       user.sentRequestUserIDs.push(request.receiver.id);
     }
-    for (const request of response.data.login.receivedRequests) {
+    for (const request of response.data.getSelf.receivedRequests) {
       friendRequest = new FriendRequest();
       friendRequest.id = request.id;
       friendRequest.senderUserID = request.sender.id;
@@ -69,6 +71,27 @@ export class SelfService {
       friendRequest.senderHandle = request.sender.handle;
       user.receivedRequests.push(friendRequest);
     }
+    this.data.changeUserInfo(user);
+  }
+  public fakeLogin() {
+    const user: User = new User();
+    let friendRequest: FriendRequest = new FriendRequest();
+    user.loggedIn = true;
+    user.userID = 1;
+    user.username = 'Rapier';
+    user.handle = 'rapier123';
+    user.email = 'r@r.com';
+    user.points = 100;
+    user.level = 3;
+    user.friends.push(new FriendInfo(1, 'Freund77', 4));
+
+    friendRequest = new FriendRequest();
+    friendRequest.id = 10;
+    friendRequest.senderUserID = 99;
+    friendRequest.senderUsername = 'Löwe';
+    friendRequest.senderHandle = 'loewe123';
+    user.receivedRequests.push(friendRequest);
+
     this.data.changeUserInfo(user);
   }
 
