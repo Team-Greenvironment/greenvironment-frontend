@@ -32,8 +32,6 @@ export class SelfService {
       }, error => {
         this.notLoggedIn();
         console.log(error.text());
-        this.fakeLogin();
-        // console.log('user wurde übergeben');
       }
       );
   }
@@ -122,4 +120,4 @@ export class SelfService {
       }};
     return body;
   }
-}// add ,receivedRequests{id} later
+}
