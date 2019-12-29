@@ -64,7 +64,7 @@ export class RegisterService {
       friendRequest.senderHandle = request.sender.handle;
       user.receivedRequests.push(friendRequest);
     }
-    if (JSON.parse(response.data.login.settings).darkmode === 'true') {
+    if (JSON.parse(response.data.register.settings).darkmode === 'true') {
       user.darkmode = true;
     }
     this.data.changeUserInfo(user);
