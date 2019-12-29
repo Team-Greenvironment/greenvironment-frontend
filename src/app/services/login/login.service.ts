@@ -6,6 +6,7 @@ import {DatasharingService} from '../datasharing.service';
 import {Router} from '@angular/router';
 import {environment} from 'src/environments/environment';
 import { FriendRequest } from 'src/app/models/friendRequest';
+import { FriendInfo } from 'src/app/models/friendinfo';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,9 @@ export class LoginService {
     user.email = response.data.login.email;
     user.points = response.data.login.points;
     user.level = response.data.login.level;
-    user.friendIDs = response.data.login.friends;
+    for (const friend of response.data.login.friends) {
+      user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
+    }
     user.groupIDs = response.data.login.groups;
     user.chatIDs = response.data.login.chats;
     for (const request of response.data.login.sentRequests) {
@@ -58,7 +61,7 @@ export class LoginService {
       friendRequest.senderHandle = request.sender.handle;
       user.receivedRequests.push(friendRequest);
     }
-    console.log(user.receivedRequests);
+    console.log(user.friends);
     this.data.changeUserInfo(user);
   }
 
@@ -75,7 +78,9 @@ export class LoginService {
           receivedRequests{id, sender{name, handle, id}},
           sentRequests{receiver{id}},
           friends {
-           id
+           id,
+           name,
+           level
           },
           groups {
             id

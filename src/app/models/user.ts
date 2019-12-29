@@ -1,4 +1,5 @@
 import { FriendRequest } from 'src/app/models/friendRequest';
+import { FriendInfo } from 'src/app/models/friendinfo';
 
 export class User {
   loggedIn = false;
@@ -10,7 +11,7 @@ export class User {
   level: number;
   profilePicture: string;
 
-  friendIDs: number[];
+  friends: FriendInfo[] = new Array();
   groupIDs: number[];
   chatIDs: number[];
   receivedRequests: FriendRequest[] = new Array();

@@ -5,6 +5,8 @@ import {Router} from '@angular/router';
 import { DatasharingService } from '../datasharing.service';
 import { User } from 'src/app/models/user';
 import { environment } from 'src/environments/environment';
+import { FriendRequest } from 'src/app/models/friendRequest';
+import { FriendInfo } from 'src/app/models/friendinfo';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +40,7 @@ export class RegisterService {
 
   public updateUserInfo(response: any) {
     const user: User = new User();
+    let friendRequest: FriendRequest = new FriendRequest();
     user.loggedIn = true;
     user.userID = response.data.register.id;
     user.username = response.data.register.name;
@@ -45,13 +48,22 @@ export class RegisterService {
     user.email = response.data.register.email;
     user.points = response.data.register.points;
     user.level = response.data.register.level;
-    user.friendIDs = response.data.register.friends;
+    for (const friend of response.data.login.friends) {
+      user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
+    }
     user.groupIDs = response.data.register.groups;
     user.chatIDs = response.data.register.chats;
     for (const request of response.data.register.sentRequests) {
       user.sentRequestUserIDs.push(request.receiver.id);
     }
-
+    for (const request of response.data.login.receivedRequests) {
+      friendRequest = new FriendRequest();
+      friendRequest.id = request.id;
+      friendRequest.senderUserID = request.sender.id;
+      friendRequest.senderUsername = request.sender.name;
+      friendRequest.senderHandle = request.sender.handle;
+      user.receivedRequests.push(friendRequest);
+    }
     this.data.changeUserInfo(user);
 
   }
@@ -64,8 +76,13 @@ export class RegisterService {
         handle,
         points,
         level,
+        receivedRequests{id, sender{name, handle, id}},
         sentRequests{receiver{id}}
-        friends{id},
+        friends {
+          id,
+          name,
+          level
+         },
         groups{id},
         chats{id}
        }

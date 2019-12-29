@@ -62,6 +62,16 @@ export class SearchComponent implements OnInit {
                 foundUser.allowedToSendRequest = false;
               }
             }
+            for (const friend of this.user.friends) {
+              if (foundUser.userID === friend.id) {
+                foundUser.allowedToSendRequest = false;
+              }
+            }
+            for (const sender of this.user.receivedRequests) {
+              if (foundUser.userID === sender.senderUserID) {
+                foundUser.allowedToSendRequest = false;
+              }
+            }
           }
         }
       });

@@ -24,7 +24,7 @@ export class SearchService {
         pUser.handle = user.handle;
         pUser.points = user.points;
         pUser.level = user.level;
-        pUser.friendIDs = user.friends;
+        pUser.friends = user.friends;
         users.push(pUser);
       }
       return users;

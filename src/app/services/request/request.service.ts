@@ -27,4 +27,29 @@ export class RequestService {
     };
     return body;
   }
+
+  public buildJsonAcceptRequest(id_: number): any {
+    const body = {
+      query: `mutation($id: ID!) {
+        acceptRequest(sender: $id, type: FRIENDREQUEST)
+      }`
+      , variables: {
+        id: id_
+      }
+    };
+    return body;
+  }
+
+  public buildJsonDenyRequest(id_: number): any {
+    const body = {
+      query: `mutation($id: ID!) {
+        denyRequest(sender: $id, type: FRIENDREQUEST)
+      }`
+      , variables: {
+        id: id_
+      }
+    };
+    return body;
+  }
+
 }

@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { FriendInfo } from 'src/app/models/friendinfo';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'social-friends',
@@ -11,44 +12,12 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./friends.component.sass']
 })
 export class FriendsComponent implements OnInit {
-
-  friendIDs: number[] = [29, 27, 30, 31];
-  friends = new Array<FriendInfo>(); // = ["Friend 1", "Friend 2", "Friend 3", "Friend 4", "Friend 5", "Friend 6"]
-
+  user: User;
   constructor(private data: DatasharingService, private http: Http, private router: Router) { }
 
   ngOnInit() {
-    // this.data.currentUserInfo.subscribe(user => {
-    //  this.friendIDs = user.friendIDs})
-    this.getFriendsNames();
-  }
-
-  getFriendsNames() {
-    for (const id of this.friendIDs) {
-      const url = environment.graphQLUrl;
-      const headers = new Headers();
-      headers.set('Content-Type', 'application/json');
-
-      this.http.post(url, this.buildJson(id))
-        .subscribe(response => {this.readOutFriendsNames(id, response.json()); });
-      }
-  }
-
-  readOutFriendsNames(pId: number, pResponse: any) {
-    this.friends.push(new FriendInfo(pId, pResponse.data.getUser.name, pResponse.data.getUser.level ));
-  }
-
-  buildJson(pId: number): any {
-    const body =  {query: `query($userId: ID) {
-      getUser(userId:$userId) {
-        name
-        level
-      }
-    }`, variables: {
-        userId: pId
-      }};
-
-    return body;
+    this.data.currentUserInfo.subscribe(user => {
+    this.user = user; });
   }
 
   public showFriendProfile(pFriend: FriendInfo) {
