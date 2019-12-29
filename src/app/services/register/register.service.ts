@@ -48,7 +48,7 @@ export class RegisterService {
     user.email = response.data.register.email;
     user.points = response.data.register.points;
     user.level = response.data.register.level;
-    for (const friend of response.data.login.friends) {
+    for (const friend of response.data.register.friends) {
       user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
     }
     user.groupIDs = response.data.register.groups;
@@ -56,7 +56,7 @@ export class RegisterService {
     for (const request of response.data.register.sentRequests) {
       user.sentRequestUserIDs.push(request.receiver.id);
     }
-    for (const request of response.data.login.receivedRequests) {
+    for (const request of response.data.register.receivedRequests) {
       friendRequest = new FriendRequest();
       friendRequest.id = request.id;
       friendRequest.senderUserID = request.sender.id;
