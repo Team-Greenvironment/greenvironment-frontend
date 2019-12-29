@@ -32,9 +32,11 @@
             <mat-card-title class="pointer" (click)="showUserProfile(user)">{{user.username}}</mat-card-title>
             <mat-card-subtitle class="pointer" (click)="showUserProfile(user)">{{user.handle}}</mat-card-subtitle>
             <div class="icon-box">
-              <button mat-icon-button class="request-button" (click)="sendFriendRequest(user)"><mat-icon>person_add</mat-icon></button>
+              <button mat-icon-button class="request-button" (click)="sendFriendRequest(user)" [disabled]="!user.allowedToSendRequest"><mat-icon>person_add</mat-icon></button>
             </div>
           </mat-card-header>
         </mat-card>
+        <mat-spinner *ngIf="loading" style="margin:0 auto; margin-top: 5em;" diameter="50"></mat-spinner>
+        
     </div>
 </div>

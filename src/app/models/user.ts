@@ -1,5 +1,8 @@
+import { FriendRequest } from 'src/app/models/friendRequest';
+import { FriendInfo } from 'src/app/models/friendinfo';
+
 export class User {
-  loggedIn: boolean;
+  loggedIn = false;
   userID: number;
   username: string;
   handle: string;
@@ -8,9 +11,11 @@ export class User {
   level: number;
   profilePicture: string;
 
-  friendIDs: number[];
+  friends: FriendInfo[] = new Array();
   groupIDs: number[];
   chatIDs: number[];
-
-  requestIDs: number[];
+  receivedRequests: FriendRequest[] = new Array();
+  sentRequestUserIDs: number[] = new Array(); // IDs of users that already received requests of the logged in user
+  allowedToSendRequest = true; /* if a user already received a request this should
+  be false to avoid multiple invitations*/
 }

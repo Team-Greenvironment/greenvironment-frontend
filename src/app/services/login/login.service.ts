@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http} from '@angular/http';
+import {Headers, Http, Request} from '@angular/http';
 import {Login} from '../../models/login';
 import {User} from 'src/app/models/user';
 import {DatasharingService} from '../datasharing.service';
 import {Router} from '@angular/router';
 import {environment} from 'src/environments/environment';
+import { FriendRequest } from 'src/app/models/friendRequest';
+import { FriendInfo } from 'src/app/models/friendinfo';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +37,7 @@ export class LoginService {
 
   public updateUserInfo(response: any) {
     const user: User = new User();
+    let friendRequest: FriendRequest = new FriendRequest();
     user.loggedIn = true;
     user.userID = response.data.login.id;
     user.username = response.data.login.name;
@@ -42,13 +45,24 @@ export class LoginService {
     user.email = response.data.login.email;
     user.points = response.data.login.points;
     user.level = response.data.login.level;
-    user.friendIDs = response.data.login.friends;
+    for (const friend of response.data.login.friends) {
+      user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
+    }
     user.groupIDs = response.data.login.groups;
     user.chatIDs = response.data.login.chats;
-    user.requestIDs = response.data.login.requests;
-
+    for (const request of response.data.login.sentRequests) {
+      user.sentRequestUserIDs.push(request.receiver.id);
+    }
+    for (const request of response.data.login.receivedRequests) {
+      friendRequest = new FriendRequest();
+      friendRequest.id = request.id;
+      friendRequest.senderUserID = request.sender.id;
+      friendRequest.senderUsername = request.sender.name;
+      friendRequest.senderHandle = request.sender.handle;
+      user.receivedRequests.push(friendRequest);
+    }
+    console.log(user.friends);
     this.data.changeUserInfo(user);
-
   }
 
   public buildJson(login: Login): any {
@@ -61,8 +75,12 @@ export class LoginService {
           handle,
           points,
           level,
+          receivedRequests{id, sender{name, handle, id}},
+          sentRequests{receiver{id}},
           friends {
-           id
+           id,
+           name,
+           level
           },
           groups {
             id

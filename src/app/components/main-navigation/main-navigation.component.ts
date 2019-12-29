@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { DatasharingService } from '../../services/datasharing.service';
 import { SelfService } from '../../services/selfservice/self.service';
+import { RequestService } from '../../services/request/request.service';
 import { environment } from 'src/environments/environment';
 import { Levellist } from 'src/app/models/levellist';
 import { Http } from '@angular/http';
@@ -22,6 +23,7 @@ export class MainNavigationComponent implements OnInit {
     public overlayContainer: OverlayContainer,
     private data: DatasharingService,
     private selfservice: SelfService,
+    private requestservice: RequestService,
     private breakpointObserver: BreakpointObserver,
     private http: Http, private router: Router
   ) {
@@ -102,11 +104,9 @@ export class MainNavigationComponent implements OnInit {
 
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-
     const body = {query: `mutation {
         logout
       }`};
-
     this.http.post(url, body).subscribe(response => {
         console.log(response.text()); });
     this.loggedIn = false;
@@ -114,5 +114,35 @@ export class MainNavigationComponent implements OnInit {
     user.loggedIn = false;
     this.data.changeUserInfo(user);
     this.router.navigate(['login']);
+  }
+
+  acceptRequest(id: number) {
+    for (let i = 0; i < this.user.receivedRequests.length; i++) {
+      if (this.user.receivedRequests[i].senderUserID === id) {
+        this.user.receivedRequests.splice(i, 1);
+        return;
+      }
+    }
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    this.http.post(environment.graphQLUrl, this.requestservice.buildJsonAcceptRequest(id))
+      .subscribe(response => {
+        console.log(response);
+      });
+  }
+
+  denyRequest(id: number) {
+    for (let i = 0; i < this.user.receivedRequests.length; i++) {
+      if (this.user.receivedRequests[i].senderUserID === id) {
+        this.user.receivedRequests.splice(i, 1);
+        return;
+      }
+    }
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    this.http.post(environment.graphQLUrl, this.requestservice.buildJsonDenyRequest(id))
+      .subscribe(response => {
+        console.log(response);
+      });
   }
 }
