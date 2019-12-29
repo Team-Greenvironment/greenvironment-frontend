@@ -32,7 +32,7 @@ export class SelfService {
       }, error => {
         this.notLoggedIn();
         console.log(error.text());
-        // this.fakeLogin();
+        this.fakeLogin();
         // console.log('user wurde übergeben');
       }
       );

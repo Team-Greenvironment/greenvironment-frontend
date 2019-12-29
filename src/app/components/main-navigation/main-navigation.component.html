@@ -3,9 +3,11 @@
   <mat-sidenav #drawer class="sidenav" 
       fxShow="true" fxHide.gt-sm="true"
       fixedInViewport="false"
-      autoFocus="false"
-     >
-    <mat-toolbar>Menu</mat-toolbar>
+      autoFocus="false">
+    <mat-toolbar *ngIf="!loggedIn">Menu</mat-toolbar>
+    <mat-toolbar *ngIf="loggedIn">
+        <span>Hello, {{user.username}}</span>
+    </mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="" (click)="drawer.close()">Home</a>
       <a mat-list-item *ngIf="loggedIn" routerLink={{profileUrl}} (click)="drawer.close()">Profile</a>
@@ -56,6 +58,7 @@
         </div>
       </nav>
       <div id="menu-button-box">
+        <span class="mat-button" [hidden]="!loggedIn" fxShow="true" fxHide.lt-md="true" routerLink={{profileUrl}}>Hello, {{user.username}}</span>
         <button mat-icon-button [matMenuTriggerFor]="requestMenu" [disabled]="!loggedIn" id="menu-button">
           <mat-icon [matBadge]="user.receivedRequests.length" [matBadgeHidden]="!(user.receivedRequests.length > 0)" matBadgeColor="accent">notifications</mat-icon>
         </button>
@@ -81,7 +84,7 @@
           <mat-slide-toggle
             color="primary"
             class="theme-button"
-            (change)="toggleTheme()"><!--stays white when dragged-->
+            (change)="toggleTheme()">
             dark mode
           </mat-slide-toggle>
         </button>
