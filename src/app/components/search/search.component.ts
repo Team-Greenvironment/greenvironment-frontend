@@ -13,6 +13,7 @@ import { DatasharingService } from '../../services/datasharing.service';
   styleUrls: ['./search.component.sass']
 })
 export class SearchComponent implements OnInit {
+  loading = false;
   searchValue = ' ';
   category = 'user';
   user: User;
@@ -40,6 +41,7 @@ export class SearchComponent implements OnInit {
     this.searchValue = searchWord;
     if (searchWord) { // if not null or empty
       if (this.category === 'user') {
+        this.loading = true;
         this.findUser(searchWord);
       } else if (this.category === 'groupe') {
         // this.findUserByHandle(searchWord);
@@ -74,6 +76,7 @@ export class SearchComponent implements OnInit {
             }
           }
         }
+        this.loading = false;
       });
   }
 

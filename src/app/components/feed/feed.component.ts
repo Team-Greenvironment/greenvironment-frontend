@@ -11,6 +11,7 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./feed.component.sass']
 })
 export class FeedComponent implements OnInit {
+  loading = true;
   checked: boolean; // if the "I protected the environment."-box is checked
   empty: boolean;
  // points value of the green action
@@ -38,6 +39,7 @@ export class FeedComponent implements OnInit {
       if (this.loggedIn) {
         this.userId = user.userID;
         this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
+          this.loading = false;
           this.feedNew = this.feedService.renderAllPosts(response.json());
           this.parentSelectedPostList = this.feedNew;
           this.feedMostLiked = this.feedNew;
@@ -45,6 +47,7 @@ export class FeedComponent implements OnInit {
         });
       } else {
         this.feedService.getAllPostsRaw().subscribe(response => {
+          this.loading = false;
           this.feedNew = this.feedService.renderAllPosts(response.json());
           this.parentSelectedPostList = this.feedNew;
           this.feedMostLiked = this.feedNew;
