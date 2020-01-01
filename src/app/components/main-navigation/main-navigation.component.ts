@@ -25,7 +25,7 @@ export class MainNavigationComponent implements OnInit {
     private settingsService: SettingsService,
     private requestservice: RequestService,
     private breakpointObserver: BreakpointObserver,
-    private http: Http, private router: Router
+    private http: Http, private router: Router,
   ) {
     this.overlay = overlayContainer.getContainerElement();
   }

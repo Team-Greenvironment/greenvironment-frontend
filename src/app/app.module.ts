@@ -55,6 +55,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import {MatSortModule} from '@angular/material/sort';
 import { SearchComponent } from './components/search/search.component';
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatIconRegistry} from '@angular/material/icon';
+
+// import logo from 'src/assets/gv-new-logo.svg';
+import logo from '!!raw-loader!./gv-new-logo-white.svg';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
@@ -126,9 +131,14 @@ const appRoutes: Routes = [
     MatTableModule,
     MatSortModule,
     MatBadgeModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIconLiteral(
+        'logo', sanitizer.bypassSecurityTrustHtml(logo));
+  }
+ }
