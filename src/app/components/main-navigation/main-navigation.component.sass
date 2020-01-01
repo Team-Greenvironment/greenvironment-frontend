@@ -1,23 +1,19 @@
-.sidenav-container 
-  height: 100%
-
 .mat-sidenav-container 
-  height: 100%
-
-.mat-sidenav-content 
-  height: 100vh
+  margin-top: 56px
+  height: calc(100vh - 56px)
 
 .sidenav 
   width: 200px
 
 .sidenav .mat-toolbar
-  background: inherit
+  //background: inherit
 
 .mat-toolbar.mat-primary
   height: 56px
-  position: sticky
+  position: fixed
+  //position: sticky
   top: 0
-  z-index: 1000
+  z-index: 999
   .mat-tab-nav-bar
     width: 50%
     height: 56px
@@ -35,13 +31,8 @@
 
 /deep/ .mat-tab-link
   min-width: 5em!important
-
-#login-button
   
 #menu-button-box
   text-align: right
   width: 100%
-
-
-
 
