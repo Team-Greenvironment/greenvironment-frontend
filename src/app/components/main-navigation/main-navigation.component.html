@@ -106,6 +106,12 @@
             <span>log out</span>
           </button> 
         </div>
+        <div [hidden]="loggedIn">
+          <button mat-menu-item routerLink="/login">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>login</span>
+          </button> 
+        </div>
       </mat-menu>
 
     </mat-toolbar>
