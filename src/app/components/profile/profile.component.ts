@@ -7,6 +7,8 @@ import { Levellist } from 'src/app/models/levellist';
 import { environment } from 'src/environments/environment';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { RequestService } from 'src/app/services/request/request.service';
+import { DatasharingService } from '../../services/datasharing.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +20,8 @@ export class ProfileComponent implements OnInit {
   actionlist: Actionlist = new Actionlist();
 
   levellist: Levellist = new Levellist();
-  user: User = new User();
+  private user: User = new User();
+  self: User;
   id: string;
   rankname: string;
   profileNotFound = false;
@@ -26,7 +29,12 @@ export class ProfileComponent implements OnInit {
   dataSource = new MatTableDataSource(this.actionlist.Actions);
   displayedLevelColumns = ['level', 'name'];
   levelSource = this.levellist.levels;
-  constructor(private router: Router, private http: Http) { }
+
+  constructor(
+    private router: Router,
+    private http: Http,
+    private requestService: RequestService,
+    private data: DatasharingService) { }
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   ngOnInit() {
@@ -37,12 +45,14 @@ export class ProfileComponent implements OnInit {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    return this.http.post(url, this.buildJson(this.id))
+    this.http.post(url, this.buildJson(this.id))
       .subscribe(response => {
         console.log(response.text());
         this.updateUserInfo(response.json());
-      }
-      );
+      });
+      this.data.currentUserInfo.subscribe(user => {
+        this.self = user;
+      });
   }
 
   public updateUserInfo(response: any) {
@@ -55,9 +65,15 @@ export class ProfileComponent implements OnInit {
       this.user.points = response.data.getUser.points;
       this.user.level = response.data.getUser.level;
       this.rankname = this.levellist.getLevelName(this.user.level);
+      this.user.allowedToSendRequest = this.requestService.isAllowedToSendRequest(response.data.getUser.id, this.self);
     } else {
       this.profileNotFound = true;
     }
+  }
+
+  public sendFriendRequest(user: User) {
+    user.allowedToSendRequest = false;
+    this.requestService.sendFriendRequest(user);
   }
 
   public buildJson(id: string): any {

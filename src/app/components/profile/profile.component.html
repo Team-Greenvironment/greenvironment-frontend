@@ -8,6 +8,14 @@
                     <div mat-card-avatar class="profile-picture"></div>
                     <mat-card-title>{{user.username}}</mat-card-title>
                     <mat-card-subtitle>{{user.handle}}</mat-card-subtitle>
+                    <div class="icon-box">
+                        <button mat-icon-button 
+                        class="request-button" 
+                        (click)="sendFriendRequest(user)" 
+                        [disabled]="!user.allowedToSendRequest">
+                            <mat-icon>person_add</mat-icon>
+                        </button>
+                    </div>
                 </mat-card-header>
                 <mat-card-content>
                     <table id="profile-table">
