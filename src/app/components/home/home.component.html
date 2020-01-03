@@ -12,7 +12,7 @@
 -->
 <div class="bottom-menu"  fxShow="true" fxHide.gt-sm="true">
     <mat-tab-group id="tab-group" selectedIndex="1" mat-stretch-tabs headerPosition="below">
-        <mat-tab>    
+        <mat-tab disabled>    
             <ng-template mat-tab-label>
                 <mat-icon>chat</mat-icon>
             </ng-template> 
@@ -24,7 +24,7 @@
             </ng-template> 
             <home-feed class="tab-content"></home-feed>
         </mat-tab>
-        <mat-tab >    
+        <mat-tab [disabled]="!loggedIn">    
             <ng-template mat-tab-label>
                 <mat-icon>people</mat-icon>
             </ng-template> 
