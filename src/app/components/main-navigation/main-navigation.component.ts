@@ -54,7 +54,6 @@ export class MainNavigationComponent implements OnInit {
     { path: '/imprint', label: 'Imprint' },
   ];
   navLinks = [
-    { path: '/login', label: 'Login' },
     { path: '', label: 'Home' },
     { path: '/about', label: 'About' },
     { path: '/imprint', label: 'Imprint' },
