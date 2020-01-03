@@ -1,7 +1,8 @@
 <div id="content" fxShow="true" fxHide.lt-md="true">
-    <div id="chat"><home-chatmanager id="chatcontainer" [hidden]="!loggedIn"></home-chatmanager></div>
-    <div id="feed"><home-feed id="feedcontainer"></home-feed></div>
-    <div id="social"><home-social id="socialcontainer" [hidden]="!loggedIn"></home-social></div>
+    <div id="chat"><home-chatmanager [hidden]="!loggedIn"></home-chatmanager></div>
+    <div id="feed"><home-feed></home-feed></div>
+    <div class="social" [hidden]="!loggedIn"><home-social></home-social></div>
+    <div class="social" [hidden]="loggedIn"><home-search></home-search></div>
 </div>
 <!--
 <mat-tab-group headerPosition="below" position="0" id="bottom-menu" fxShow="true" fxHide.gt-sm="true">
