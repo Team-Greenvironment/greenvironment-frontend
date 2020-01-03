@@ -6,13 +6,13 @@
             <mat-card class="mat-elevation-z8">
                 <mat-card-header>
                     <div mat-card-avatar class="profile-picture"></div>
-                    <mat-card-title>{{user.username}}</mat-card-title>
-                    <mat-card-subtitle>{{user.handle}}</mat-card-subtitle>
+                    <mat-card-title>{{userProfile.username}}</mat-card-title>
+                    <mat-card-subtitle>{{userProfile.handle}}</mat-card-subtitle>
                     <div class="icon-box">
                         <button mat-icon-button 
                         class="request-button" 
-                        (click)="sendFriendRequest(user)" 
-                        [disabled]="!user.allowedToSendRequest">
+                        (click)="sendFriendRequest(userProfile)" 
+                        [disabled]="!userProfile.allowedToSendRequest">
                             <mat-icon>person_add</mat-icon>
                         </button>
                     </div>
@@ -21,27 +21,27 @@
                     <table id="profile-table">
                         <tr>
                             <div class="mat-header-cell">name: </div>
-                            <td>{{user.username}}</td>
+                            <td>{{userProfile.username}}</td>
                         </tr>
                         <mat-divider></mat-divider>
                         <tr>
                             <div class="mat-header-cell">handle: </div>
-                            <td>{{user.handle}}</td>
+                            <td>{{userProfile.handle}}</td>
                         </tr>
                         <mat-divider></mat-divider>
                         <tr>
                             <div class="mat-header-cell">profileID: </div>
-                            <td>{{user.userID}}</td>
+                            <td>{{userProfile.userID}}</td>
                         </tr>
                         <mat-divider></mat-divider>
                         <tr>
                             <div class="mat-header-cell">points: </div>
-                            <td>{{user.points}}</td>
+                            <td>{{userProfile.points}}</td>
                         </tr>
                         <mat-divider></mat-divider>
                         <tr>
                             <div class="mat-header-cell">level: </div>
-                            <td>{{user.level}}</td>
+                            <td>{{userProfile.level}}</td>
                         </tr>
                         <mat-divider></mat-divider>
                         <tr>
