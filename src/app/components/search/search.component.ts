@@ -57,24 +57,7 @@ export class SearchComponent implements OnInit {
       .subscribe(response => {
         this.foundUsers = this.searchService.renderUsers(response.json());
         for (const foundUser of this.foundUsers) {
-          if (!this.user.loggedIn) {foundUser.allowedToSendRequest = false; } else {
-            for (const receiverID of this.user.sentRequestUserIDs) {
-              if (foundUser.userID === receiverID ||
-                foundUser.userID === this.user.userID) {
-                foundUser.allowedToSendRequest = false;
-              }
-            }
-            for (const friend of this.user.friends) {
-              if (foundUser.userID === friend.id) {
-                foundUser.allowedToSendRequest = false;
-              }
-            }
-            for (const sender of this.user.receivedRequests) {
-              if (foundUser.userID === sender.senderUserID) {
-                foundUser.allowedToSendRequest = false;
-              }
-            }
-          }
+          foundUser.allowedToSendRequest = this.requestService.isAllowedToSendRequest(foundUser.userID, this.user);
         }
         this.loading = false;
       });
@@ -86,11 +69,7 @@ export class SearchComponent implements OnInit {
 
   public sendFriendRequest(user: User) {
     user.allowedToSendRequest = false;
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.requestService.buildJsonRequest(user.userID, 'FRIENDREQUEST'))
-      .subscribe(response => {
-      });
+    this.requestService.sendFriendRequest(user);
   }
 }
 

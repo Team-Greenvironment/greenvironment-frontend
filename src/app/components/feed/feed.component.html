@@ -1,29 +1,44 @@
 <div id="home">
-<mat-card >      
-  <mat-card-content>
-  <mat-form-field id="input">
-    <textarea matInput #content type="text" [(ngModel)]="empty" mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
-    <button mat-button matSuffix mat-icon-button>
-      <mat-icon>add</mat-icon>
-    </button>
-  </mat-form-field>
-  <p id="check">
-    <mat-checkbox color="primary" [(ngModel)]="checked">I protected the environment.</mat-checkbox>
-  </p>
-  <mat-form-field id="action-chooser" *ngIf="checked">
-    <mat-label>What did you do?</mat-label>
-    <mat-select [(ngModel)]="selectedValue" name="action">
-      <mat-option>nothing ;)</mat-option>
-      <mat-option *ngFor="let action of actionlist.Actions" [value]="action.points">
-        {{action.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button mat-raised-button *ngIf="empty" color="primary" id="post-button" (click)=createPost(content)>
-    POST
-  </button>
-</mat-card-content>
-</mat-card>
+  <div [hidden]="!loggedIn">
+    <mat-card >      
+      <mat-card-content>
+        <mat-form-field id="input">
+          <textarea matInput #content type="text" [(ngModel)]="empty" mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
+          <button mat-button matSuffix mat-icon-button>
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-form-field>
+        <p id="check">
+          <mat-checkbox color="primary" [(ngModel)]="checked">I protected the environment.</mat-checkbox>
+        </p>
+        <mat-form-field id="action-chooser" *ngIf="checked">
+          <mat-label>What did you do?</mat-label>
+          <mat-select [(ngModel)]="selectedValue" name="action">
+            <mat-option>nothing ;)</mat-option>
+            <mat-option *ngFor="let action of actionlist.Actions" [value]="action.points">
+              {{action.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button *ngIf="empty" color="primary" id="post-button" (click)=createPost(content)>
+          POST
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div [hidden]="loggedIn">
+    <mat-card id="info">      
+      <mat-card-header>
+        <mat-card-title >
+          You are not logged in. Do you want to post something?
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <a mat-stroked-button color="primary" routerLink="/login" id="post-button">Login</a>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
 <div id="chooser-div" style="text-align: center; margin-top: 1em;">
     <mat-button-toggle-group id="feedchooser" value="new">
     <mat-button-toggle (click)="showNew()" value="new">New</mat-button-toggle>
