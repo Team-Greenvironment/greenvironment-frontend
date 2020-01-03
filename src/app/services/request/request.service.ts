@@ -37,6 +37,7 @@ export class RequestService {
   }
 
   public sendFriendRequest(user: User) {
+    this.data.addSentRequestUserID(user.userID);
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
     this.http.post(environment.graphQLUrl, this.buildJsonRequest(user.userID, 'FRIENDREQUEST'))
