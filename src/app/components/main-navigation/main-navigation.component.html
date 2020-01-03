@@ -68,6 +68,7 @@
       <!--content on BIG SCREEN-->
       <div id="menu-button-box">
         <span class="mat-button" *ngIf="loggedIn" fxShow="true" fxHide.lt-md="true" routerLink={{profileUrl}}>Hello, {{user.username}}</span>
+        <span class="mat-button" *ngIf="!loggedIn" fxShow="true" fxHide.lt-md="true" routerLink="/login"><span>Hello, Sign in</span></span>
         <button mat-icon-button [matMenuTriggerFor]="requestMenu" [disabled]="!loggedIn" id="menu-button">
           <mat-icon [matBadge]="user.receivedRequests.length" [matBadgeHidden]="!(user.receivedRequests.length > 0)" matBadgeColor="accent">notifications</mat-icon>
         </button>
