@@ -19,6 +19,12 @@ export class DatasharingService {
     this.userInfoSource.next(pUserInfo);
   }
 
+  addSentRequestUserID(id: number) {
+    const user: User = this.userInfoSource.getValue();
+    user.sentRequestUserIDs.push(id);
+    this.changeUserInfo(user);
+  }
+
   changeChatIDs(pChatIDs: number[]) {
     this.chatIDsSource.next(pChatIDs);
   }
