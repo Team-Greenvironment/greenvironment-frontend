@@ -1,7 +1,5 @@
 import { Component, OnInit, HostBinding  } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
 import { DatasharingService } from '../../services/datasharing.service';
 import { RequestService } from '../../services/request/request.service';
 import { SettingsService } from '../../services/settings/settings.service';
@@ -42,11 +40,6 @@ export class MainNavigationComponent implements OnInit {
   lighttheme = true;
   overlay;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
   navLinksLoggedIn = [
     { path: '', label: 'Home' },
     { path: this.profileUrl, label: 'Profile' },
