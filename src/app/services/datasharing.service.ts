@@ -25,6 +25,12 @@ export class DatasharingService {
     this.changeUserInfo(user);
   }
 
+  setDarkMode(active: boolean) {
+    const user: User = this.userInfoSource.getValue();
+    user.darkmode = active;
+    this.changeUserInfo(user);
+  }
+
   changeChatIDs(pChatIDs: number[]) {
     this.chatIDsSource.next(pChatIDs);
   }
