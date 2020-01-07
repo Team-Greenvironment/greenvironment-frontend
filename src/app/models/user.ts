@@ -1,5 +1,6 @@
 import { FriendRequest } from 'src/app/models/friendRequest';
 import { FriendInfo } from 'src/app/models/friendinfo';
+import { GroupInfo } from 'src/app/models/groupinfo';
 
 export class User {
   loggedIn = false;
@@ -14,7 +15,7 @@ export class User {
   darkmode = false;
 
   friends: FriendInfo[] = new Array();
-  groupIDs: number[];
+  groups: GroupInfo[] = new Array();
   chatIDs: number[];
   receivedRequests: FriendRequest[] = new Array();
   sentRequestUserIDs: number[] = new Array(); // IDs of users that already received requests of the logged in user

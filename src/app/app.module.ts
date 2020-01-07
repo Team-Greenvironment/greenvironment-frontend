@@ -17,6 +17,7 @@ import { FeedComponent } from './components/feed/feed.component';
 import { HomeComponent } from './components/home/home.component';
 import { SocialComponent } from './components/social/social.component';
 import { GroupsComponent } from './components/social/groups/groups.component';
+import { DialogCreateGroupComponent } from './components/social/groups/groups.component';
 import { ChatmanagerComponent } from './components/chatmanager/chatmanager.component';
 import { ChatlistComponent } from './components/chatlist/chatlist.component';
 import { PostlistComponent } from './components/feed/postlist/postlist.component';
@@ -96,7 +97,8 @@ const appRoutes: Routes = [
     AboutComponent,
     ProfileComponent,
     MainNavigationComponent,
-    SearchComponent
+    SearchComponent,
+    DialogCreateGroupComponent
   ],
   imports: [
     BrowserModule,
@@ -133,8 +135,9 @@ const appRoutes: Routes = [
     MatSortModule,
     MatBadgeModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
   ],
+  entryComponents: [ DialogCreateGroupComponent ],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {environment} from 'src/environments/environment';
 import { FriendRequest } from 'src/app/models/friendRequest';
 import { FriendInfo } from 'src/app/models/friendinfo';
+import { GroupInfo } from 'src/app/models/groupinfo';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +49,10 @@ export class LoginService {
     for (const friend of response.data.login.friends) {
       user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
     }
-    user.groupIDs = response.data.login.groups;
+    for (const group of response.data.login.groups) {
+      console.log(group.name);
+      user.groups.push(new GroupInfo(group.id, group.name));
+    }
     user.chatIDs = response.data.login.chats;
     for (const request of response.data.login.sentRequests) {
       user.sentRequestUserIDs.push(request.receiver.id);
@@ -85,7 +89,8 @@ export class LoginService {
            level
           },
           groups {
-            id
+            id,
+            name
           },
           chats{
             id

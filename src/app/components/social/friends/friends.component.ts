@@ -3,7 +3,6 @@ import { DatasharingService } from 'src/app/services/datasharing.service';
 import { Http } from '@angular/http';
 import { FriendInfo } from 'src/app/models/friendinfo';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -13,7 +12,7 @@ import { User } from 'src/app/models/user';
 })
 export class FriendsComponent implements OnInit {
   user: User;
-  constructor(private data: DatasharingService, private http: Http, private router: Router) { }
+  constructor(private data: DatasharingService, private router: Router) { }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
