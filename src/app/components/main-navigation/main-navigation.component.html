@@ -40,7 +40,7 @@
       </button>
       <mat-icon svgIcon="logo" style="min-width: 35px;"></mat-icon>
       <span>Greenvironment</span>
-      <nav mat-tab-nav-bar backgroundColor="primary" fxShow="true" fxHide.lt-md="true">
+      <nav mat-tab-nav-bar backgroundColor="primary" fxShow="true" fxHide.lt-md="true" routerLinkActive #rla="">
         <div [hidden]="!loggedIn">
         <a mat-tab-link class="link"
               *ngFor="let link of navLinksLoggedIn"
