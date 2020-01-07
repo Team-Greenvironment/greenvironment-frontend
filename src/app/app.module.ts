@@ -10,7 +10,6 @@ import { DocumentListComponent } from './components/document-list/document-list.
 import { DocumentComponent } from './components/document/document.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
-import { AppScaffoldComponent } from './components/app-scaffold/app-scaffold.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { FriendsComponent } from './components/social/friends/friends.component';
 import { FeedComponent } from './components/feed/feed.component';
@@ -82,7 +81,6 @@ const appRoutes: Routes = [
     DocumentComponent,
     RegisterComponent,
     LoginComponent,
-    AppScaffoldComponent,
     ChatComponent,
     FriendsComponent,
     FeedComponent,

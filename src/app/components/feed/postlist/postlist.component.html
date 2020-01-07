@@ -21,6 +21,16 @@
 
 <mat-card class="post" *ngFor = "let post of childPostList" [class.selected]="post === selectedPost" tabindex="0">
   <mat-card-header>
+  <div id="button-box">
+    <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button" *ngIf="post.deletable">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="deletePost(post)">
+        <span>delete Post</span>
+      </button>
+    </mat-menu>
+  </div>
   <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>
       {{post.author.name}}
@@ -48,3 +58,4 @@
     {{post.downvotes}}
   </mat-card-actions>
 </mat-card>
+
