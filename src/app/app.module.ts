@@ -57,6 +57,7 @@ import {MatSortModule} from '@angular/material/sort';
 import { SearchComponent } from './components/search/search.component';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
 
 // import logo from 'src/assets/gv-new-logo.svg';
 import logo from '!!raw-loader!./gv-new-logo-white.svg';
@@ -132,6 +133,7 @@ const appRoutes: Routes = [
     MatSortModule,
     MatBadgeModule,
     MatProgressSpinnerModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

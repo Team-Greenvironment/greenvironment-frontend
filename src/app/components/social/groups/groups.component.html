@@ -5,9 +5,9 @@
 </div>-->
 <mat-toolbar>
   <span>Groups</span>
-  <!--<div id="button-box">
-    <button mat-icon-button><mat-icon>group_add</mat-icon></button>
-  </div>-->
+  <div id="button-box">
+    <button mat-icon-button (click)="openDialog()"><mat-icon>group_add</mat-icon></button>
+  </div>
 </mat-toolbar>
 <div id="grouplist">
     <!--<div class="groupitem" *ngFor="let group of groups"
