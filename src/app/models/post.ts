@@ -8,6 +8,7 @@ export class Post {
     upvotes: number;
     downvotes: number;
     userVote: string;
+    deletable: boolean;
     author: Author;
 
     // TODO: constructor properties need normal names
@@ -18,6 +19,7 @@ export class Post {
       pUpvotes: number,
       pDownvotes: number,
       pUserVote: string,
+      pDeletable: boolean,
       pDate: string,
       pAuthor: Author
     ) {
@@ -27,6 +29,7 @@ export class Post {
         this.upvotes = pUpvotes;
         this.downvotes = pDownvotes;
         this.userVote = pUserVote;
+        this.deletable = pDeletable;
         this.date = pDate;
         this.author = pAuthor;
     }

@@ -29,6 +29,17 @@ export class PostlistComponent implements OnInit {
         this.voteEvent.emit(true); });
   }
 
+  deletePost(pPost: Post) {
+    this.feedService.deletePost(pPost.id).subscribe(response => {
+      for (let i = 0; i < this.childPostList.length; i++) {
+        if (this.childPostList[i].id === pPost.id) {
+          this.childPostList.splice(i, 1);
+          return;
+        }
+      }
+    });
+  }
+
   public showUserProfile(post: any) {
     this.router.navigate(['profile/' + post.author.id]);
   }
