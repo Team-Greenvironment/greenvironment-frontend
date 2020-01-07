@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { FriendRequest } from 'src/app/models/friendRequest';
 import { FriendInfo } from 'src/app/models/friendinfo';
+import { GroupInfo } from 'src/app/models/groupinfo';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,7 @@ export class SelfService {
       }, error => {
         this.notLoggedIn();
         console.log(error.text());
+        // this.fakeLogin();
       }
       );
   }
@@ -56,7 +58,10 @@ export class SelfService {
     for (const friend of response.data.getSelf.friends) {
       user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
     }
-    user.groupIDs = response.data.getSelf.groups;
+    for (const group of response.data.getSelf.groups) {
+      console.log(group.name);
+      user.groups.push(new GroupInfo(group.id, group.name));
+    }
     user.chatIDs = response.data.getSelf.chats;
     for (const request of response.data.getSelf.sentRequests) {
       user.sentRequestUserIDs.push(request.receiver.id);
@@ -113,7 +118,8 @@ export class SelfService {
          level
         },
         groups {
-          id
+          id,
+          name
         },
         chats{
           id

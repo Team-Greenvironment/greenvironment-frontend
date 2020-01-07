@@ -17,6 +17,7 @@ import { FeedComponent } from './components/feed/feed.component';
 import { HomeComponent } from './components/home/home.component';
 import { SocialComponent } from './components/social/social.component';
 import { GroupsComponent } from './components/social/groups/groups.component';
+import { DialogCreateGroupComponent } from './components/social/groups/groups.component';
 import { ChatmanagerComponent } from './components/chatmanager/chatmanager.component';
 import { ChatlistComponent } from './components/chatlist/chatlist.component';
 import { PostlistComponent } from './components/feed/postlist/postlist.component';
@@ -57,6 +58,7 @@ import {MatSortModule} from '@angular/material/sort';
 import { SearchComponent } from './components/search/search.component';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
 
 // import logo from 'src/assets/gv-new-logo.svg';
 import logo from '!!raw-loader!./gv-new-logo-white.svg';
@@ -95,7 +97,8 @@ const appRoutes: Routes = [
     AboutComponent,
     ProfileComponent,
     MainNavigationComponent,
-    SearchComponent
+    SearchComponent,
+    DialogCreateGroupComponent
   ],
   imports: [
     BrowserModule,
@@ -132,7 +135,9 @@ const appRoutes: Routes = [
     MatSortModule,
     MatBadgeModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
   ],
+  entryComponents: [ DialogCreateGroupComponent ],
   providers: [],
   bootstrap: [AppComponent]
 })

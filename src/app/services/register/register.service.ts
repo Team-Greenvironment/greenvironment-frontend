@@ -51,7 +51,7 @@ export class RegisterService {
     for (const friend of response.data.register.friends) {
       user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
     }
-    user.groupIDs = response.data.register.groups;
+    // user.groupIDs = response.data.register.groups;
     user.chatIDs = response.data.register.chats;
     for (const request of response.data.register.sentRequests) {
       user.sentRequestUserIDs.push(request.receiver.id);
