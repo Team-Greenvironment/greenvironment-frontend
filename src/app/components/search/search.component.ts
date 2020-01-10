@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user';
 import {environment} from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { DatasharingService } from '../../services/datasharing.service';
+import { GroupInfo } from 'src/app/models/groupinfo';
 
 @Component({
   selector: 'home-search',
@@ -17,7 +18,8 @@ export class SearchComponent implements OnInit {
   searchValue = ' ';
   category = 'user';
   user: User;
-  foundUsers: Array<User>;
+  foundUsers: Array<User> = new Array();
+  foundGroups: Array<GroupInfo> = new Array();
 
   constructor(
     private searchService: SearchService,
@@ -56,8 +58,12 @@ export class SearchComponent implements OnInit {
     this.http.post(environment.graphQLUrl, this.searchService.buildJsonUser(name))
       .subscribe(response => {
         this.foundUsers = this.searchService.renderUsers(response.json());
+        this.foundGroups = this.searchService.renderGroups(response.json());
         for (const foundUser of this.foundUsers) {
           foundUser.allowedToSendRequest = this.requestService.isAllowedToSendRequest(foundUser.userID, this.user);
+        }
+        for (const foundGroup of this.foundGroups) {
+          foundGroup.allowedToJoinGroup = this.requestService.isAllowedToJoinGroup(foundGroup.id, this.user);
         }
         this.loading = false;
       });
@@ -70,6 +76,11 @@ export class SearchComponent implements OnInit {
   public sendFriendRequest(user: User) {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);
+  }
+
+  public joinGroup(group: GroupInfo) {
+    group.allowedToJoinGroup = false;
+    this.requestService.joinGroup(group);
   }
 }
 
