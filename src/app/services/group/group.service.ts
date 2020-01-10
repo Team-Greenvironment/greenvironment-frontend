@@ -43,8 +43,6 @@ export class GroupService {
   }
 
   public renderGroup(response: any): Group {
-    console.log(response);
-    console.log(response.data.getGroup.creator.id);
     const group = new Group();
     const members: User[] = new Array();
     const admins: User[] = new Array();
@@ -70,7 +68,6 @@ export class GroupService {
         admins.push(user);
       }
       group.admins = admins;
-      console.log(group);
       return group;
     }
     return null;

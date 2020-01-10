@@ -26,19 +26,15 @@ export class LoginComponent implements OnInit {
   }
 
   public loginError(error: any) {
-    console.log(error.errors[0].message);
     this.errorOccurred = true;
     this.errorMessage = error.errors[0].message;
   }
 
   onClickSubmit(pEmail: string, pPasswordHash: string) {
-    console.log('try to login with mail adress:' + pEmail);
     this.errorOccurred = false;
     this.errorMessage = ' ';
     this.login.email = pEmail.trim().toLowerCase();
     this.login.passwordHash = sha512.sha512(pPasswordHash);
-    console.log(this.login.email);
-
 
     this.loginService.login(this.login, error => this.loginError(error.json()));
   }

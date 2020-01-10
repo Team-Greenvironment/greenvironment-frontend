@@ -110,7 +110,6 @@ export class ProfileService {
   }
 
   public renderProfile(response: any): User {
-    console.log(response);
     const posts = new Array<Post>();
     const profile = new User();
     if (response.data.getUser != null) {
@@ -139,7 +138,6 @@ export class ProfileService {
         posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, pdate, author));
       }
       profile.posts = posts;
-      console.log(profile);
       return profile;
     }
     return null;

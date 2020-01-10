@@ -25,7 +25,7 @@ export class FeedService {
       }};
 
     this.http.post(url, body).subscribe(response => {
-        console.log(response.text()); });
+    });
   }
 
   public upvote(pPostID: number): any {
@@ -80,7 +80,6 @@ export class FeedService {
     this.http.post(url, this.getBodyForGetAllPosts())
     .subscribe(response => {
         this.posts = this.renderAllPosts(response.json());
-        console.log(response);
       });
     return this.posts;
   }
@@ -93,7 +92,6 @@ export class FeedService {
     this.http.post(url, this.getBodyForGetAllPostsByUserId(userId))
     .subscribe(response => {
         this.posts = this.renderAllPosts(response.json());
-        console.log(response);
       });
     return this.posts;
   }

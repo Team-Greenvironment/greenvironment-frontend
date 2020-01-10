@@ -24,7 +24,6 @@ export class LoginService {
 
     return this.http.post(environment.graphQLUrl, this.buildJson(login))
       .subscribe(response => {
-          console.log(response.text());
           this.loginSuccess();
           this.updateUserInfo(response.json());
         }, errorCb
@@ -32,7 +31,6 @@ export class LoginService {
   }
 
   public loginSuccess() {
-    console.log('alles supi dupi');
     this.router.navigateByUrl('');
   }
 
@@ -50,7 +48,6 @@ export class LoginService {
       user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
     }
     for (const group of response.data.login.groups) {
-      console.log(group.name);
       user.groups.push(new GroupInfo(group.id, group.name));
     }
     user.chatIDs = response.data.login.chats;

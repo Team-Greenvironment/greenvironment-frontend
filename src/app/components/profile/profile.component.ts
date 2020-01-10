@@ -8,7 +8,6 @@ import {MatTableDataSource} from '@angular/material/table';
 import { RequestService } from 'src/app/services/request/request.service';
 import { DatasharingService } from '../../services/datasharing.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
-import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-profile',
@@ -43,7 +42,6 @@ export class ProfileComponent implements OnInit {
           const possibleID = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
           if (this.id !== possibleID && this.id && this.router.url.includes('profile/')) {
             // reload the user
-            console.log('search for user id: ' + this.router.url.substr(this.router.url.lastIndexOf('/') + 1));
             this.ngOnInit();
           }
         }
