@@ -33,7 +33,7 @@ export class SearchService {
 
   public renderGroups(pResponse: any): Array<GroupInfo> {
     const groups = new Array<GroupInfo>();
-      for (const group of pResponse.data.search.groups) {       
+      for (const group of pResponse.data.search.groups) {
         groups.push(new GroupInfo(group.id, group.name));
       }
       return groups;

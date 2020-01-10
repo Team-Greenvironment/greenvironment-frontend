@@ -11,16 +11,16 @@ import { Observable, Subject } from 'rxjs';
 })
 export class ProfileService {
 
-  public proflile:Subject<any> = new Subject();
+  public proflile: Subject<any> = new Subject();
 
   constructor(private http: Http) { }
 
   public getUserData(userId: string) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    //return this.renderProfile(this.http.post(environment.graphQLUrl, this.buildGetProfileJson(userId)));
+    // return this.renderProfile(this.http.post(environment.graphQLUrl, this.buildGetProfileJson(userId)));
     this.http.post(environment.graphQLUrl, this.buildGetProfileJson(userId)).subscribe(result => {
-      //push onto subject
+      // push onto subject
       this.proflile.next(this.renderProfile(result.json()));
       return this.proflile;
     });
@@ -29,9 +29,9 @@ export class ProfileService {
   public getUserDataBySelfId(userId: string, selfId: string) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    //return this.renderProfile(this.http.post(environment.graphQLUrl, this.buildGetProfileJson(userId)));
+    // return this.renderProfile(this.http.post(environment.graphQLUrl, this.buildGetProfileJson(userId)));
     this.http.post(environment.graphQLUrl, this.buildGetProfileJsonBySelfId(userId, selfId)).subscribe(result => {
-      //push onto subject
+      // push onto subject
       this.proflile.next(this.renderProfile(result.json()));
       return this.proflile;
     });
@@ -134,9 +134,9 @@ export class ProfileService {
         const userVote: string = post.userVote;
         const deletable: boolean = post.deletable;
         const author = new Author(post.author.id, post.author.name, post.author.handle);
-        const temp = new Date(Number(post.createdAt));
-        const date = temp.toLocaleString('en-GB');
-        posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, date, author));
+        const ptemp = new Date(Number(post.createdAt));
+        const pdate = ptemp.toLocaleString('en-GB');
+        posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, pdate, author));
       }
       profile.posts = posts;
       console.log(profile);

@@ -63,8 +63,7 @@ export class ProfileComponent implements OnInit {
     } else {
       this.profileService.getUserData(this.id);
     }
-    this.profileService.proflile.subscribe(response =>
-      {
+    this.profileService.proflile.subscribe(response => {
         if (response) {
           this.userProfile = response;
           // tslint:disable-next-line:max-line-length
