@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GroupInfo } from 'src/app/models/groupinfo';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { SocialService } from 'src/app/services/social/social.service';
 import { User } from 'src/app/models/user';
 import { DatasharingService } from 'src/app/services/datasharing.service';
+import { Router } from '@angular/router';
 
 // DIALOG COMPONENT to create groups
 @Component({
@@ -38,11 +39,15 @@ export class DialogCreateGroupComponent {
 })
 export class GroupsComponent implements OnInit {
   user: User;
-  constructor(public dialog: MatDialog, private data: DatasharingService) { }
+  constructor(public dialog: MatDialog, private data: DatasharingService, private router: Router) { }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
     this.user = user; });
+  }
+
+  public showGroupProfile(group: GroupInfo) {
+    this.router.navigate(['group/' + group.id]);
   }
 
   openDialog(): void {
