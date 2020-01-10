@@ -1,13 +1,13 @@
 <mat-toolbar>
   <span>Groups</span>
   <div id="button-box">
-    <button mat-icon-button (click)="openDialog()"><mat-icon>group_add</mat-icon></button>
+    <button mat-icon-button (click)="openDialog()" matTooltip="create group" matTooltipPosition="left" matTooltipShowDelay="500"><mat-icon>group_add</mat-icon></button>
   </div>
 </mat-toolbar>
 
 <div id="grouplist">
     <mat-card class="group-card" *ngFor="let group of user.groups" 
-    [class.selected]="group === selectedGroup">
+    [class.selected]="group === selectedGroup" (click)="showGroupProfile(group)">
       <mat-card-header>
         <div mat-card-avatar class="group-picture"></div>
         <mat-card-title>{{group.name}}</mat-card-title>

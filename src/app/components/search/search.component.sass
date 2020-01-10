@@ -13,13 +13,15 @@
   padding-left: 0.5em
   padding-right: 0.5em
 
-#friendlist
+#list
   padding: 0.5em
 
-.friend-card
+.card
   box-sizing: border-box
   width: 100%
   margin-top: 0.5em
+  outline: none
+  user-select: none
   /deep/ .mat-card-header-text
     width: 1000%
     margin: 0
@@ -46,3 +48,9 @@
 .icon-box
   text-align: right
   width: 100%
+
+/deep/ .mat-expansion-panel
+  background: #e6e6e6
+/deep/.dark-theme .mat-expansion-panel
+  background: #121212
+

@@ -4,6 +4,7 @@ import {DatasharingService} from '../datasharing.service';
 import {Router} from '@angular/router';
 import {environment} from 'src/environments/environment';
 import { User } from 'src/app/models/user';
+import { GroupInfo } from 'src/app/models/groupinfo';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,14 @@ export class SearchService {
       return users;
   }
 
+  public renderGroups(pResponse: any): Array<GroupInfo> {
+    const groups = new Array<GroupInfo>();
+      for (const group of pResponse.data.search.groups) {
+        groups.push(new GroupInfo(group.id, group.name));
+      }
+      return groups;
+  }
+
   public buildJsonUser(name_: String): any {
     const body = {
       query: `query($name: String!) {
@@ -44,6 +53,12 @@ export class SearchService {
             friends {
             id
             }
+          }
+          groups{
+            id
+            name
+            creator{id name handle}
+            members{id name handle}
           }
         }
       }`

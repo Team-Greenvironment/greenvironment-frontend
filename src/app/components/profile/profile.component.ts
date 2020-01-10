@@ -1,14 +1,13 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
-import {Http, URLSearchParams, Headers} from '@angular/http';
 import { User } from 'src/app/models/user';
 import { Actionlist } from 'src/app/models/actionlist';
 import { Levellist } from 'src/app/models/levellist';
-import { environment } from 'src/environments/environment';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { RequestService } from 'src/app/services/request/request.service';
 import { DatasharingService } from '../../services/datasharing.service';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,15 +29,18 @@ export class ProfileComponent implements OnInit {
   displayedLevelColumns = ['level', 'name'];
   levelSource = this.levellist.levels;
 
+  loading = false;
+
   constructor(
     private router: Router,
-    private http: Http,
     private requestService: RequestService,
-    private data: DatasharingService) {
+    private data: DatasharingService,
+    private profileService: ProfileService) {
       router.events.forEach((event) => {
         // check if the user is on the profile page (of userY) and routes to the page of userY (e.g. his own page)
         if (event instanceof NavigationEnd) {
-          if (this.id !== this.router.url.substr(this.router.url.lastIndexOf('/') + 1) && this.id) {
+          const possibleID = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
+          if (this.id !== possibleID && this.id && this.router.url.includes('profile/')) {
             // reload the user
             this.ngOnInit();
           }
@@ -48,65 +50,30 @@ export class ProfileComponent implements OnInit {
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   ngOnInit() {
+    this.loading = true;
     this.dataSource.sort = this.sort;
     this.id = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
-    // let url = './graphql'
-    const url = environment.graphQLUrl;
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-
-    this.http.post(url, this.buildJson(this.id))
-      .subscribe(response => {
-        console.log(response.text());
-        this.updateUserInfo(response.json());
-      });
-      this.data.currentUserInfo.subscribe(user => {
-        this.self = user;
-      });
-  }
-
-  public updateUserInfo(response: any) {
-    if (response.data.getUser != null) {
-      this.profileNotFound = false;
-      this.userProfile.loggedIn = true;
-      this.userProfile.userID = response.data.getUser.id;
-      this.userProfile.username = response.data.getUser.name;
-      this.userProfile.handle = response.data.getUser.handle;
-      this.userProfile.points = response.data.getUser.points;
-      this.userProfile.level = response.data.getUser.level;
-      this.rankname = this.levellist.getLevelName(this.userProfile.level);
-      // tslint:disable-next-line:max-line-length
-      this.userProfile.allowedToSendRequest = this.requestService.isAllowedToSendRequest(response.data.getUser.id, this.self);
+    this.data.currentUserInfo.subscribe(user => {
+      this.self = user;
+    });
+    if (this.self.loggedIn) {
+      this.profileService.getUserDataBySelfId(this.id, this.self.userID.toString());
     } else {
-      this.profileNotFound = true;
+      this.profileService.getUserData(this.id);
     }
+    this.profileService.proflile.subscribe(response => {
+        if (response) {
+          this.userProfile = response;
+          // tslint:disable-next-line:max-line-length
+          this.userProfile.allowedToSendRequest = this.requestService.isAllowedToSendRequest(this.userProfile.userID, this.self);
+          this.rankname = this.levellist.getLevelName(this.userProfile.level);
+        } else { this.profileNotFound = true; }
+        this.loading = false;
+      });
   }
 
   public sendFriendRequest(user: User) {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);
-  }
-
-  public buildJson(id: string): any {
-    const body =  {query: `query($userId: ID) {
-      getUser(userId:$userId){
-        id
-        handle
-        name
-        profilePicture
-        points
-        level
-        friendCount
-        friends{
-          id
-        }
-        posts{
-          content
-        }
-      }
-    }`, variables: {
-        userId: this.id
-      }};
-    return body;
   }
 }

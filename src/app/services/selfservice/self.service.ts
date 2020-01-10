@@ -18,31 +18,24 @@ export class SelfService {
   constructor(private http: Http, private data: DatasharingService, private router: Router) { }
 
   public checkIfLoggedIn() {
-    console.log('check if logged in...');
-
     const url = environment.graphQLUrl;
-
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
     return this.http.post(url, this.buildJson())
       .subscribe(response => {
-        console.log(response.text());
         this.stillLoggedIn();
         this.updateUserInfo(response.json());
       }, error => {
         this.notLoggedIn();
-        console.log(error.text());
         // this.fakeLogin();
       }
       );
   }
   public stillLoggedIn() {
-    console.log('user was logged in');
   }
 
   public notLoggedIn() {
-    console.log('user was not logged in');
   }
 
   public updateUserInfo(response: any) {
@@ -59,7 +52,6 @@ export class SelfService {
       user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
     }
     for (const group of response.data.getSelf.groups) {
-      console.log(group.name);
       user.groups.push(new GroupInfo(group.id, group.name));
     }
     user.chatIDs = response.data.getSelf.chats;

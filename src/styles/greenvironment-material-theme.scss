@@ -6,6 +6,39 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
+$md-gvgreen: (
+    50 : #e0f7e7,
+    100 : #b3ebc3,
+    200 : #80de9c,
+    300 : #4dd174,
+    400 : #26c756,
+    500 : #00bd38,
+    600 : #00b732,
+    700 : #00ae2b,
+    800 : #00a624,
+    900 : #009817,
+    A100 : #c3ffc9,
+    A200 : #90ff9a,
+    A400 : #5dff6b,
+    A700 : #44ff54,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/

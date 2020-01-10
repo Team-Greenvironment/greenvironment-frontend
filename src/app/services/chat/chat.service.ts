@@ -22,7 +22,6 @@ export class ChatService {
    }
 
   public getAllChats(): Array<Chat> {
-    console.log('Getting all chats ..');
     const url = environment.graphQLUrl;
 
     const headers = new Headers();
@@ -36,7 +35,6 @@ export class ChatService {
   }
 
   public getAllChatsRaw(): any {
-    console.log('Getting all chats ..');
     const url = 'https://greenvironment.net/graphql';
 
     const headers = new Headers();
@@ -47,7 +45,6 @@ export class ChatService {
 
   public getChatsByID(pChatIDs: number[]): Array<Chat> {
     this.chats = [];
-    console.log('Getting chats by ID..');
 
     for (const chatId of pChatIDs) {
       const url = environment.graphQLUrl;
@@ -64,7 +61,6 @@ export class ChatService {
   }
 
   public getChatsByIDRaw(pChatIDs: number[]): any {
-    console.log('Getting chats by ID..');
 
     for (const chatId of pChatIDs) {
       const url = 'https://greenvironment.net/graphql';
@@ -140,7 +136,6 @@ export class ChatService {
     headers.set('Content-Type', 'application/json');
 
     this.http.post(url, this.getBodyForGetMessagesInChat(pChatID)).subscribe(response => {
-        console.log('Downloading messages ...');
         messages = this.renderMessages(response.json());
       });
     return messages;

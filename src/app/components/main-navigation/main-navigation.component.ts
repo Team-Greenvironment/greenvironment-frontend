@@ -65,7 +65,8 @@ export class MainNavigationComponent implements OnInit {
       if (this.user.darkmode === true && this.lighttheme) {
         this.toggleTheme();
         this.darkModeButtonChecked = true;
-      } else if (!this.user.darkmode && !this.lighttheme) {
+        // IF user activated darkmode and logged in after that
+      } else if (this.user.loggedIn && !this.user.darkmode && !this.lighttheme) {
         this.settingsService.setDarkModeActive(true);
       }
       this.updateLinks();

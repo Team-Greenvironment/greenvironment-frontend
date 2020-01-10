@@ -23,6 +23,7 @@ import { PostlistComponent } from './components/feed/postlist/postlist.component
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './components/profile/profile.component';
+import { GroupComponent } from './components/group/group.component';
 import { ImprintComponent } from './components/imprint/imprint.component';
 import { AboutComponent } from './components/about/about.component';
 import { ChatcontactsComponent } from './components/chatmanager/chatcontacts/chatcontacts.component';
@@ -58,6 +59,8 @@ import { SearchComponent } from './components/search/search.component';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 // import logo from 'src/assets/gv-new-logo.svg';
 import logo from '!!raw-loader!./gv-new-logo-white.svg';
@@ -68,6 +71,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'profile/:id', component: ProfileComponent },
+  { path: 'group/:id', component: GroupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'about', component: AboutComponent },
@@ -96,7 +100,8 @@ const appRoutes: Routes = [
     ProfileComponent,
     MainNavigationComponent,
     SearchComponent,
-    DialogCreateGroupComponent
+    DialogCreateGroupComponent,
+    GroupComponent
   ],
   imports: [
     BrowserModule,
@@ -134,6 +139,8 @@ const appRoutes: Routes = [
     MatBadgeModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    MatTooltipModule,
+    MatExpansionModule
   ],
   entryComponents: [ DialogCreateGroupComponent ],
   providers: [],

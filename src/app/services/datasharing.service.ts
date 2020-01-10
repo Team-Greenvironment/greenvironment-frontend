@@ -15,7 +15,6 @@ export class DatasharingService {
   constructor() { }
 
   changeUserInfo(pUserInfo: User) {
-    console.log('DatasharingService: user info updated');
     this.userInfoSource.next(pUserInfo);
   }
 
