@@ -24,10 +24,12 @@
   margin-bottom: 0.5em
   margin-left: auto
 #toolbar
-  margin-top: 25px
-
+  margin-top: 32px
+  .mat-toolbar-row
+    max-height: 40px
+  
 #username
-  margin: 0.5em
+  margin: 0 0.5em
 #handle
   font-size: 14px
 #info
@@ -55,16 +57,7 @@ $mat-card-header-size: 100px !default
 
 
 
-#profile-table
-  width: 100%
-  .mat-table 
-    display: block
-  .mat-cell,
-  .mat-header-cell 
-    align-items: center
-    display: flex
-    min-height: 48px
-    padding: 0
-    flex: 1
-    overflow: hidden
-    word-wrap: break-word
+#postlist
+  margin: 0.5em auto
+  padding: 0
+  max-width: 690px
