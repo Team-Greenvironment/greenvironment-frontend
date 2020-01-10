@@ -12,6 +12,9 @@ export class User {
   points: number;
   level: number;
   profilePicture: string;
+  joinedAt: string;
+  friendCount: number;
+  groupCount: number;
 
   darkmode = false;
 

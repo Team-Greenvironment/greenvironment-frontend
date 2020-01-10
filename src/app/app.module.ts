@@ -59,6 +59,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 // import logo from 'src/assets/gv-new-logo.svg';
 import logo from '!!raw-loader!./gv-new-logo-white.svg';
@@ -135,7 +136,8 @@ const appRoutes: Routes = [
     MatBadgeModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatExpansionModule
   ],
   entryComponents: [ DialogCreateGroupComponent ],
   providers: [],

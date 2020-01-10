@@ -13,11 +13,16 @@
                 </button>
             </mat-toolbar-row>
             <mat-toolbar-row>
-                <span id="info">{{rankname}} ({{userProfile.points}} points)</span>
+                <div id="info-box">
+                    <span class="info">{{rankname}} ({{userProfile.points}} points)</span>
+                    <span class="info">{{userProfile.friendCount}} friends</span>
+                    <span class="info">{{userProfile.groupCount}} groups</span>
+                    <span class="info">joined on {{userProfile.joinedAt}}</span>
+                </div>
             </mat-toolbar-row>
         </mat-toolbar>
         <div id="postlist">
-            <feed-postlist [childPostList]="this.userProfile.posts"></feed-postlist>
+            <feed-postlist [childPostList]="this.userProfile.posts"></feed-postlist>  
         </div>
         <div id="profile">
                 <br>

@@ -48,6 +48,8 @@ export class ProfileService {
         points
         level
         friendCount
+        groupCount
+        joinedAt
         friends{
           id
         }
@@ -80,6 +82,8 @@ export class ProfileService {
         points
         level
         friendCount
+        groupCount
+        joinedAt
         friends{
           id
         }
@@ -116,6 +120,11 @@ export class ProfileService {
       profile.handle = response.data.getUser.handle;
       profile.points = response.data.getUser.points;
       profile.level = response.data.getUser.level;
+      profile.friendCount = response.data.getUser.friendCount;
+      profile.groupCount = response.data.getUser.groupCount;
+      const temp = new Date(Number(response.data.getUser.joinedAt));
+      const date = temp.toLocaleString('en-GB');
+      profile.joinedAt = date;
       for (const post of response.data.getUser.posts) {
         const id: number = post.id;
         const content: string = post.content;
