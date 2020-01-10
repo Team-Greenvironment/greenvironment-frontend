@@ -4,6 +4,8 @@ export class Group {
   id: number;
   name: string;
   handle: string;
-  creator: User;
-  member: User[] = new Array();
+  creator: User = new User();
+  members: User[] = new Array();
+  admins: User[] = new Array();
+  allowedToJoinGroup = false;
 }

@@ -73,6 +73,10 @@ export class SearchComponent implements OnInit {
     this.router.navigate(['profile/' + user.userID]);
   }
 
+  public showGroupProfile(group: GroupInfo) {
+    this.router.navigate(['group/' + group.id]);
+  }
+
   public sendFriendRequest(user: User) {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);

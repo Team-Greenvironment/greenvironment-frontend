@@ -1,0 +1,28 @@
+<div id="profile-page">
+    <div id="profilecontainer" *ngIf="!profileNotFound && !loading">
+        <mat-toolbar color="primary" id="toolbar">
+            <mat-toolbar-row>
+                <div class="profile-picture"></div>
+                <span id="username">{{groupProfile.name}}</span>
+                <span id="handle">created by {{groupProfile.creator.username}} @{{groupProfile.creator.handle}}</span>
+                <button mat-icon-button 
+                    class="request-button" 
+                    (click)="joinGroup(groupProfile)" 
+                    [disabled]="!groupProfile.allowedToJoinGroup">
+                    <mat-icon>group_add</mat-icon>
+                </button>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <div id="info-box">
+                    <span class="info">{{groupProfile.members.length}} member(s)</span>
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+    <div id="profilecontainer" *ngIf="profileNotFound">
+        <h1>Profile not found :(</h1>
+    </div>
+    <mat-spinner *ngIf="loading" style="margin:0 auto; margin-top: 10em;" diameter="100"></mat-spinner>
+</div>
+
+  
