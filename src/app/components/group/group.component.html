@@ -1,5 +1,5 @@
 <div id="profile-page">
-    <div id="profilecontainer" *ngIf="!profileNotFound && !loading">
+    <div id="profilecontainer" *ngIf="!groupNotFound && !loading">
         <mat-toolbar color="primary" id="toolbar">
             <mat-toolbar-row>
                 <div class="profile-picture"></div>
@@ -19,8 +19,8 @@
             </mat-toolbar-row>
         </mat-toolbar>
     </div>
-    <div id="profilecontainer" *ngIf="profileNotFound">
-        <h1>Profile not found :(</h1>
+    <div id="profilecontainer" *ngIf="groupNotFound">
+        <h1>Group not found :(</h1>
     </div>
     <mat-spinner *ngIf="loading" style="margin:0 auto; margin-top: 10em;" diameter="100"></mat-spinner>
 </div>
