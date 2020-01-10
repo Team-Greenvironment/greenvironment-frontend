@@ -1,21 +1,30 @@
 <div id="profile-page">
-    <mat-toolbar color="primary">Profile</mat-toolbar>
+    <mat-toolbar color="primary" id="toolbar">
+        <mat-toolbar-row>
+            <div class="profile-picture"></div>
+            <span id="username">{{userProfile.username}}</span>
+            <span id="handle">@{{userProfile.handle}}</span>
+            <button mat-icon-button 
+                class="request-button" 
+                (click)="sendFriendRequest(userProfile)" 
+                [disabled]="!userProfile.allowedToSendRequest">
+                <mat-icon>person_add</mat-icon>
+            </button>
+        </mat-toolbar-row>
+        <mat-toolbar-row>
+            <span id="info">{{rankname}} ({{userProfile.points}} points)</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <feed-postlist [childPostList]="this.userProfile.posts"></feed-postlist>
     <div id="profile">
         <div id="profilecontainer" [hidden]="profileNotFound">
-            <div id="profile-card-container">
+            <!--<div id="profile-card-container">
             <mat-card class="mat-elevation-z8">
                 <mat-card-header>
                     <div mat-card-avatar class="profile-picture"></div>
                     <mat-card-title>{{userProfile.username}}</mat-card-title>
                     <mat-card-subtitle>{{userProfile.handle}}</mat-card-subtitle>
-                    <div class="icon-box">
-                        <button mat-icon-button 
-                        class="request-button" 
-                        (click)="sendFriendRequest(userProfile)" 
-                        [disabled]="!userProfile.allowedToSendRequest">
-                            <mat-icon>person_add</mat-icon>
-                        </button>
-                    </div>
+                    
                 </mat-card-header>
                 <mat-card-content>
                     <table id="profile-table">
@@ -51,7 +60,7 @@
                     </table>
                 </mat-card-content>
             </mat-card>
-            </div>
+            </div>-->
             <br>
             <h1>What does the level mean?</h1>
                 <p>There are different levels you can reach through green behaviour.

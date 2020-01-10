@@ -46,12 +46,12 @@
       <p [innerHTML]="post.htmlContent"></p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button (click)="voteUp(post)">
+    <button mat-button (click)="voteUp(post)" matTooltip="vote up" matTooltipShowDelay="500">
       <mat-icon aria-hidden="false" color="primary" *ngIf="post.userVote == 'UPVOTE'">keyboard_arrow_up</mat-icon>
       <mat-icon aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'DOWNVOTE'">keyboard_arrow_up</mat-icon>
     </button>
     {{post.upvotes}}
-    <button mat-button (click)="voteDown(post)">
+    <button mat-button (click)="voteDown(post)" matTooltip="vote down" matTooltipShowDelay="500">
       <mat-icon aria-hidden="false" color="primary" *ngIf="post.userVote == 'DOWNVOTE'">keyboard_arrow_down</mat-icon>
       <mat-icon aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'UPVOTE'">keyboard_arrow_down</mat-icon>
     </button>

@@ -34,6 +34,7 @@ export class FeedComponent implements OnInit {
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
+      console.log('feed got new user');
       this.user = user;
       this.loggedIn = user.loggedIn;
       if (this.loggedIn) {
@@ -53,8 +54,7 @@ export class FeedComponent implements OnInit {
           this.feedMostLiked = this.feedNew;
           console.log(this.feedNew);
         });
-    }
-
+      }
     });
 
   }

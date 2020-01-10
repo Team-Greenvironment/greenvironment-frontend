@@ -25,7 +25,7 @@ export class DialogCreateGroupComponent {
     if (name) {
     this.social.createGroup(name);
     this.dialogRef.close();
-    }
+  }
 
   }
 }

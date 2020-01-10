@@ -9,6 +9,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { RequestService } from 'src/app/services/request/request.service';
 import { DatasharingService } from '../../services/datasharing.service';
+import { FeedService } from 'src/app/services/feed/feed.service';
 
 @Component({
   selector: 'app-profile',
@@ -74,6 +75,7 @@ export class ProfileComponent implements OnInit {
       this.userProfile.handle = response.data.getUser.handle;
       this.userProfile.points = response.data.getUser.points;
       this.userProfile.level = response.data.getUser.level;
+      this.userProfile.posts = response.data.getUser.posts;
       this.rankname = this.levellist.getLevelName(this.userProfile.level);
       // tslint:disable-next-line:max-line-length
       this.userProfile.allowedToSendRequest = this.requestService.isAllowedToSendRequest(response.data.getUser.id, this.self);
