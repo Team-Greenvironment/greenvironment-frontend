@@ -72,4 +72,22 @@ export class GroupService {
     }
     return null;
   }
+
+  public createEvent(name: string, date: string, groupId: string) {
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    const body = {query: `mutation($groupId: ID!, $name: String, $date: String) {
+        createEvent(name: $name, dueDate: $date, groupId: $groupId) {
+          id
+          name
+          dueDate
+        }
+      }`, variables: {
+          name: name,
+          date: date,
+          groupId: groupId
+      }};
+
+    return this.http.post(environment.graphQLUrl, body);
+  }
 }

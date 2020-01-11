@@ -17,6 +17,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SocialComponent } from './components/social/social.component';
 import { GroupsComponent } from './components/social/groups/groups.component';
 import { DialogCreateGroupComponent } from './components/social/groups/groups.component';
+import { DialogCreateEventComponent } from './components/group/group.component';
 import { ChatmanagerComponent } from './components/chatmanager/chatmanager.component';
 import { ChatlistComponent } from './components/chatlist/chatlist.component';
 import { PostlistComponent } from './components/feed/postlist/postlist.component';
@@ -61,6 +62,8 @@ import {MatIconRegistry} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/';
 
 // import logo from 'src/assets/gv-new-logo.svg';
 import logo from '!!raw-loader!./gv-new-logo-white.svg';
@@ -101,7 +104,8 @@ const appRoutes: Routes = [
     MainNavigationComponent,
     SearchComponent,
     DialogCreateGroupComponent,
-    GroupComponent
+    GroupComponent,
+    DialogCreateEventComponent
   ],
   imports: [
     BrowserModule,
@@ -110,6 +114,8 @@ const appRoutes: Routes = [
     SocketIoModule.forRoot(config),
     GraphQLModule,
     HttpClientModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     RouterModule.forRoot(
       appRoutes
     ),
@@ -140,9 +146,10 @@ const appRoutes: Routes = [
     MatProgressSpinnerModule,
     MatDialogModule,
     MatTooltipModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDatepickerModule
   ],
-  entryComponents: [ DialogCreateGroupComponent ],
+  entryComponents: [ DialogCreateGroupComponent, DialogCreateEventComponent ],
   providers: [],
   bootstrap: [AppComponent]
 })

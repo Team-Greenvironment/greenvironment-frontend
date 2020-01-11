@@ -5,12 +5,22 @@
             <mat-toolbar-row>
                 <div class="profile-picture"></div>
                 <span id="username">{{groupProfile.name}}</span>
-                <button mat-icon-button 
-                    class="request-button" 
-                    (click)="joinGroup(groupProfile)" 
-                    [disabled]="!groupProfile.allowedToJoinGroup">
-                    <mat-icon>group_add</mat-icon>
-                </button>
+                <div class="button-box">
+                    <button mat-icon-button 
+                        class="request-button" 
+                        matTooltip="join group" matTooltipShowDelay="500"
+                        (click)="joinGroup(groupProfile)" 
+                        [disabled]="!groupProfile.allowedToJoinGroup">
+                        <mat-icon>group_add</mat-icon>
+                    </button>
+                    <button mat-icon-button 
+                        class="request-button" 
+                        matTooltip="create event" matTooltipShowDelay="500"
+                        (click)="openDialog()" 
+                        [disabled]="!isAdmin">
+                        <mat-icon>event</mat-icon>
+                    </button>
+                </div>
             </mat-toolbar-row>
             <mat-toolbar-row>
                 <div class="info-box">
