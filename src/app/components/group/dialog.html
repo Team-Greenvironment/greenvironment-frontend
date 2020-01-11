@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Create a new event!</h1>
 <div mat-dialog-content>
   <mat-form-field style="display:contents;">
-    <input matInput placeholder="Enter groupname" #name>
+    <input matInput placeholder="Enter eventname" #name>
   </mat-form-field>
   <mat-form-field style="display:contents;">
     <input matInput [matDatepicker]="picker" placeholder="Choose a date" #date disabled>
@@ -11,5 +11,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button cdkFocusInitial (click)="createEvent(name.value, date.value)">Create Group</button>
+  <button mat-button cdkFocusInitial (click)="createEvent(name.value, date.value)">Create Event</button>
 </div>

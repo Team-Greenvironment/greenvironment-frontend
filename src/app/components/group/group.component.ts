@@ -30,9 +30,7 @@ export class DialogCreateEventComponent {
   createEvent(name: string, date: string) {
     name = name.trim();
     if (name && date) {
-    this.group.createEvent(name, (new Date(date)).getTime().toString(), this.groupId).subscribe(response => {
-      console.log(response);
-    });
+    this.group.createEvent(name, (new Date(date)).getTime().toString(), this.groupId);
     this.dialogRef.close();
     }
   }
@@ -93,6 +91,9 @@ export class GroupComponent implements OnInit {
             this.isAdmin = true;
           }
         }
+        for (const member of this.groupProfile.members) {
+          member.allowedToSendRequest = this.requestService.isAllowedToSendRequest(member.userID, this.self);
+        }
       } else { this.groupNotFound = true; }
       this.loading = false;
     });
@@ -107,5 +108,14 @@ export class GroupComponent implements OnInit {
   public joinGroup(group: Group) {
     group.allowedToJoinGroup = false;
     this.requestService.joinGroup(group);
+  }
+
+  public showUserProfile(user: User) {
+    this.router.navigate(['profile/' + user.userID]);
+  }
+
+  public sendFriendRequest(user: User) {
+    user.allowedToSendRequest = false;
+    this.requestService.sendFriendRequest(user);
   }
 }

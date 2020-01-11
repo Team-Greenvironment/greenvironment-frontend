@@ -3,7 +3,8 @@ import { Http } from '@angular/http';
 import { Author } from 'src/app/models/author';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/user';
-import { Observable, Subject } from 'rxjs';
+import { Event } from 'src/app/models/event';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Group } from 'src/app/models/group';
 
 @Injectable({
@@ -11,7 +12,7 @@ import { Group } from 'src/app/models/group';
 })
 export class GroupService {
 
-  public group: Subject<any> = new Subject();
+  public group: BehaviorSubject<Group> = new BehaviorSubject(new Group());
 
   constructor(private http: Http) { }
 
@@ -34,6 +35,7 @@ export class GroupService {
           creator{id name handle}
           admins{id name handle}
           members{id name handle}
+          events{id name dueDate}
       }
     }`, variables: {
       groupId: id
@@ -44,8 +46,6 @@ export class GroupService {
 
   public renderGroup(response: any): Group {
     const group = new Group();
-    const members: User[] = new Array();
-    const admins: User[] = new Array();
     if (response.data.getGroup != null) {
       group.id = response.data.getGroup.id;
       group.name = response.data.getGroup.name;
@@ -57,17 +57,20 @@ export class GroupService {
         user.userID = member.id;
         user.username = member.name;
         user.handle = member.handle;
-        members.push(user);
+        group.members.push(user);
       }
-      group.members = members;
       for (const admin of response.data.getGroup.admins) {
         const user = new User();
         user.userID = admin.id;
         user.username = admin.name;
         user.handle = admin.handle;
-        admins.push(user);
+        group.admins.push(user);
       }
-      group.admins = admins;
+      for (const event of response.data.getGroup.events) {
+        const temp = new Date(Number(event.dueDate));
+        const date = temp.toLocaleString('en-GB');
+        group.events.push(new Event(event.id, event.name, date));
+      }
       return group;
     }
     return null;
@@ -88,6 +91,11 @@ export class GroupService {
           groupId: groupId
       }};
 
-    return this.http.post(environment.graphQLUrl, body);
+    this.http.post(environment.graphQLUrl, body).subscribe(response => {
+      const event = response.json().data.createEvent;
+      const temp = new Date(Number(event.dueDate));
+      const pdate = temp.toLocaleString('en-GB');
+      this.group.next(this.renderGroup(this.group.getValue().events.push(new Event(event.id, event.name, pdate))));
+    });
   }
 }
