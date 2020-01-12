@@ -32,6 +32,7 @@ export class GroupService {
       getGroup(groupId:$groupId){
           id
           name
+          joined
           creator{id name handle}
           admins{id name handle}
           members{id name handle}
@@ -52,6 +53,8 @@ export class GroupService {
       group.creator.userID = response.data.getGroup.creator.id;
       group.creator.handle = response.data.getGroup.creator.handle;
       group.creator.username = response.data.getGroup.creator.name;
+      group.joined = response.data.getGroup.joined;
+
       for (const member of response.data.getGroup.members) {
         const user = new User();
         user.userID = member.id;

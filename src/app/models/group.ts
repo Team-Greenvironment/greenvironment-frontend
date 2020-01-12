@@ -9,5 +9,6 @@ export class Group {
   members: User[] = new Array();
   admins: User[] = new Array();
   events: Event[] = new Array();
+  joined: boolean;
   allowedToJoinGroup = false;
 }
