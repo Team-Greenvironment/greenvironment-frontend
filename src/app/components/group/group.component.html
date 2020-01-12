@@ -1,23 +1,110 @@
 <div id="profile-page">
     <div id="profilecontainer" *ngIf="!groupNotFound && !loading">
-        <mat-toolbar color="primary" id="toolbar">
+        <!--on small screen-->
+        <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.gt-sm="true">
             <mat-toolbar-row>
                 <div class="profile-picture"></div>
                 <span id="username">{{groupProfile.name}}</span>
-                <span id="handle">created by {{groupProfile.creator.username}} @{{groupProfile.creator.handle}}</span>
-                <button mat-icon-button 
-                    class="request-button" 
-                    (click)="joinGroup(groupProfile)" 
-                    [disabled]="!groupProfile.allowedToJoinGroup">
-                    <mat-icon>group_add</mat-icon>
-                </button>
+                <div class="button-box">
+                    <button mat-icon-button 
+                        class="request-button" 
+                        matTooltip="join group" matTooltipShowDelay="500"
+                        (click)="joinGroup(groupProfile)" 
+                        [disabled]="!groupProfile.allowedToJoinGroup">
+                        <mat-icon>group_add</mat-icon>
+                    </button>
+                    <button mat-icon-button 
+                        class="request-button" 
+                        matTooltip="create event" matTooltipShowDelay="500"
+                        (click)="openDialog()" 
+                        [disabled]="!isAdmin">
+                        <mat-icon>event</mat-icon>
+                    </button>
+                </div>
             </mat-toolbar-row>
             <mat-toolbar-row>
-                <div id="info-box">
+                <div class="info-box">
+                    <span id="handle">created by {{groupProfile.creator.username}} @{{groupProfile.creator.handle}}</span>
+                </div>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <div class="info-box">
                     <span class="info">{{groupProfile.members.length}} member(s)</span>
                 </div>
             </mat-toolbar-row>
         </mat-toolbar>
+        <!--on big screen-->
+        <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.lt-md="true">
+            <mat-toolbar-row>
+                <div class="profile-picture"></div>
+                <span id="username">{{groupProfile.name}}</span>
+                <span id="handle" class="pointer" (click)="showUserProfile(groupProfile.creator)">created by {{groupProfile.creator.username}} @{{groupProfile.creator.handle}}</span>
+                <div class="button-box">
+                    <button mat-icon-button 
+                        class="request-button" 
+                        matTooltip="join group" matTooltipShowDelay="500"
+                        (click)="joinGroup(groupProfile)" 
+                        [disabled]="!groupProfile.allowedToJoinGroup">
+                        <mat-icon>group_add</mat-icon>
+                    </button>
+                    <button mat-icon-button 
+                        class="request-button" 
+                        matTooltip="create event" matTooltipShowDelay="500"
+                        (click)="openDialog()" 
+                        [disabled]="!isAdmin">
+                        <mat-icon>event</mat-icon>
+                    </button>
+                </div>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <div class="info-box">
+                    <span class="info">{{groupProfile.members.length}} member(s)</span>
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <mat-accordion>
+            <mat-expansion-panel *ngIf="groupProfile.events.length > 0" expanded>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Events
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="list">
+                <mat-card class="card" *ngFor="let event of groupProfile.events" 
+                [class.selected]="event === selectedEvent"
+                tabindex="0">
+                  <mat-card-header>
+                    <mat-card-title>{{event.name}}</mat-card-title>
+                    <mat-card-subtitle >{{event.date}}</mat-card-subtitle>
+                    <!--<div class="icon-box">
+                      <button mat-icon-button class="request-button" (click)="sendFriendRequest(user)" [disabled]="!user.allowedToSendRequest"><mat-icon>person_add</mat-icon></button>
+                    </div>-->
+                  </mat-card-header>
+                </mat-card>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="groupProfile.events.length < 1">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Members  
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="list">
+                <mat-card class="card" *ngFor="let user of groupProfile.members" 
+                [class.selected]="user === selectedUser"
+                tabindex="0">
+                  <mat-card-header>
+                    <div mat-card-avatar class="profile-picture" (click)="showUserProfile(user)"></div>
+                    <mat-card-title class="pointer" (click)="showUserProfile(user)">{{user.username}}</mat-card-title>
+                    <mat-card-subtitle class="pointer" (click)="showUserProfile(user)">{{user.handle}}</mat-card-subtitle>
+                    <div class="icon-box">
+                      <button mat-icon-button class="request-button" (click)="sendFriendRequest(user)" [disabled]="!user.allowedToSendRequest"><mat-icon>person_add</mat-icon></button>
+                    </div>
+                  </mat-card-header>
+                </mat-card>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion> 
     </div>
     <div id="profilecontainer" *ngIf="groupNotFound">
         <h1>Group not found :(</h1>

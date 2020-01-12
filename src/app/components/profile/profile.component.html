@@ -1,6 +1,41 @@
 <div id="profile-page">
     <div id="profilecontainer" *ngIf="!profileNotFound && !loading">
-        <mat-toolbar color="primary" id="toolbar">
+        <!--on small screen-->
+        <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.gt-sm="true">
+            <mat-toolbar-row>
+                <div class="profile-picture"></div>
+                <span id="username">{{userProfile.username}}</span>
+                <button mat-icon-button 
+                class="request-button" 
+                (click)="sendFriendRequest(userProfile)" 
+                [disabled]="!userProfile.allowedToSendRequest">
+                    <mat-icon>person_add</mat-icon>
+                </button>
+            </mat-toolbar-row>
+            <mat-toolbar-row> 
+                <div class="info-box"> 
+                    <span id="handle">@{{userProfile.handle}}</span>
+                </div>  
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <div>
+                    <span class="info">{{rankname}} ({{userProfile.points}} points)</span>
+                </div>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <div>
+                    <span class="info">{{userProfile.friendCount}} friends</span>
+                    <span class="info">{{userProfile.groupCount}} groups</span>
+                </div>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <div>
+                    <span class="info">joined on {{userProfile.joinedAt}}</span>
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <!--on big screen-->
+        <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.lt-md="true">
             <mat-toolbar-row>
                 <div class="profile-picture"></div>
                 <span id="username">{{userProfile.username}}</span>
@@ -13,7 +48,7 @@
                 </button>
             </mat-toolbar-row>
             <mat-toolbar-row>
-                <div id="info-box">
+                <div class="info-box">
                     <span class="info">{{rankname}} ({{userProfile.points}} points)</span>
                     <span class="info">{{userProfile.friendCount}} friends</span>
                     <span class="info">{{userProfile.groupCount}} groups</span>
