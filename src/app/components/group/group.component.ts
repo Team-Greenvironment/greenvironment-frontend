@@ -28,11 +28,14 @@ export class DialogCreateEventComponent {
     this.dialogRef.close();
   }
 
-  createEvent(name: string, date: string) {
+  createEvent(name: string, date: string, time: string) {
     name = name.trim();
-    if (name && date) {
-    this.group.createEvent(name, (new Date(date)).getTime().toString(), this.groupId);
-    this.dialogRef.close();
+    if (name && date && time) {
+      date = date + ' ' + time;
+      console.log(date);
+      console.log(new Date(date).getTime().toString());
+      this.group.createEvent(name, (new Date(date)).getTime().toString(), this.groupId);
+      this.dialogRef.close();
     }
   }
 
