@@ -6,6 +6,7 @@ import { RequestService } from 'src/app/services/request/request.service';
 import { DatasharingService } from '../../services/datasharing.service';
 import { GroupService } from 'src/app/services/group/group.service';
 import { Group } from 'src/app/models/group';
+import { Event } from 'src/app/models/event';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 // DIALOG COMPONENT to create events
@@ -108,6 +109,20 @@ export class GroupComponent implements OnInit {
   public joinGroup(group: Group) {
     group.allowedToJoinGroup = false;
     this.requestService.joinGroup(group);
+  }
+
+  public joinEvent(event: Event) {
+    this.groupService.joinEvent(event.id).subscribe(response => {
+      const pEvent = response.json().data.joinEvent;
+      event.joined = pEvent.joined;
+    });
+  }
+
+  public leaveEvent(event: Event) {
+    this.groupService.leaveEvent(event.id).subscribe(response => {
+      const pEvent = response.json().data.leaveEvent;
+      event.joined = pEvent.joined;
+    });
   }
 
   public showUserProfile(user: User) {

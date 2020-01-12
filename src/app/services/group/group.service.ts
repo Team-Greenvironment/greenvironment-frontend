@@ -35,7 +35,7 @@ export class GroupService {
           creator{id name handle}
           admins{id name handle}
           members{id name handle}
-          events{id name dueDate}
+          events{id name dueDate joined}
       }
     }`, variables: {
       groupId: id
@@ -69,7 +69,7 @@ export class GroupService {
       for (const event of response.data.getGroup.events) {
         const temp = new Date(Number(event.dueDate));
         const date = temp.toLocaleString('en-GB');
-        group.events.push(new Event(event.id, event.name, date));
+        group.events.push(new Event(event.id, event.name, date, event.joined));
       }
       return group;
     }
@@ -84,6 +84,7 @@ export class GroupService {
           id
           name
           dueDate
+          joined
         }
       }`, variables: {
           name: name,
@@ -95,7 +96,36 @@ export class GroupService {
       const event = response.json().data.createEvent;
       const temp = new Date(Number(event.dueDate));
       const pdate = temp.toLocaleString('en-GB');
-      this.group.next(this.renderGroup(this.group.getValue().events.push(new Event(event.id, event.name, pdate))));
+      this.group.next(
+        this.renderGroup(this.group.getValue().events.push(new Event(event.id, event.name, pdate, event.joined)))
+      );
     });
   }
+
+  public joinEvent(eventId: string) {
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    const body = {query: `mutation($eventId: ID!) {
+      joinEvent(eventId: $eventId) {
+        joined
+      }
+    }`, variables: {
+          eventId: eventId
+      }};
+    return this.http.post(environment.graphQLUrl, body);
+  }
+
+  public leaveEvent(eventId: string) {
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    const body = {query: `mutation($eventId: ID!) {
+      leaveEvent(eventId: $eventId) {
+        joined
+      }
+    }`, variables: {
+          eventId: eventId
+      }};
+    return this.http.post(environment.graphQLUrl, body);
+  }
+
 }

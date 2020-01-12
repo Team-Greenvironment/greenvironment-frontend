@@ -26,18 +26,6 @@ export class ProfileService {
     });
   }
 
-  public getUserDataBySelfId(userId: string, selfId: string) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    // return this.renderProfile(this.http.post(environment.graphQLUrl, this.buildGetProfileJson(userId)));
-    this.http.post(environment.graphQLUrl, this.buildGetProfileJsonBySelfId(userId, selfId)).subscribe(result => {
-      // push onto subject
-      this.proflile.next(this.renderProfile(result.json()));
-      return this.proflile;
-    });
-  }
-
-
   public buildGetProfileJson(id: string): any {
     const body =  {query: `query($userId: ID) {
       getUser(userId:$userId){
@@ -59,42 +47,8 @@ export class ProfileService {
           htmlContent,
           upvotes,
           downvotes,
-          author{
-            name,
-            handle,
-            id},
-          createdAt
-        }
-      }
-    }`, variables: {
-        userId: id
-      }};
-    return body;
-  }
-
-  public buildGetProfileJsonBySelfId(id: string, selfId: string): any {
-    const body =  {query: `query($userId: ID, $selfId: ID!) {
-      getUser(userId:$userId){
-        id
-        handle
-        name
-        profilePicture
-        points
-        level
-        friendCount
-        groupCount
-        joinedAt
-        friends{
-          id
-        }
-        posts{
-          id,
-          content,
-          htmlContent,
-          upvotes,
-          downvotes,
-          userVote(userId: $selfId),
-          deletable(userId: $selfId)
+          userVote,
+          deletable,
           author{
             name,
             handle,
@@ -104,7 +58,6 @@ export class ProfileService {
       }
     }`, variables: {
         userId: id,
-        selfId: selfId
       }};
     return body;
   }

@@ -23,13 +23,17 @@ export class PostlistComponent implements OnInit {
     this.feedService.upvote(pPost.id).subscribe(response => {
       // this.voteEvent.emit(true);
       pPost.userVote = response.json().data.vote;
+      pPost.upvotes = response.json().data.vote.post.upvotes;
+      pPost.downvotes = response.json().data.vote.post.downvotes;
     });
   }
 
   voteDown(pPost: Post) {
     this.feedService.downvote(pPost.id).subscribe(response => {
       // this.voteEvent.emit(true);
-      pPost.userVote = response.json().data.vote;
+      pPost.userVote = response.json().data.vote.post.userVote;
+      pPost.upvotes = response.json().data.vote.post.upvotes;
+      pPost.downvotes = response.json().data.vote.post.downvotes;
     });
   }
 

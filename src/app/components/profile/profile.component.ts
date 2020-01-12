@@ -56,11 +56,7 @@ export class ProfileComponent implements OnInit {
     this.data.currentUserInfo.subscribe(user => {
       this.self = user;
     });
-    if (this.self.loggedIn) {
-      this.profileService.getUserDataBySelfId(this.id, this.self.userID.toString());
-    } else {
-      this.profileService.getUserData(this.id);
-    }
+    this.profileService.getUserData(this.id);
     this.profileService.proflile.subscribe(response => {
         if (response) {
           this.userProfile = response;
