@@ -24,7 +24,7 @@
             </mat-toolbar-row>
             <mat-toolbar-row>
                 <div class="info-box">
-                    <span id="handle">created by {{groupProfile.creator.username}} @{{groupProfile.creator.handle}}</span>
+                    <span id="handle" class="pointer" (click)="showUserProfile(groupProfile.creator)">created by {{groupProfile.creator.username}} @{{groupProfile.creator.handle}}</span>
                 </div>
             </mat-toolbar-row>
             <mat-toolbar-row>
@@ -62,6 +62,7 @@
                 </div>
             </mat-toolbar-row>
         </mat-toolbar>
+        <div id="accordion">
         <mat-accordion>
             <mat-expansion-panel *ngIf="groupProfile.events.length > 0" expanded>
               <mat-expansion-panel-header>
@@ -76,9 +77,21 @@
                   <mat-card-header>
                     <mat-card-title>{{event.name}}</mat-card-title>
                     <mat-card-subtitle >{{event.date}}</mat-card-subtitle>
-                    <!--<div class="icon-box">
-                      <button mat-icon-button class="request-button" (click)="sendFriendRequest(user)" [disabled]="!user.allowedToSendRequest"><mat-icon>person_add</mat-icon></button>
-                    </div>-->
+                    <div class="button-box">
+                      <button mat-icon-button class="request-button" 
+                        matTooltip="join event" matTooltipShowDelay="500"
+                        (click)="joinEvent(event)" 
+                        [disabled]="event.joined">
+                        <mat-icon *ngIf="event.joined" color="primary">event_available</mat-icon>
+                        <mat-icon *ngIf="!event.joined">event_available</mat-icon>
+                      </button>
+                      <button mat-icon-button class="request-button" 
+                        matTooltip="leave event" matTooltipShowDelay="500"
+                        (click)="leaveEvent(event)" 
+                        [disabled]="!event.joined">
+                        <mat-icon>event_busy</mat-icon>
+                      </button>
+                    </div>
                   </mat-card-header>
                 </mat-card>
               </div>
@@ -97,7 +110,7 @@
                     <div mat-card-avatar class="profile-picture" (click)="showUserProfile(user)"></div>
                     <mat-card-title class="pointer" (click)="showUserProfile(user)">{{user.username}}</mat-card-title>
                     <mat-card-subtitle class="pointer" (click)="showUserProfile(user)">{{user.handle}}</mat-card-subtitle>
-                    <div class="icon-box">
+                    <div class="button-box">
                       <button mat-icon-button class="request-button" (click)="sendFriendRequest(user)" [disabled]="!user.allowedToSendRequest"><mat-icon>person_add</mat-icon></button>
                     </div>
                   </mat-card-header>
@@ -105,6 +118,7 @@
               </div>
             </mat-expansion-panel>
           </mat-accordion> 
+          </div>
     </div>
     <div id="profilecontainer" *ngIf="groupNotFound">
         <h1>Group not found :(</h1>

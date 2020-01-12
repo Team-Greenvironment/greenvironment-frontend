@@ -36,22 +36,12 @@ export class FeedComponent implements OnInit {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
-      if (this.loggedIn) {
-        this.userId = user.userID;
-        this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
-          this.loading = false;
-          this.feedNew = this.feedService.renderAllPosts(response.json());
-          this.parentSelectedPostList = this.feedNew;
-          this.feedMostLiked = this.feedNew;
-        });
-      } else {
         this.feedService.getAllPostsRaw().subscribe(response => {
           this.loading = false;
           this.feedNew = this.feedService.renderAllPosts(response.json());
           this.parentSelectedPostList = this.feedNew;
           this.feedMostLiked = this.feedNew;
         });
-      }
     });
 
   }
@@ -66,7 +56,7 @@ export class FeedComponent implements OnInit {
   }
 
   showNew() {
-    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
+    this.feedService.getAllPostsRaw().subscribe(response => {
       this.feedNew = this.feedService.renderAllPosts(response.json());
       this.parentSelectedPostList = this.feedNew; });
     this.viewNew = true;
@@ -74,7 +64,7 @@ export class FeedComponent implements OnInit {
   }
 
   showMostLiked() {
-    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
+    this.feedService.getAllPostsRaw().subscribe(response => {
       this.feedMostLiked = this.feedService.renderAllPosts(response.json());
       this.parentSelectedPostList = this.feedMostLiked; });
     this.viewNew = false;
@@ -83,7 +73,7 @@ export class FeedComponent implements OnInit {
 
 
   refresh($event) {
-    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
+    this.feedService.getAllPostsRaw().subscribe(response => {
       this.parentSelectedPostList = this.feedService.renderAllPosts(response.json());
     });
   }

@@ -29,33 +29,33 @@ export class FeedService {
   }
 
   public upvote(pPostID: number): any {
-    const url = environment.graphQLUrl;
-
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
     const body = {query: `mutation($postId: ID!) {
-        vote(postId: $postId, type: UPVOTE)
+        vote(postId: $postId, type: UPVOTE) {
+          post{userVote upvotes downvotes}
+        }
       }`, variables: {
           postId: pPostID
       }};
 
-    return this.http.post(url, body);
+    return this.http.post(environment.graphQLUrl, body);
   }
 
   public downvote(pPostID: number): any {
-    const url = environment.graphQLUrl;
-
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
     const body = {query: `mutation($postId: ID!) {
-        vote(postId: $postId, type: DOWNVOTE)
+        vote(postId: $postId, type: DOWNVOTE) {
+          post{userVote upvotes downvotes}
+        }
       }`, variables: {
           postId: pPostID
       }};
 
-    return this.http.post(url, body);
+    return this.http.post(environment.graphQLUrl, body);
   }
 
   public deletePost(pPostID: number): any {
@@ -83,72 +83,30 @@ export class FeedService {
       });
     return this.posts;
   }
-  public getAllPostsById(userId: number): Array<Post> {
-    const url = environment.graphQLUrl;
-
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-
-    this.http.post(url, this.getBodyForGetAllPostsByUserId(userId))
-    .subscribe(response => {
-        this.posts = this.renderAllPosts(response.json());
-      });
-    return this.posts;
-  }
 
   public getAllPostsRaw(): any {
-    const url = environment.graphQLUrl;
-
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-
-    return this.http.post(url, this.getBodyForGetAllPosts());
+    return this.http.post(environment.graphQLUrl, this.getBodyForGetAllPosts());
   }
 
-  public getAllPostsRawByUserId(userId: number): any {
-    const url = environment.graphQLUrl;
-
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-
-    return this.http.post(url, this.getBodyForGetAllPostsByUserId(userId));
-  }
-
-  getBodyForGetAllPostsByUserId(pUserId: number) {
-    const body =  {query: `query ($userId: ID!) {
+  getBodyForGetAllPosts() {
+    const body =  {query: `{
         getPosts (first: 1000, offset: 0) {
           id,
           content,
           htmlContent,
           upvotes,
           downvotes,
-          userVote(userId: $userId),
-          deletable(userId: $userId)
+          userVote,
+          deletable
           author{
             name,
             handle,
             id},
           createdAt}
       }`, variables: {
-        userId: pUserId
       }};
-      return body;
-  }
-  getBodyForGetAllPosts() {
-    const body =  {query: `query {
-        getPosts (first: 1000, offset: 0) {
-          id,
-          content,
-          htmlContent,
-          upvotes,
-          downvotes,
-          author{
-            name,
-            handle,
-            id},
-          createdAt}
-      }`
-      };
       return body;
   }
 
