@@ -49,6 +49,7 @@ export class FeedService {
         const updatedposts = this.newPosts.getValue();
         updatedposts.unshift(this.renderPost(response.json()));
         this.newPosts.next(updatedposts);
+        this.posts.next(this.newPosts.getValue());
       });
   }
 
@@ -84,6 +85,7 @@ export class FeedService {
         const updatedposts = this.newPosts.getValue();
         updatedposts.unshift(this.renderPost(response.json()));
         this.newPosts.next(updatedposts);
+        this.posts.next(this.newPosts.getValue());
       });
   }
 
