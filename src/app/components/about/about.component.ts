@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Actionlist } from 'src/app/models/actionlist';
+import { Activitylist } from 'src/app/models/activity';
 import { Levellist } from 'src/app/models/levellist';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -10,7 +10,7 @@ import {MatTableDataSource} from '@angular/material/table';
   styleUrls: ['./about.component.sass']
 })
 export class AboutComponent implements OnInit {
-  actionlist: Actionlist = new Actionlist();
+  actionlist: Activitylist = new Activitylist();
   levellist: Levellist = new Levellist();
 
   displayedColumns = ['points', 'name'];

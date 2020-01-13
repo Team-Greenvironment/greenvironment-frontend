@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { FeedService } from 'src/app/services/feed/feed.service';
-import { Actionlist } from 'src/app/models/actionlist';
+import { Activitylist } from 'src/app/models/activity';
 import { DatasharingService } from '../../services/datasharing.service';
 import { User } from 'src/app/models/user';
 
@@ -24,7 +24,7 @@ export class FeedComponent implements OnInit {
 
   parentSelectedPostList: Array<Post>;
 
-  actionlist: Actionlist = new Actionlist();
+  actionlist: Activitylist = new Activitylist();
 
   loggedIn = false;
   userId: number;
