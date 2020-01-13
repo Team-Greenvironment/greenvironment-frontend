@@ -58,7 +58,7 @@
     {{post.downvotes}}
     <div *ngIf="post.activity" class="activity-info">
       <span class="span" [matTooltip]="post.activity.description" matTooltipShowDelay="200">
-        {{post.activity.points}} points earned through {{post.activity.name}}
+        {{post.activity.points}} points earned through <b>{{post.activity.name}}</b>
       </span>
     </div>
   </mat-card-actions>
