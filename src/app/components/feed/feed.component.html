@@ -13,14 +13,14 @@
         </p>
         <mat-form-field id="action-chooser" *ngIf="checked">
           <mat-label>What did you do?</mat-label>
-          <mat-select [(ngModel)]="selectedValue" name="action">
+          <mat-select [(ngModel)]="activityId" name="action">
             <mat-option>nothing ;)</mat-option>
-            <mat-option *ngFor="let action of actionlist.Actions" [value]="action.points">
-              {{action.name}}
+            <mat-option *ngFor="let action of actionlist.Actions" [value]="action.id" [matTooltip]="action.description" matTooltipShowDelay="200">
+              {{action.name}} 
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button *ngIf="empty" color="primary" id="post-button" (click)=createPost(content)>
+        <button mat-raised-button *ngIf="empty" color="primary" id="post-button" (click)=createPost(content,activityId)>
           POST
         </button>
       </mat-card-content>
@@ -44,12 +44,7 @@
 </div>
 <div id="complete-feed">
   <div id="feedlist">
-    <div *ngIf = "viewNew">
-      <feed-postlist (voteEvent)="refresh($event)" [childPostList]="parentSelectedPostList"></feed-postlist>
-    </div>
-    <div *ngIf = "viewMostLiked">
-      <feed-postlist (voteEvent)="refresh($event)" [childPostList]="parentSelectedPostList"></feed-postlist>
-    </div>
+    <feed-postlist [childPostList]="parentSelectedPostList"></feed-postlist>
     <mat-spinner *ngIf="loading" style="margin:0 auto; margin-top: 5em;" diameter="50"></mat-spinner>
   </div>
 </div>

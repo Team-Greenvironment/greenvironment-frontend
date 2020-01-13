@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Activitylist } from 'src/app/models/activity';
+import { Activitylist, Activity } from 'src/app/models/activity';
 import { environment } from 'src/environments/environment';
 import { Http } from '@angular/http';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActivityService {
 
-  private activitylist = new BehaviorSubject<Activitylist>(new Activitylist());
-  currentActivityList = this.activitylist.asObservable();
+  public activitylist = new BehaviorSubject<Activitylist>(new Activitylist());
 
   constructor(private http: Http) { }
 
@@ -19,53 +19,34 @@ export class ActivityService {
   }
 
   public getActivitys() {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.buildJson()).subscribe(result => {
-      // push onto subject
-      this.activitylist.next(this.renderActivity(result.json()));
-    });
+    if (this.activitylist.getValue().Actions.length < 1) {
+      const headers = new Headers();
+      headers.set('Content-Type', 'application/json');
+      this.http.post(environment.graphQLUrl, this.buildJson()).subscribe(result => {
+        // push onto subject
+        this.activitylist.next(this.renderActivity(result.json()));
+      });
+    }
   }
 
-  public buildJson(id: string): any {
-    const body =  {query: `query($userId: ID) {
-      getUser(userId:$userId){
-        id
-        handle
-        name
-        profilePicture
-        points
-        level
-        friendCount
-        groupCount
-        joinedAt
-        friends{
-          id
-        }
-        posts{
-          id,
-          content,
-          htmlContent,
-          upvotes,
-          downvotes,
-          userVote,
-          deletable,
-          author{
-            name,
-            handle,
-            id},
-          createdAt
-        }
-      }
-    }`, variables: {
-        userId: id,
+  public buildJson(): any {
+    const body =  {query: `query{getActivities{
+      id name description points
+    }}`, variables: {
+
       }};
     return body;
   }
 
   public renderActivity(response: any): Activitylist {
     const activitylist = new Activitylist();
-    // activitylist.push();
+    for (const activity of response.data.getActivities) {
+      activitylist.Actions.push(new Activity(
+        activity.id,
+        activity.name,
+        activity.description,
+        activity.points));
+    }
     return activitylist;
   }
 }
