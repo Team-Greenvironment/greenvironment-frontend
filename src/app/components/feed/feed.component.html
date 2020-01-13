@@ -9,14 +9,14 @@
           </button>
         </mat-form-field>
         <p id="check">
-          <mat-checkbox color="primary" [(ngModel)]="checked">I protected the environment.</mat-checkbox>
+          <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked">I protected the environment.</mat-checkbox>
         </p>
         <mat-form-field id="action-chooser" *ngIf="checked">
           <mat-label>What did you do?</mat-label>
           <mat-select [(ngModel)]="activityId" name="action">
             <mat-option>nothing ;)</mat-option>
             <mat-option *ngFor="let action of actionlist.Actions" [value]="action.id" [matTooltip]="action.description" matTooltipShowDelay="200">
-              {{action.name}} 
+              {{action.name}} ({{action.description}})
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -37,7 +37,7 @@
   </div>
 
 <div id="chooser-div" style="text-align: center; margin-top: 1em;">
-    <mat-button-toggle-group id="feedchooser" value="new">
+    <mat-button-toggle-group id="feedchooser" [(ngModel)]="view" value="view">
     <mat-button-toggle (click)="showNew()" value="new">New</mat-button-toggle>
     <mat-button-toggle (click)="showMostLiked()" value="mostliked">Most Liked</mat-button-toggle>
   </mat-button-toggle-group>

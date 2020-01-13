@@ -14,7 +14,8 @@ import { User } from 'src/app/models/user';
 export class FeedComponent implements OnInit {
   loading = true;
 
-  checked: boolean; // if the "I protected the environment."-box is checked
+  checked = false; // if the "I protected the environment."-box is checked
+  view = 'new';
   empty: any;
  // id of the green activity
   value: any;
@@ -48,14 +49,16 @@ export class FeedComponent implements OnInit {
   }
 
   createPost(pElement, activityId: string) {
-    if (pElement && activityId) {
+    if (pElement && activityId && this.checked) {
     this.feedService.createPostActivity(pElement.value, activityId);
     pElement.value = '';
     this.empty = '';
+    this.view = 'new';
     } else if (pElement) {
       this.feedService.createPost(pElement.value);
       pElement.value = '';
       this.empty = '';
+      this.view = 'new';
     }
   }
 
