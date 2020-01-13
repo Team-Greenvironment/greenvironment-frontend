@@ -8,7 +8,7 @@
   overflow: scroll
   overflow-x: hidden
 
-#profile 
+#profile
   padding: 2em
   max-width: 1200px
   margin: 0 auto
@@ -36,7 +36,7 @@ $mat-card-header-size: 100px !default
     font-size: 14px
     margin-left: calc(100px + 0.5em)
     .info
-      margin-right: 3em 
+      margin-right: 3em
   #username
     margin: 0 0.5em
     overflow: auto
@@ -59,7 +59,7 @@ $mat-card-header-size: 100px !default
   margin-top: 0.5em
   outline: none
   user-select: none
-  /deep/ .mat-card-header-text
+  ::ng-deep .mat-card-header-text
     margin: 0
     margin-left: 16px
   .mat-card-subtitle
@@ -79,7 +79,7 @@ $mat-card-header-size: 100px !default
 .pointer
   cursor: pointer
 
-/deep/ .mat-expansion-panel
+::ng-deep .mat-expansion-panel
   background: #e6e6e6
-/deep/.dark-theme .mat-expansion-panel
+::ng-deep.dark-theme .mat-expansion-panel
   background: #121212
