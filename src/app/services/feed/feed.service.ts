@@ -25,51 +25,50 @@ export class FeedService {
       }};
 
     this.http.post(url, body).subscribe(response => {
-        console.log(response.text()); });
-  }
-
-  public createPost2(pContent: String) {
-    const url = environment.graphQLUrl;
-
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-
-    const body = {query: `query{
-        getSelf {name}
-      }`};
-
-    this.http.post(url, body).subscribe(response => {
-        console.log(response.text()); });
+    });
   }
 
   public upvote(pPostID: number): any {
-    const url = environment.graphQLUrl;
-
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
     const body = {query: `mutation($postId: ID!) {
-        vote(postId: $postId, type: UPVOTE)
+        vote(postId: $postId, type: UPVOTE) {
+          post{userVote upvotes downvotes}
+        }
       }`, variables: {
           postId: pPostID
       }};
 
-    return this.http.post(url, body);
+    return this.http.post(environment.graphQLUrl, body);
   }
 
   public downvote(pPostID: number): any {
-    const url = environment.graphQLUrl;
-
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
     const body = {query: `mutation($postId: ID!) {
-        vote(postId: $postId, type: DOWNVOTE)
+        vote(postId: $postId, type: DOWNVOTE) {
+          post{userVote upvotes downvotes}
+        }
       }`, variables: {
           postId: pPostID
       }};
 
-    return this.http.post(url, body);
+    return this.http.post(environment.graphQLUrl, body);
+  }
+
+  public deletePost(pPostID: number): any {
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
+    const body = {query: `mutation($postId: ID!) {
+        deletePost(postId: $postId)
+      }`, variables: {
+          postId: pPostID
+      }};
+
+    return this.http.post(environment.graphQLUrl, body);
   }
 
   public getAllPosts(): Array<Post> {
@@ -81,76 +80,33 @@ export class FeedService {
     this.http.post(url, this.getBodyForGetAllPosts())
     .subscribe(response => {
         this.posts = this.renderAllPosts(response.json());
-        console.log(response);
-      });
-    return this.posts;
-  }
-  public getAllPostsById(userId: number): Array<Post> {
-    const url = environment.graphQLUrl;
-
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-
-    this.http.post(url, this.getBodyForGetAllPostsByUserId(userId))
-    .subscribe(response => {
-        this.posts = this.renderAllPosts(response.json());
-        console.log(response);
       });
     return this.posts;
   }
 
   public getAllPostsRaw(): any {
-    const url = environment.graphQLUrl;
-
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-
-    return this.http.post(url, this.getBodyForGetAllPosts());
+    return this.http.post(environment.graphQLUrl, this.getBodyForGetAllPosts());
   }
 
-  public getAllPostsRawByUserId(userId: number): any {
-    const url = environment.graphQLUrl;
-
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-
-    return this.http.post(url, this.getBodyForGetAllPostsByUserId(userId));
-  }
-
-  getBodyForGetAllPostsByUserId(pUserId: number) {
-    const body =  {query: `query ($userId: ID!) {
+  getBodyForGetAllPosts() {
+    const body =  {query: `{
         getPosts (first: 1000, offset: 0) {
           id,
           content,
           htmlContent,
           upvotes,
           downvotes,
-          userVote(userId: $userId),
+          userVote,
+          deletable
           author{
             name,
             handle,
             id},
           createdAt}
       }`, variables: {
-        userId: pUserId
       }};
-      return body;
-  }
-  getBodyForGetAllPosts() {
-    const body =  {query: `query {
-        getPosts (first: 1000, offset: 0) {
-          id,
-          content,
-          htmlContent,
-          upvotes,
-          downvotes,
-          author{
-            name,
-            handle,
-            id},
-          createdAt}
-      }`
-      };
       return body;
   }
 
@@ -164,11 +120,12 @@ export class FeedService {
       const upvotes: number = post.upvotes;
       const downvotes: number = post.downvotes;
       const userVote: string = post.userVote;
+      const deletable: boolean = post.deletable;
       const author = new Author(post.author.id, post.author.name, post.author.handle);
       const temp = new Date(Number(post.createdAt));
       const date = temp.toLocaleString('en-GB');
 
-      posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, date, author));
+      posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, date, author));
     }
     return posts;
   }

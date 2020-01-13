@@ -1,7 +1,8 @@
 <div id="content" fxShow="true" fxHide.lt-md="true">
-    <div id="chat"><home-chatmanager id="chatcontainer" [hidden]="!loggedIn"></home-chatmanager></div>
-    <div id="feed"><home-feed id="feedcontainer"></home-feed></div>
-    <div id="social"><home-social id="socialcontainer" [hidden]="!loggedIn"></home-social></div>
+    <div id="chat"><home-chatmanager [hidden]="!loggedIn"></home-chatmanager></div>
+    <div id="feed"><home-feed></home-feed></div>
+    <div class="social" [hidden]="!loggedIn"><home-social></home-social></div>
+    <div class="social" [hidden]="loggedIn"><home-search></home-search></div>
 </div>
 <!--
 <mat-tab-group headerPosition="below" position="0" id="bottom-menu" fxShow="true" fxHide.gt-sm="true">
@@ -12,7 +13,7 @@
 -->
 <div class="bottom-menu"  fxShow="true" fxHide.gt-sm="true">
     <mat-tab-group id="tab-group" selectedIndex="1" mat-stretch-tabs headerPosition="below">
-        <mat-tab>    
+        <mat-tab disabled>    
             <ng-template mat-tab-label>
                 <mat-icon>chat</mat-icon>
             </ng-template> 
@@ -24,12 +25,18 @@
             </ng-template> 
             <home-feed class="tab-content"></home-feed>
         </mat-tab>
-        <mat-tab >    
+        <mat-tab [disabled]="!loggedIn">    
             <ng-template mat-tab-label>
                 <mat-icon>people</mat-icon>
             </ng-template> 
             <home-social class="tab-content"></home-social>
-            </mat-tab>
+        </mat-tab>
+        <mat-tab >    
+            <ng-template mat-tab-label>
+                <mat-icon>search</mat-icon>
+            </ng-template> 
+            <home-search class="tab-content"></home-search>
+        </mat-tab>
     </mat-tab-group>
 </div>
 

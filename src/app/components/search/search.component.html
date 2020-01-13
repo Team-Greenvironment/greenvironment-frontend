@@ -1,0 +1,58 @@
+<div id="search">
+  <mat-toolbar>
+    <mat-form-field id="input"
+    floatLabel="never" >
+      <input matInput #searchWord
+      placeholder="search"
+      [ngModel]="searchWord.value"
+      (ngModelChange)="search(searchWord.value)">
+      <button mat-button matSuffix mat-icon-button>
+        <mat-icon>search </mat-icon>
+      </button>
+    </mat-form-field>
+  </mat-toolbar>
+  <mat-accordion>
+    <mat-expansion-panel *ngIf="foundUsers.length > 0" expanded>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Users
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="list">
+        <mat-card class="card" *ngFor="let user of foundUsers" 
+        [class.selected]="user === selectedUser"
+        tabindex="0">
+          <mat-card-header>
+            <div mat-card-avatar class="profile-picture" (click)="showUserProfile(user)"></div>
+            <mat-card-title class="pointer" (click)="showUserProfile(user)">{{user.username}}</mat-card-title>
+            <mat-card-subtitle class="pointer" (click)="showUserProfile(user)">{{user.handle}}</mat-card-subtitle>
+            <div class="icon-box">
+              <button mat-icon-button class="request-button" (click)="sendFriendRequest(user)" [disabled]="!user.allowedToSendRequest"><mat-icon>person_add</mat-icon></button>
+            </div>
+          </mat-card-header>
+        </mat-card>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="foundGroups.length > 0" [expanded]="foundUsers.length < 1">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Groups  
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="list">
+        <mat-card class="card" *ngFor="let group of foundGroups" 
+        [class.selected]="group === selectedGroup"
+        tabindex="0">
+          <mat-card-header>
+            <div mat-card-avatar class="profile-picture" (click)="showGroupProfile(group)"></div>
+            <mat-card-title class="pointer" (click)="showGroupProfile(group)">{{group.name}}</mat-card-title>
+            <div class="icon-box">
+              <button mat-icon-button class="request-button" (click)="joinGroup(group)" [disabled]="!group.allowedToJoinGroup"><mat-icon>group_add</mat-icon></button>
+            </div>
+          </mat-card-header>
+        </mat-card>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion> 
+  <mat-spinner *ngIf="loading" style="margin:0 auto; margin-top: 5em;" diameter="50"></mat-spinner>
+</div>

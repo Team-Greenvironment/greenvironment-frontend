@@ -1,0 +1,90 @@
+import { Component, OnInit} from '@angular/core';
+import { SearchService } from 'src/app/services/search/search.service';
+import { RequestService } from 'src/app/services/request/request.service';
+import {Headers, Http} from '@angular/http';
+import { User } from 'src/app/models/user';
+import {environment} from 'src/environments/environment';
+import { Router } from '@angular/router';
+import { DatasharingService } from '../../services/datasharing.service';
+import { GroupInfo } from 'src/app/models/groupinfo';
+
+@Component({
+  selector: 'home-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.sass']
+})
+export class SearchComponent implements OnInit {
+  loading = false;
+  searchValue = ' ';
+  category = 'user';
+  user: User;
+  foundUsers: Array<User> = new Array();
+  foundGroups: Array<GroupInfo> = new Array();
+
+  constructor(
+    private searchService: SearchService,
+    private requestService: RequestService,
+    private http: Http,
+    private router: Router,
+    private data: DatasharingService) { }
+  ngOnInit() {
+    this.data.currentUserInfo.subscribe(user => {
+      this.user = user;
+    });
+  }
+
+  changeCategory(value: string) {
+    this.category = value;
+    this.search(this.searchValue);
+  }
+
+  search(searchWord: string) {
+    this.foundUsers = Array<User>();
+    this.searchValue = searchWord;
+    if (searchWord) { // if not null or empty
+      if (this.category === 'user') {
+        this.loading = true;
+        this.findUser(searchWord);
+      } else if (this.category === 'groupe') {
+        // this.findUserByHandle(searchWord);
+        console.log('search group');
+      }
+    }
+  }
+
+  findUser(name: String) {
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    this.http.post(environment.graphQLUrl, this.searchService.buildJsonUser(name))
+      .subscribe(response => {
+        this.foundUsers = this.searchService.renderUsers(response.json());
+        this.foundGroups = this.searchService.renderGroups(response.json());
+        for (const foundUser of this.foundUsers) {
+          foundUser.allowedToSendRequest = this.requestService.isAllowedToSendRequest(foundUser.userID, this.user);
+        }
+        for (const foundGroup of this.foundGroups) {
+          foundGroup.allowedToJoinGroup = this.requestService.isAllowedToJoinGroup(foundGroup.id, this.user);
+        }
+        this.loading = false;
+      });
+  }
+
+  public showUserProfile(user: User) {
+    this.router.navigate(['profile/' + user.userID]);
+  }
+
+  public showGroupProfile(group: GroupInfo) {
+    this.router.navigate(['group/' + group.id]);
+  }
+
+  public sendFriendRequest(user: User) {
+    user.allowedToSendRequest = false;
+    this.requestService.sendFriendRequest(user);
+  }
+
+  public joinGroup(group: GroupInfo) {
+    group.allowedToJoinGroup = false;
+    this.requestService.joinGroup(group);
+  }
+}
+

@@ -11,7 +11,9 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./feed.component.sass']
 })
 export class FeedComponent implements OnInit {
+  loading = true;
   checked: boolean; // if the "I protected the environment."-box is checked
+  empty: boolean;
  // points value of the green action
   value: any;
   viewNew = true;
@@ -34,15 +36,14 @@ export class FeedComponent implements OnInit {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
-      if (this.loggedIn) { this.userId = user.userID; }
-      console.log('the userId is ' + this.userId);
+        this.feedService.getAllPostsRaw().subscribe(response => {
+          this.loading = false;
+          this.feedNew = this.feedService.renderAllPosts(response.json());
+          this.parentSelectedPostList = this.feedNew;
+          this.feedMostLiked = this.feedNew;
+        });
     });
-    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
-      this.feedNew = this.feedService.renderAllPosts(response.json());
-      this.parentSelectedPostList = this.feedNew;
-      this.feedMostLiked = this.feedNew;
-      console.log(this.feedNew);
-    });
+
   }
 
   createPost(pElement) {
@@ -55,8 +56,7 @@ export class FeedComponent implements OnInit {
   }
 
   showNew() {
-    console.log('showNew()');
-    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
+    this.feedService.getAllPostsRaw().subscribe(response => {
       this.feedNew = this.feedService.renderAllPosts(response.json());
       this.parentSelectedPostList = this.feedNew; });
     this.viewNew = true;
@@ -64,8 +64,7 @@ export class FeedComponent implements OnInit {
   }
 
   showMostLiked() {
-    console.log('showMostLiked()');
-    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
+    this.feedService.getAllPostsRaw().subscribe(response => {
       this.feedMostLiked = this.feedService.renderAllPosts(response.json());
       this.parentSelectedPostList = this.feedMostLiked; });
     this.viewNew = false;
@@ -74,9 +73,8 @@ export class FeedComponent implements OnInit {
 
 
   refresh($event) {
-    this.feedService.getAllPostsRawByUserId(this.userId).subscribe(response => {
+    this.feedService.getAllPostsRaw().subscribe(response => {
       this.parentSelectedPostList = this.feedService.renderAllPosts(response.json());
-      console.log('Refresh');
     });
   }
 

@@ -1,20 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { SearchComponent } from './search.component';
 
-import { AppScaffoldComponent } from './app-scaffold.component';
-
-describe('AppScaffoldComponent', () => {
-  let component: AppScaffoldComponent;
-  let fixture: ComponentFixture<AppScaffoldComponent>;
+describe('ChatComponent', () => {
+  let component: SearchComponent;
+  let fixture: ComponentFixture<SearchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppScaffoldComponent ]
+      declarations: [ SearchComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppScaffoldComponent);
+    fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

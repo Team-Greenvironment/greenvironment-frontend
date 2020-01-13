@@ -1,2 +1,25 @@
-<social-friends id="friendscontainer"></social-friends>
-<social-groups id="groupscontainer"></social-groups>
+<div id="content" fxShow="true" fxHide.lt-md="true">
+    <mat-tab-group selectedIndex="0" mat-stretch-tabs id="tabs">
+        <mat-tab>    
+            <ng-template mat-tab-label>
+                <mat-icon>people</mat-icon>
+            </ng-template> 
+            <div id="friendscontainer">
+                <social-friends></social-friends>
+            </div>
+            <social-groups id="groupscontainer"></social-groups>
+        </mat-tab>
+        <mat-tab>    
+            <ng-template mat-tab-label>
+                <mat-icon>search</mat-icon>
+            </ng-template> 
+            <home-search class="tab-content"></home-search>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+<div fxShow="true" fxHide.gt-sm="true">
+    <social-friends id="friendscontainer"></social-friends>
+    <social-groups id="groupscontainer"></social-groups>
+</div>
+
+

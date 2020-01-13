@@ -2,13 +2,12 @@
 @import '../../../styles/vars.sass'
 
 #friendscontainer
-  box-sizing: content-box
-  height: 50%
-  width: 100%
-  overflow: auto
     
 #groupscontainer
-  box-sizing: content-box
-  height: 50%
-  width: 100%
-  overflow: auto
+
+#tabs
+  /deep/ .mat-tab-label
+    min-width: 50px
+
+/deep/ .mat-toolbar-row
+  max-height: 40px
