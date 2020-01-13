@@ -60,50 +60,7 @@
             <feed-postlist [childPostList]="this.userProfile.posts"></feed-postlist>  
         </div>
         <div id="profile">
-                <br>
-                <h1>What does the level mean?</h1>
-                    <p>There are different levels you can reach through green behaviour.
-                        Collect 100 points to level up! The levels are called: 
-                    </p>
-                    <table mat-table [dataSource]="levelSource" class="mat-elevation-z8">
-                        <ng-container matColumnDef="level">
-                            <th mat-header-cell *matHeaderCellDef> level </th>
-                            <td mat-cell *matCellDef="let level"> {{level.level}} </td>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef> level name </th>
-                            <td mat-cell *matCellDef="let level"> {{level.name}} </td>
-                        </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="displayedLevelColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedLevelColumns;"></tr>
-                    </table>
-                    <br>
-                <h1>How to level up?</h1>
-                    <p>There is an always growing list of things you can do,
-                        to support your environment
-                        and earn points to level up at the same time.
-                        You can get a different amount of points
-                        for differnet actions you can see in the list below:
-                    </p>
-                    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-                        <!--- Note that these columns can be defined in any order.
-                                The actual rendered columns are set as a property on the row definition" -->
-                        
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="points">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> points </th>
-                            <td mat-cell *matCellDef="let action"> {{action.points}} </td>
-                        </ng-container>
-
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="name">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> action </th>
-                            <td mat-cell *matCellDef="let action"> {{action.name}} </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
+                
                     <!--<table style="width:100%">
                         <tr>
                             <th>points </th>

@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
     this.data.currentUserInfo.subscribe(user => {
       this.loggedIn = user.loggedIn;
     });
-    this.feedService.getAllPosts();
   }
 
 }

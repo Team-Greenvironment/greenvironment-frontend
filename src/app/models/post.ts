@@ -1,4 +1,5 @@
 import { Author } from './author';
+import { Activity } from './activity';
 
 export class Post {
     id: number;
@@ -10,6 +11,7 @@ export class Post {
     userVote: string;
     deletable: boolean;
     author: Author;
+    activity: Activity;
 
     // TODO: constructor properties need normal names
     constructor(
@@ -21,7 +23,8 @@ export class Post {
       pUserVote: string,
       pDeletable: boolean,
       pDate: string,
-      pAuthor: Author
+      pAuthor: Author,
+      pactivity: Activity
     ) {
         this.id = pId;
         this.content = pContent;
@@ -32,5 +35,6 @@ export class Post {
         this.deletable = pDeletable;
         this.date = pDate;
         this.author = pAuthor;
+        this.activity = pactivity;
     }
 }

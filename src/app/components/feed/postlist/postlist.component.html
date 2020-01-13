@@ -56,6 +56,11 @@
       <mat-icon aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'UPVOTE'">keyboard_arrow_down</mat-icon>
     </button>
     {{post.downvotes}}
+    <div *ngIf="post.activity" class="activity-info">
+      <span class="span" [matTooltip]="post.activity.description" matTooltipShowDelay="200">
+        {{post.activity.points}} points earned through {{post.activity.name}}
+      </span>
+    </div>
   </mat-card-actions>
 </mat-card>
 
