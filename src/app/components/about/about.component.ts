@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Actionlist } from 'src/app/models/actionlist';
+import { Levellist } from 'src/app/models/levellist';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-about',
@@ -6,10 +10,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./about.component.sass']
 })
 export class AboutComponent implements OnInit {
+  actionlist: Actionlist = new Actionlist();
+  levellist: Levellist = new Levellist();
+
+  displayedColumns = ['points', 'name'];
+  dataSource = new MatTableDataSource(this.actionlist.Actions);
+  displayedLevelColumns = ['level', 'name'];
+  levelSource = this.levellist.levels;
 
   constructor() { }
 
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   ngOnInit() {
+    this.dataSource.sort = this.sort;
   }
 
 }

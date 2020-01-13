@@ -36,12 +36,12 @@ export class FeedComponent implements OnInit {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
-        this.feedService.getAllPostsRaw().subscribe(response => {
-          this.loading = false;
-          this.feedNew = this.feedService.renderAllPosts(response.json());
-          this.parentSelectedPostList = this.feedNew;
-          this.feedMostLiked = this.feedNew;
-        });
+    });
+    this.feedService.getAllPostsRaw().subscribe(response => {
+      this.loading = false;
+      this.feedNew = this.feedService.renderAllPosts(response.json());
+      this.parentSelectedPostList = this.feedNew;
+      this.feedMostLiked = this.feedNew;
     });
 
   }
