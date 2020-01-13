@@ -8,8 +8,11 @@
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker disabled="false"></mat-datepicker>
   </mat-form-field>
+  <mat-form-field style="display:contents;">
+    <input matInput #time type="time" placeholder="choose a time">
+  </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button cdkFocusInitial (click)="createEvent(name.value, date.value)">Create Event</button>
+  <button mat-button cdkFocusInitial (click)="createEvent(name.value, date.value, time.value)">Create Event</button>
 </div>
