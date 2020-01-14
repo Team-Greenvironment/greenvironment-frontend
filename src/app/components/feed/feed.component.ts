@@ -82,7 +82,6 @@ export class FeedComponent implements OnInit {
   }
 
   showMostLiked() {
-    this.view = 'mostLiked';
     this.feedService.getPosts('TOP');
   }
 }
