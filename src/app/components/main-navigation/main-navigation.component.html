@@ -41,18 +41,18 @@
       <mat-icon svgIcon="logo" style="min-width: 35px;" routerLink="" class="link"></mat-icon>
       <span routerLink="" class="link">Greenvironment</span>
       <nav mat-tab-nav-bar backgroundColor="primary" fxShow="true" fxHide.lt-md="true" routerLinkActive #rla="">
-        <div [hidden]="!loggedIn">
-        <a mat-tab-link class="link"
-              *ngFor="let link of navLinksLoggedIn"
-              [routerLink]="link.path"
-              (click)="activeLink = link"
-              routerLinkActive #rla="routerLinkActive"
-              [routerLinkActiveOptions]="{exact:true}"
-              [active]="activeLink == link">
-              {{link.label}}
+        <div *ngIf="loggedIn">
+          <a mat-tab-link class="link"
+          *ngFor="let link of navLinksLoggedIn"
+          [routerLink]="link.path"
+          (click)="activeLink = link"
+          routerLinkActive #rla="routerLinkActive"
+          [routerLinkActiveOptions]="{exact:true}"
+          [active]="rla.isActive">
+            {{link.label}}
           </a>
-          </div>
-          <div [hidden]="loggedIn">
+        </div>
+        <div *ngIf="!loggedIn">
           <a mat-tab-link class="link"
           *ngFor="let link of navLinks"
           [routerLink]="link.path"
@@ -60,7 +60,7 @@
           routerLinkActive #rla="routerLinkActive"
           [routerLinkActiveOptions]="{exact:true}"
           [active]="rla.isActive">
-          {{link.label}}
+            {{link.label}}
           </a>
         </div>
       </nav>
