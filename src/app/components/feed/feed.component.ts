@@ -43,7 +43,9 @@ export class FeedComponent implements OnInit {
     });
     this.feedService.getNewPosts();
     this.feedService.posts.subscribe(response => {
-      if (response.length > 0) {this.loading = false; }
+      if (response.length > 0) {
+        // this.loading = false;
+      }
       this.parentSelectedPostList = response;
     });
   }
@@ -60,6 +62,10 @@ export class FeedComponent implements OnInit {
       this.empty = '';
       this.view = 'new';
     }
+  }
+
+  onScroll() {
+    console.log('scrolled');
   }
 
   showNew() {

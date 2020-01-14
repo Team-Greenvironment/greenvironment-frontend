@@ -30,6 +30,8 @@ import { AboutComponent } from './components/about/about.component';
 import { ChatcontactsComponent } from './components/chatmanager/chatcontacts/chatcontacts.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTableModule} from '@angular/material/table';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatFormFieldModule  } from '@angular/material/form-field';
@@ -114,6 +116,7 @@ const appRoutes: Routes = [
     SocketIoModule.forRoot(config),
     GraphQLModule,
     HttpClientModule,
+    InfiniteScrollModule,
     MatDatepickerModule,
     MatNativeDateModule,
     RouterModule.forRoot(

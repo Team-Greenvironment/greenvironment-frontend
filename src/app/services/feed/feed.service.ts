@@ -158,7 +158,7 @@ export class FeedService {
 
   buildJsonNew() {
     const body =  {query: `{
-        getPosts (first: 1000, offset: 0) {
+        getPosts (first: 3, offset: 0) {
           id,
           content,
           htmlContent,
