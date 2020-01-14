@@ -41,7 +41,7 @@ export class FeedComponent implements OnInit {
     this.activityService.activitylist.subscribe(response => {
       this.actionlist = response;
     });
-    this.feedService.getNewPosts();
+    this.feedService.getPosts('NEW');
     this.feedService.posts.subscribe(response => {
       if (response.length > 0) {
         // this.loading = false;
@@ -66,13 +66,14 @@ export class FeedComponent implements OnInit {
 
   onScroll() {
     console.log('scrolled');
+    this.feedService.getNextPosts();
   }
 
   showNew() {
-    this.feedService.getNewPosts();
+    this.feedService.getPosts('NEW');
   }
 
   showMostLiked() {
-    this.feedService.getMostLikedPosts();
+    this.feedService.getPosts('TOP');
   }
 }

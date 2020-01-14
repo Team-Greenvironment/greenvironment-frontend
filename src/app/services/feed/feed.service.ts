@@ -15,6 +15,9 @@ export class FeedService {
   public posts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
   public newPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
   public mostLikedPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
+  private activePostList = 'NEW';
+  private mostLikedOffset = 0;
+  private newOffset = 0;
 
   constructor(private http: Http) { }
 
@@ -49,7 +52,7 @@ export class FeedService {
         const updatedposts = this.newPosts.getValue();
         updatedposts.unshift(this.renderPost(response.json()));
         this.newPosts.next(updatedposts);
-        this.posts.next(this.newPosts.getValue());
+        this.setPost('NEW');
       });
   }
 
@@ -85,7 +88,7 @@ export class FeedService {
         const updatedposts = this.newPosts.getValue();
         updatedposts.unshift(this.renderPost(response.json()));
         this.newPosts.next(updatedposts);
-        this.posts.next(this.newPosts.getValue());
+        this.setPost('NEW');
       });
   }
 
@@ -132,33 +135,61 @@ export class FeedService {
     return this.http.post(environment.graphQLUrl, body);
   }
 
-  public getNewPosts() {
-    if (this.newPosts.getValue().length === 0) {
+  public getPosts(sort: string) {
+    if ((sort === 'NEW' && this.newPosts.getValue().length === 0) ||
+    (sort === 'TOP' && this.mostLikedPosts.getValue().length === 0)) {
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
-      this.http.post(environment.graphQLUrl, this.buildJsonNew())
+      this.http.post(environment.graphQLUrl, this.buildJson(sort, 0))
       .subscribe(response => {
-        this.newPosts.next(this.renderAllPosts(response.json()));
-        this.posts.next(this.newPosts.getValue());
+        if (sort === 'NEW') {
+          this.newPosts.next(this.renderAllPosts(response.json()));
+        } else if (sort === 'TOP') {
+          this.mostLikedPosts.next(this.renderAllPosts(response.json()));
+        }
+        this.setPost(sort);
       });
-    } else {this.posts.next(this.newPosts.getValue()); }
+    } this.setPost(sort);
   }
 
-  public getMostLikedPosts() {
-    if (this.mostLikedPosts.getValue().length === 0) {
+  public getNextPosts() {
+    if (this.activePostList === 'NEW') {
+      this.newOffset += 10;
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
-      this.http.post(environment.graphQLUrl, this.buildJsonMostLiked())
+      this.http.post(environment.graphQLUrl, this.buildJson(this.activePostList, this.newOffset))
       .subscribe(response => {
-        this.mostLikedPosts.next(this.renderAllPosts(response.json()));
-        this.posts.next(this.mostLikedPosts.getValue());
+        let updatedposts = this.newPosts.getValue();
+        updatedposts = updatedposts.concat(this.renderAllPosts(response.json()));
+        this.newPosts.next(updatedposts);
+        this.setPost('NEW');
       });
-    } else {this.posts.next(this.mostLikedPosts.getValue()); }
+    } else if (this.activePostList === 'TOP') {
+      this.mostLikedOffset += 10;
+      const headers = new Headers();
+      headers.set('Content-Type', 'application/json');
+      this.http.post(environment.graphQLUrl, this.buildJson(this.activePostList, this.mostLikedOffset))
+      .subscribe(response => {
+        let updatedposts = this.mostLikedPosts.getValue();
+        updatedposts = updatedposts.concat(this.renderAllPosts(response.json()));
+        this.mostLikedPosts.next(updatedposts);
+        this.setPost('TOP');
+      });
+    }
   }
 
-  buildJsonNew() {
-    const body =  {query: `{
-        getPosts (first: 3, offset: 0) {
+  setPost(sort: string) {
+    this.activePostList = sort;
+    if (sort === 'NEW') {
+      this.posts.next(this.newPosts.getValue());
+    } else if (sort === 'TOP') {
+      this.posts.next(this.mostLikedPosts.getValue());
+    }
+  }
+
+  buildJson(sort: string, offset: number) {
+    const body =  {query: `query($offset: Int, $sort: SortType){
+        getPosts (first: 10, offset: $offset, sort: $sort) {
           id,
           content,
           htmlContent,
@@ -178,32 +209,8 @@ export class FeedService {
             id},
           createdAt}
       }`, variables: {
-      }};
-      return body;
-  }
-
-  buildJsonMostLiked() {
-    const body =  {query: `{
-        getPosts (first: 1000, offset: 0, sort: TOP) {
-          id,
-          content,
-          htmlContent,
-          upvotes,
-          downvotes,
-          userVote,
-          deletable,
-          activity{
-            id
-            name
-            description
-            points
-          },
-          author{
-            name,
-            handle,
-            id},
-          createdAt}
-      }`, variables: {
+        offset,
+        sort
       }};
       return body;
   }
