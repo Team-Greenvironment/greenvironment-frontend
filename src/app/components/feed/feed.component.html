@@ -49,7 +49,7 @@ infinite-scroll
 <div id="complete-feed">
   <div id="feedlist">
     <feed-postlist [childPostList]="parentSelectedPostList"></feed-postlist>
-    <div style="height: 60px;" [hidden]='(!loadingNew && view === "new") || (!loadingMostLiked && view === "mostLiked") '>
+    <div style="height: 60px;" [hidden]='(!loadingNew && view === "new") || (!loadingMostLiked && view === "mostliked") '>
       <!--<mat-spinner *ngIf='loadingNew && view === "mostLiked"' style="margin:0 auto; margin-top: 2em;" diameter="50"></mat-spinner>-->
         <mat-spinner style="margin:0 auto; margin-top: 2em;" diameter="50"></mat-spinner>
     </div>
