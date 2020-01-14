@@ -12,7 +12,8 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./feed.component.sass']
 })
 export class FeedComponent implements OnInit {
-  loading = true;
+  loadingNew = true;
+  loadingMostLiked = true;
 
   checked = false; // if the "I protected the environment."-box is checked
   view = 'new';
@@ -41,10 +42,19 @@ export class FeedComponent implements OnInit {
     this.activityService.activitylist.subscribe(response => {
       this.actionlist = response;
     });
-    this.feedService.getNewPosts();
+    this.feedService.getPosts('NEW');
     this.feedService.posts.subscribe(response => {
-      if (response.length > 0) {this.loading = false; }
+      if (response.length > 0) {
+        // this.loading = false;
+      }
       this.parentSelectedPostList = response;
+    });
+    this.feedService.newPostsAvailable.subscribe(response => {
+      this.loadingNew = response;
+    });
+    this.feedService.topPostsAvailable.subscribe(response => {
+      console.log(response);
+      this.loadingMostLiked = response;
     });
   }
 
@@ -62,11 +72,17 @@ export class FeedComponent implements OnInit {
     }
   }
 
+  onScroll() {
+    console.log('scrolled');
+    this.feedService.getNextPosts();
+  }
+
   showNew() {
-    this.feedService.getNewPosts();
+    this.feedService.getPosts('NEW');
   }
 
   showMostLiked() {
-    this.feedService.getMostLikedPosts();
+    this.view = 'mostLiked';
+    this.feedService.getPosts('TOP');
   }
 }
