@@ -12,6 +12,8 @@ import { User } from 'src/app/models/user';
 })
 export class FeedService {
 
+  public newPostsAvailable = new BehaviorSubject<boolean>(true);
+  public topPostsAvailable = new BehaviorSubject<boolean>(true);
   public posts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
   public newPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
   public mostLikedPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
@@ -153,7 +155,7 @@ export class FeedService {
   }
 
   public getNextPosts() {
-    if (this.activePostList === 'NEW') {
+    if (this.activePostList === 'NEW' && this.newPostsAvailable) {
       this.newOffset += 10;
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
@@ -161,10 +163,13 @@ export class FeedService {
       .subscribe(response => {
         let updatedposts = this.newPosts.getValue();
         updatedposts = updatedposts.concat(this.renderAllPosts(response.json()));
+        if (this.renderAllPosts(response.json()).length < 1) {
+          this.newPostsAvailable.next(false);
+        }
         this.newPosts.next(updatedposts);
         this.setPost('NEW');
       });
-    } else if (this.activePostList === 'TOP') {
+    } else if (this.activePostList === 'TOP' && this.topPostsAvailable) {
       this.mostLikedOffset += 10;
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
@@ -172,6 +177,9 @@ export class FeedService {
       .subscribe(response => {
         let updatedposts = this.mostLikedPosts.getValue();
         updatedposts = updatedposts.concat(this.renderAllPosts(response.json()));
+        if (this.renderAllPosts(response.json()).length < 1) {
+          this.topPostsAvailable.next(false);
+        }
         this.mostLikedPosts.next(updatedposts);
         this.setPost('TOP');
       });

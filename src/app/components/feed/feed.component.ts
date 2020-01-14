@@ -12,7 +12,8 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./feed.component.sass']
 })
 export class FeedComponent implements OnInit {
-  loading = true;
+  loadingNew = true;
+  loadingMostLiked = true;
 
   checked = false; // if the "I protected the environment."-box is checked
   view = 'new';
@@ -48,6 +49,13 @@ export class FeedComponent implements OnInit {
       }
       this.parentSelectedPostList = response;
     });
+    this.feedService.newPostsAvailable.subscribe(response => {
+      this.loadingNew = response;
+    });
+    this.feedService.topPostsAvailable.subscribe(response => {
+      console.log(response);
+      this.loadingMostLiked = response;
+    });
   }
 
   createPost(pElement, activityId: string) {
@@ -74,6 +82,7 @@ export class FeedComponent implements OnInit {
   }
 
   showMostLiked() {
+    this.view = 'mostLiked';
     this.feedService.getPosts('TOP');
   }
 }
