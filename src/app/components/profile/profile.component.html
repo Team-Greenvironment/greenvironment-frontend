@@ -3,7 +3,15 @@
         <!--on small screen-->
         <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.gt-sm="true">
             <mat-toolbar-row>
-                <div class="profile-picture"></div>
+                <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
+                    <img class="profile-picture" [src]="userProfile.profilePicture"/>  
+                    <mat-icon id="icon">camera_alt</mat-icon>
+                    <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+                </div>
+                <div *ngIf="!ownProfile">
+                    <img class="profile-picture" [src]="userProfile.profilePicture"/>
+                </div>
+                
                 <span id="username">{{userProfile.username}}</span>
                 <button mat-icon-button 
                 class="request-button" 
@@ -37,7 +45,14 @@
         <!--on big screen-->
         <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.lt-md="true">
             <mat-toolbar-row>
-                <div class="profile-picture"></div>
+                <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
+                    <img class="profile-picture" [src]="userProfile.profilePicture"/>  
+                    <mat-icon id="icon">camera_alt</mat-icon>
+                    <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+                </div>
+                <div *ngIf="!ownProfile">
+                    <img class="profile-picture" [src]="userProfile.profilePicture"/>
+                </div>
                 <span id="username">{{userProfile.username}}</span>
                 <span id="handle">@{{userProfile.handle}}</span>
                 <button mat-icon-button 

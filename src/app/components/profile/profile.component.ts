@@ -5,6 +5,7 @@ import { Levellist } from 'src/app/models/levellist';
 import { RequestService } from 'src/app/services/request/request.service';
 import { DatasharingService } from '../../services/datasharing.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +15,7 @@ import { ProfileService } from 'src/app/services/profile/profile.service';
 
 export class ProfileComponent implements OnInit {
   levellist: Levellist = new Levellist();
+  ownProfile = false;
   userProfile: User = new User();
   self: User;
   id: string;
@@ -23,6 +25,7 @@ export class ProfileComponent implements OnInit {
   loading = false;
 
   constructor(
+    private http: HttpClient,
     private router: Router,
     private requestService: RequestService,
     private data: DatasharingService,
@@ -51,6 +54,9 @@ export class ProfileComponent implements OnInit {
           this.userProfile = response;
           // tslint:disable-next-line:max-line-length
           this.userProfile.allowedToSendRequest = this.requestService.isAllowedToSendRequest(this.userProfile.userID, this.self);
+          if (this.userProfile.userID === this.self.userID) {
+            this.ownProfile = true;
+          } else {this.ownProfile = false; }
           this.rankname = this.levellist.getLevelName(this.userProfile.level);
         } else { this.profileNotFound = true; }
         this.loading = false;
@@ -60,5 +66,17 @@ export class ProfileComponent implements OnInit {
   public sendFriendRequest(user: User) {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);
+  }
+  onFileInput(event) {
+    console.log(event.target.files[0]);
+    const formData: any = new FormData();
+    formData.append('profilePicture', event.target.files[0]);
+
+    this.http.post('https://greenvironment.net/upload', formData).subscribe(
+    async (response: Response) => {
+      this.userProfile.profilePicture = 'https://greenvironment.net/' + (await response.json()).filename;
+    },
+    (error) => console.log(error)
+  );
   }
 }

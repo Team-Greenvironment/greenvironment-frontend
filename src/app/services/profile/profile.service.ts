@@ -81,6 +81,11 @@ export class ProfileService {
       profile.level = response.data.getUser.level;
       profile.friendCount = response.data.getUser.friendCount;
       profile.groupCount = response.data.getUser.groupCount;
+      if (response.data.getUser.profilePicture) {
+        profile.profilePicture = 'https://greenvironment.net/' + response.data.getUser.profilePicture;
+      } else {
+        profile.profilePicture = 'assets/images/account_circle-24px.svg';
+      }
       const temp = new Date(Number(response.data.getUser.joinedAt));
       const date = temp.toLocaleString('en-GB');
       profile.joinedAt = date;
