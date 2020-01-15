@@ -3,7 +3,12 @@
         <!--on small screen-->
         <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.gt-sm="true">
             <mat-toolbar-row>
-                <div class="profile-picture"></div>
+                <div class="hover-box">
+                    <img class="profile-picture" src="https://material.angular.io/assets/img/examples/shiba1.jpg"/>  
+                    <mat-icon id="icon">camera_alt</mat-icon>
+                </div>
+
+                
                 <span id="username">{{userProfile.username}}</span>
                 <button mat-icon-button 
                 class="request-button" 
