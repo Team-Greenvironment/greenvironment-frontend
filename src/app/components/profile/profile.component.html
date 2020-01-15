@@ -4,12 +4,12 @@
         <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.gt-sm="true">
             <mat-toolbar-row>
                 <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
-                    <img class="profile-picture" src="https://material.angular.io/assets/img/examples/shiba1.jpg"/>  
+                    <img class="profile-picture" [src]="userProfile.profilePicture"/>  
                     <mat-icon id="icon">camera_alt</mat-icon>
                     <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
                 </div>
                 <div *ngIf="!ownProfile">
-                    <img class="profile-picture" src="https://material.angular.io/assets/img/examples/shiba1.jpg"/>
+                    <img class="profile-picture" [src]="userProfile.profilePicture"/>
                 </div>
                 
                 <span id="username">{{userProfile.username}}</span>
@@ -45,12 +45,13 @@
         <!--on big screen-->
         <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.lt-md="true">
             <mat-toolbar-row>
-                <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile">
-                    <img class="profile-picture" src="https://material.angular.io/assets/img/examples/shiba1.jpg"/>  
+                <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
+                    <img class="profile-picture" [src]="userProfile.profilePicture"/>  
                     <mat-icon id="icon">camera_alt</mat-icon>
+                    <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
                 </div>
                 <div *ngIf="!ownProfile">
-                    <img class="profile-picture" src="https://material.angular.io/assets/img/examples/shiba1.jpg"/>
+                    <img class="profile-picture" [src]="userProfile.profilePicture"/>
                 </div>
                 <span id="username">{{userProfile.username}}</span>
                 <span id="handle">@{{userProfile.handle}}</span>

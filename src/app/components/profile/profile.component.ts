@@ -73,7 +73,9 @@ export class ProfileComponent implements OnInit {
     formData.append('profilePicture', event.target.files[0]);
 
     this.http.post('https://greenvironment.net/upload', formData).subscribe(
-    (response) => console.log(response),
+    async (response: Response) => {
+      this.userProfile.profilePicture = 'https://greenvironment.net/' + (await response.json()).filename;
+    },
     (error) => console.log(error)
   );
   }
