@@ -82,7 +82,7 @@ export class ProfileService {
       profile.friendCount = response.data.getUser.friendCount;
       profile.groupCount = response.data.getUser.groupCount;
       if (response.data.getUser.profilePicture) {
-        profile.profilePicture = 'https://greenvironment.net/' + response.data.getUser.profilePicture;
+        profile.profilePicture = environment.greenvironmentUrl + response.data.getUser.profilePicture;
       } else {
         profile.profilePicture = 'assets/images/account_circle-24px.svg';
       }

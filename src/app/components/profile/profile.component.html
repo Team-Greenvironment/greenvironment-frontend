@@ -6,7 +6,7 @@
                 <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
                     <img class="profile-picture" [src]="userProfile.profilePicture"/>  
                     <mat-icon id="icon">camera_alt</mat-icon>
-                    <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+                    <input #fileInput type="file" accept="image/*" (change)="onFileInput($event)" style="display:none;" />
                 </div>
                 <div *ngIf="!ownProfile">
                     <img class="profile-picture" [src]="userProfile.profilePicture"/>
@@ -48,7 +48,7 @@
                 <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
                     <img class="profile-picture" [src]="userProfile.profilePicture"/>  
                     <mat-icon id="icon">camera_alt</mat-icon>
-                    <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+                    <input #fileInput type="file" accept="image/*" (change)="onFileInput($event)" style="display:none;" />
                 </div>
                 <div *ngIf="!ownProfile">
                     <img class="profile-picture" [src]="userProfile.profilePicture"/>

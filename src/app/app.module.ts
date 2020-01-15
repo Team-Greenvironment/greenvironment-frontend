@@ -66,6 +66,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 // import logo from 'src/assets/gv-new-logo.svg';
 import logo from '!!raw-loader!./gv-new-logo-white.svg';
@@ -150,7 +151,8 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatTooltipModule,
     MatExpansionModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSnackBarModule,
   ],
   entryComponents: [ DialogCreateGroupComponent, DialogCreateEventComponent ],
   providers: [],

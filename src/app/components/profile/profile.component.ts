@@ -6,6 +6,9 @@ import { RequestService } from 'src/app/services/request/request.service';
 import { DatasharingService } from '../../services/datasharing.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { reduce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -26,6 +29,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private _snackBar: MatSnackBar,
     private router: Router,
     private requestService: RequestService,
     private data: DatasharingService,
@@ -72,11 +76,14 @@ export class ProfileComponent implements OnInit {
     const formData: any = new FormData();
     formData.append('profilePicture', event.target.files[0]);
 
-    this.http.post('https://greenvironment.net/upload', formData).subscribe(
-    async (response: Response) => {
-      this.userProfile.profilePicture = 'https://greenvironment.net/' + (await response.json()).filename;
+    this.http.post(environment.greenvironmentUrl + '/upload', formData).subscribe(
+     (response: any) => {
+      this.userProfile.profilePicture = environment.greenvironmentUrl + response.fileName;
     },
-    (error) => console.log(error)
-  );
+    (error) => {
+      this._snackBar.open('failed to upload picture', 'okay', {
+      duration: 3000
+      });
+    });
   }
 }
