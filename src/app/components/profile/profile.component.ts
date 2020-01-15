@@ -14,6 +14,7 @@ import { ProfileService } from 'src/app/services/profile/profile.service';
 
 export class ProfileComponent implements OnInit {
   levellist: Levellist = new Levellist();
+  ownProfile = false;
   userProfile: User = new User();
   self: User;
   id: string;
@@ -51,6 +52,9 @@ export class ProfileComponent implements OnInit {
           this.userProfile = response;
           // tslint:disable-next-line:max-line-length
           this.userProfile.allowedToSendRequest = this.requestService.isAllowedToSendRequest(this.userProfile.userID, this.self);
+          if (this.userProfile.userID === this.self.userID) {
+            this.ownProfile = true;
+          } else {this.ownProfile = false; }
           this.rankname = this.levellist.getLevelName(this.userProfile.level);
         } else { this.profileNotFound = true; }
         this.loading = false;
