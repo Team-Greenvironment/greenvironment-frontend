@@ -59,6 +59,7 @@ export class ProfileService {
           author{
             name,
             handle,
+            profilePicture
             id},
           createdAt
         }
@@ -97,7 +98,13 @@ export class ProfileService {
         const downvotes: number = post.downvotes;
         const userVote: string = post.userVote;
         const deletable: boolean = post.deletable;
-        const author = new Author(post.author.id, post.author.name, post.author.handle);
+        let profilePicture: string;
+        if (post.author.profilePicture) {
+          profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
+        } else {
+          profilePicture = 'assets/images/account_circle-24px.svg';
+        }
+        const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
         const ptemp = new Date(Number(post.createdAt));
         const pdate = ptemp.toLocaleString('en-GB');
         let activity: Activity;
