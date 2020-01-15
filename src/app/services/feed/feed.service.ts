@@ -45,6 +45,7 @@ export class FeedService {
           author{
             name,
             handle,
+            profilePicture,
             id},
           createdAt}
       }`, variables: {
@@ -80,6 +81,7 @@ export class FeedService {
           author{
             name,
             handle,
+            profilePicture,
             id},
           createdAt}
       }`, variables: {
@@ -214,6 +216,7 @@ export class FeedService {
           author{
             name,
             handle,
+            profilePicture,
             id},
           createdAt}
       }`, variables: {
@@ -232,7 +235,13 @@ export class FeedService {
     const downvotes: number = post.downvotes;
     const userVote: string = post.userVote;
     const deletable: boolean = post.deletable;
-    const author = new Author(post.author.id, post.author.name, post.author.handle);
+    let profilePicture: string;
+      if (post.author.profilePicture) {
+        profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
+      } else {
+        profilePicture = 'assets/images/account_circle-24px.svg';
+      }
+    const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
     const temp = new Date(Number(post.createdAt));
     const date = temp.toLocaleString('en-GB');
     let activity: Activity;
@@ -258,7 +267,13 @@ export class FeedService {
       const downvotes: number = post.downvotes;
       const userVote: string = post.userVote;
       const deletable: boolean = post.deletable;
-      const author = new Author(post.author.id, post.author.name, post.author.handle);
+      let profilePicture: string;
+      if (post.author.profilePicture) {
+        profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
+      } else {
+        profilePicture = 'assets/images/account_circle-24px.svg';
+      }
+      const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
       const temp = new Date(Number(post.createdAt));
       const date = temp.toLocaleString('en-GB');
       let activity: Activity;

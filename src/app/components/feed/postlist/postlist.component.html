@@ -21,16 +21,19 @@
 
 <mat-card class="post" *ngFor = "let post of childPostList" [class.selected]="post === selectedPost" tabindex="0">
   <mat-card-header>
-  <div id="button-box">
-    <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button" *ngIf="post.deletable">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="deletePost(post)">
-        <span>delete post</span>
+    <div mat-card-avatar>
+      <img class="profile-picture" [src]="post.author.profilePicture"/>  
+    </div>
+    <div id="button-box">
+      <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button" *ngIf="post.deletable">
+        <mat-icon>more_vert</mat-icon>
       </button>
-    </mat-menu>
-  </div>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="deletePost(post)">
+          <span>delete post</span>
+        </button>
+      </mat-menu>
+    </div>
   <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>
       {{post.author.name}}
