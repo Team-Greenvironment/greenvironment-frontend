@@ -3,9 +3,10 @@
         <!--on small screen-->
         <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.gt-sm="true">
             <mat-toolbar-row>
-                <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile">
+                <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
                     <img class="profile-picture" src="https://material.angular.io/assets/img/examples/shiba1.jpg"/>  
                     <mat-icon id="icon">camera_alt</mat-icon>
+                    <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
                 </div>
                 <div *ngIf="!ownProfile">
                     <img class="profile-picture" src="https://material.angular.io/assets/img/examples/shiba1.jpg"/>

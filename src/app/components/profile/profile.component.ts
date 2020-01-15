@@ -5,6 +5,7 @@ import { Levellist } from 'src/app/models/levellist';
 import { RequestService } from 'src/app/services/request/request.service';
 import { DatasharingService } from '../../services/datasharing.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -24,6 +25,7 @@ export class ProfileComponent implements OnInit {
   loading = false;
 
   constructor(
+    private http: HttpClient,
     private router: Router,
     private requestService: RequestService,
     private data: DatasharingService,
@@ -64,5 +66,15 @@ export class ProfileComponent implements OnInit {
   public sendFriendRequest(user: User) {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);
+  }
+  onFileInput(event) {
+    console.log(event.target.files[0]);
+    const formData: any = new FormData();
+    formData.append('profilePicture', event.target.files[0]);
+
+    this.http.post('https://greenvironment.net/upload', formData).subscribe(
+    (response) => console.log(response),
+    (error) => console.log(error)
+  );
   }
 }
