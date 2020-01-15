@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  graphQLUrl: 'https://greenvironment.net/graphql'
+  graphQLUrl: 'https://greenvironment.net/graphql',
+  greenvironmentUrl: 'https://greenvironment.net/',
 };
 
 /*

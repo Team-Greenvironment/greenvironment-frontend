@@ -6,6 +6,7 @@ import { RequestService } from 'src/app/services/request/request.service';
 import { DatasharingService } from '../../services/datasharing.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -72,9 +73,9 @@ export class ProfileComponent implements OnInit {
     const formData: any = new FormData();
     formData.append('profilePicture', event.target.files[0]);
 
-    this.http.post('https://greenvironment.net/upload', formData).subscribe(
+    this.http.post(environment.greenvironmentUrl, formData).subscribe(
      (response: any) => {
-      this.userProfile.profilePicture = 'https://greenvironment.net/' + response.filename;
+      this.userProfile.profilePicture = environment.greenvironmentUrl + response.filename;
     },
     (error) => console.log(error)
   );
