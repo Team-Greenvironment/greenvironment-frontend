@@ -14,9 +14,9 @@ export class FeedService {
 
   public newPostsAvailable = new BehaviorSubject<boolean>(true);
   public topPostsAvailable = new BehaviorSubject<boolean>(true);
-  public posts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
-  public newPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
-  public mostLikedPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
+  public posts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
+  public newPosts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
+  public mostLikedPosts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
   private activePostList = 'NEW';
   private mostLikedOffset = 0;
   private newOffset = 0;
@@ -96,7 +96,7 @@ export class FeedService {
       });
   }
 
-  public upvote(pPostID: number): any {
+  public upvote(postId: number): any {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
@@ -105,7 +105,7 @@ export class FeedService {
           post{userVote upvotes downvotes}
         }
       }`, variables: {
-          postId: pPostID
+          postId
       }};
 
     return this.http.post(environment.graphQLUrl, body);
@@ -168,7 +168,7 @@ export class FeedService {
         if (this.renderAllPosts(response).length < 1) {
           this.newPostsAvailable.next(false);
         }
-        this.newPosts.next(updatedposts);
+        this.newPosts.next(updatedPosts);
         this.setPost('NEW');
       });
     } else if (this.activePostList === 'TOP' && this.topPostsAvailable) {

@@ -23,7 +23,7 @@ export class AboutComponent implements OnInit {
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   ngOnInit() {
-    this.activityService.getActivitys();
+    this.activityService.getActivities();
     this.activityService.activitylist.subscribe(response => {
       this.actionlist = response;
       this.dataSource = new MatTableDataSource(this.actionlist.Actions);

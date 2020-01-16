@@ -18,7 +18,7 @@ export class ActivityService {
     this.activitylist.next(pActivitylist);
   }
 
-  public getActivitys() {
+  public getActivities() {
     if (this.activitylist.getValue().Actions.length < 1) {
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
