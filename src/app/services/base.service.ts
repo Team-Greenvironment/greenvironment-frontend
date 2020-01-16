@@ -11,6 +11,4 @@ export abstract class BaseService {
     this.headers = new HttpHeaders();
     this.headers.set('Content-Type', 'application/json');
   }
-
-  abstract buildRequestBody(...params: any): any;
 }
