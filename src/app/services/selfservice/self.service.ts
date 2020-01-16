@@ -47,7 +47,12 @@ export class SelfService {
     user.points = response.data.getSelf.points;
     user.level = response.data.getSelf.level;
     for (const friend of response.data.getSelf.friends) {
-      user.friends.push(new FriendInfo(friend.id, friend.name, friend.level, friend.profilePicture));
+      user.friends.push(new FriendInfo(
+        friend.id,
+        friend.name,
+        friend.level,
+        user.buildProfilePictureUrl(friend.profilePicture)
+      ));
     }
     for (const group of response.data.getSelf.groups) {
       user.groups.push(new GroupInfo(group.id, group.name));
