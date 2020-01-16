@@ -31,7 +31,7 @@ import { ChatcontactsComponent } from './components/chatmanager/chatcontacts/cha
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTableModule} from '@angular/material/table';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
+import {UserlistComponent} from './components/userlist/userlist.component';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatFormFieldModule  } from '@angular/material/form-field';
@@ -108,7 +108,8 @@ const appRoutes: Routes = [
     SearchComponent,
     DialogCreateGroupComponent,
     GroupComponent,
-    DialogCreateEventComponent
+    DialogCreateEventComponent,
+    UserlistComponent,
   ],
   imports: [
     BrowserModule,

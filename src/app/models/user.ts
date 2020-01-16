@@ -3,6 +3,7 @@ import { FriendInfo } from 'src/app/models/friendinfo';
 import { GroupInfo } from 'src/app/models/groupinfo';
 import { Post } from 'src/app/models/post';
 import {IUser} from './interfaces/IUser';
+import { environment } from 'src/environments/environment';
 
 export class User {
   loggedIn = false;
@@ -29,13 +30,14 @@ export class User {
   be false to avoid multiple invitations*/
 
   public assignFromResponse(userDataResponse: IUser) {
+    this.loggedIn = true;
     this.userID = userDataResponse.id;
     this.username = userDataResponse.name;
     this.handle = userDataResponse.handle;
     this.email = userDataResponse.email;
     this.points = userDataResponse.points;
     this.level = userDataResponse.level;
-    this.profilePicture = userDataResponse.profilePicture;
+    this.profilePicture = this.buildProfilePictureUrl(userDataResponse.profilePicture);
     this.joinedAt = userDataResponse.joinedAt;
     this.friendCount = userDataResponse.friendCount;
     this.groupCount = userDataResponse.groupCount;
@@ -45,7 +47,11 @@ export class User {
       console.error(err);
     }
     this.friends = userDataResponse.friends
-      .map(friend => new FriendInfo(friend.id, friend.name, friend.level));
+      .map(friend => new FriendInfo(
+        friend.id, friend.name,
+        friend.level,
+        this.buildProfilePictureUrl(friend.profilePicture)
+      ));
     this.groups = userDataResponse.groups
       .map(group => new GroupInfo(group.id, group.name));
     this.chatIDs = userDataResponse.chats.map(chat => chat.id);
@@ -53,5 +59,13 @@ export class User {
       .map(request => request.receiver.id);
     this.receivedRequests = userDataResponse.receivedRequests
       .map(request => new FriendRequest(request.id, request.sender.id, request.sender.handle, request.sender.name));
+  }
+
+  buildProfilePictureUrl(path: string): string {
+    if (path) {
+      return environment.greenvironmentUrl + path;
+    } else {
+      return 'assets/images/account_circle-24px.svg';
+    }
   }
 }

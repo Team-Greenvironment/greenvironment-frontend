@@ -8,7 +8,9 @@
     tabindex="0"
     matRipple>
       <mat-card-header>
-        <div mat-card-avatar class="profile-picture"></div>
+        <div mat-card-avatar>
+          <img class="profile-picture" [src]="friend.profilePicture"/>  
+        </div>
         <mat-card-title>{{friend.name}}</mat-card-title>
         <mat-card-subtitle>{{friend.rankname}}</mat-card-subtitle>
       </mat-card-header>

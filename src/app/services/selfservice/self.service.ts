@@ -47,7 +47,7 @@ export class SelfService {
     user.points = response.data.getSelf.points;
     user.level = response.data.getSelf.level;
     for (const friend of response.data.getSelf.friends) {
-      user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
+      user.friends.push(new FriendInfo(friend.id, friend.name, friend.level, friend.profilePicture));
     }
     for (const group of response.data.getSelf.groups) {
       user.groups.push(new GroupInfo(group.id, group.name));
@@ -79,7 +79,7 @@ export class SelfService {
     user.email = 'r@r.com';
     user.points = 100;
     user.level = 3;
-    user.friends.push(new FriendInfo(1, 'Freund77', 4));
+    user.friends.push(new FriendInfo(1, 'Freund77', 4, 'lalala'));
 
     friendRequest = new FriendRequest();
     friendRequest.id = 10;
@@ -105,7 +105,8 @@ export class SelfService {
         friends {
          id,
          name,
-         level
+         level,
+         profilePicture,
         },
         groups {
           id,

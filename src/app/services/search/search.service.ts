@@ -71,7 +71,7 @@ export class SearchService extends BaseService {
     const users = new Array<User>();
       for (const foundUser of response.data.search.users) {
         const user = new User();
-        user.profilePicture = foundUser.profilePicture;
+        user.profilePicture = user.buildProfilePictureUrl(foundUser.profilePicture);
         user.username = foundUser.name;
         user.userID = foundUser.id;
         user.handle = foundUser.handle;

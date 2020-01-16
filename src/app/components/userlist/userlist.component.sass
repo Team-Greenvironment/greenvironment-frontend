@@ -1,0 +1,40 @@
+@import '../../../styles/mixins.sass'
+@import '../../../styles/vars.sass'
+
+.card
+  box-sizing: border-box
+  width: 100%
+  margin-top: 0.5em
+  outline: none
+  user-select: none
+  ::ng-deep .mat-card-header-text
+    width: 1000%
+    margin: 0
+    margin-left: 24px
+  .mat-card-subtitle
+    margin: 0
+    word-break: break-all
+  .mat-card-title
+    margin: 0
+    word-break: break-all
+  .request-button
+    margin-top: 0.5em
+    margin-bottom: 0.5em
+
+.pointer:hover
+  cursor: pointer
+
+.icon-box
+  text-align: right
+  width: 100%
+
+$mat-card-header-size: 54px !default
+.profile-picture
+    height: $mat-card-header-size
+    width: $mat-card-header-size
+    border-radius: 50%
+    flex-shrink: 0
+    background-size: cover
+    transition-duration: 0.5s
+    z-index: 10
+    object-fit: cover

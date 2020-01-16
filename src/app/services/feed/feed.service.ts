@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Post } from 'src/app/models/post';
 import { Author } from 'src/app/models/author';
 import { environment } from 'src/environments/environment';
@@ -21,7 +21,7 @@ export class FeedService {
   private mostLikedOffset = 0;
   private newOffset = 0;
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   public createPost(pContent: String) {
     const headers = new Headers();
@@ -53,7 +53,7 @@ export class FeedService {
       }};
       return this.http.post(environment.graphQLUrl, body).subscribe(response => {
         const updatedposts = this.newPosts.getValue();
-        updatedposts.unshift(this.renderPost(response.json()));
+        updatedposts.unshift(this.renderPost(response));
         this.newPosts.next(updatedposts);
         this.setPost('NEW');
       });
@@ -90,7 +90,7 @@ export class FeedService {
       }};
       return this.http.post(environment.graphQLUrl, body).subscribe(response => {
         const updatedposts = this.newPosts.getValue();
-        updatedposts.unshift(this.renderPost(response.json()));
+        updatedposts.unshift(this.renderPost(response));
         this.newPosts.next(updatedposts);
         this.setPost('NEW');
       });
@@ -147,9 +147,9 @@ export class FeedService {
       this.http.post(environment.graphQLUrl, this.buildJson(sort, 0))
       .subscribe(response => {
         if (sort === 'NEW') {
-          this.newPosts.next(this.renderAllPosts(response.json()));
+          this.newPosts.next(this.renderAllPosts(response));
         } else if (sort === 'TOP') {
-          this.mostLikedPosts.next(this.renderAllPosts(response.json()));
+          this.mostLikedPosts.next(this.renderAllPosts(response));
         }
         this.setPost(sort);
       });
@@ -164,8 +164,8 @@ export class FeedService {
       this.http.post(environment.graphQLUrl, this.buildJson(this.activePostList, this.newOffset))
       .subscribe(response => {
         let updatedposts = this.newPosts.getValue();
-        updatedposts = updatedposts.concat(this.renderAllPosts(response.json()));
-        if (this.renderAllPosts(response.json()).length < 1) {
+        updatedposts = updatedposts.concat(this.renderAllPosts(response));
+        if (this.renderAllPosts(response).length < 1) {
           this.newPostsAvailable.next(false);
         }
         this.newPosts.next(updatedposts);
@@ -178,8 +178,8 @@ export class FeedService {
       this.http.post(environment.graphQLUrl, this.buildJson(this.activePostList, this.mostLikedOffset))
       .subscribe(response => {
         let updatedposts = this.mostLikedPosts.getValue();
-        updatedposts = updatedposts.concat(this.renderAllPosts(response.json()));
-        if (this.renderAllPosts(response.json()).length < 1) {
+        updatedposts = updatedposts.concat(this.renderAllPosts(response));
+        if (this.renderAllPosts(response).length < 1) {
           this.topPostsAvailable.next(false);
         }
         this.mostLikedPosts.next(updatedposts);
