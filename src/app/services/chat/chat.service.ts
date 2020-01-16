@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Http, URLSearchParams, Headers} from '@angular/http';
 import { Chat } from 'src/app/models/chat';
-import { responsePathAsArray } from 'graphql';
 import { Chatmessage } from 'src/app/models/chatmessage';
 import { FriendInfo } from 'src/app/models/friendinfo';
 import { DatasharingService } from '../datasharing.service';
@@ -35,7 +34,7 @@ export class ChatService {
   }
 
   public getAllChatsRaw(): any {
-    const url = 'https://greenvironment.net/graphql';
+    const url = environment.graphQLUrl;
 
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
@@ -63,7 +62,7 @@ export class ChatService {
   public getChatsByIDRaw(pChatIDs: number[]): any {
 
     for (const chatId of pChatIDs) {
-      const url = 'https://greenvironment.net/graphql';
+      const url = environment.graphQLUrl;
 
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
@@ -142,7 +141,7 @@ export class ChatService {
   }
 
   public getMessagesRaw(pChatID): any {
-    const url = 'https://greenvironment.net/graphql';
+    const url = environment.graphQLUrl;
 
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
@@ -242,9 +241,9 @@ export class ChatService {
   getBodyForGetAllChats() {
     const body =  {query: `query {
         getSelf {
-          chats(first: 1000, offset: 0) {
+          chats(first: 10, offset: 0) {
             id, members{name, id, level},
-            messages(first: 1000, offset: 0) {
+            messages(first: 10, offset: 0) {
               author {id}, createdAt, content
             }
           }

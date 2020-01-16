@@ -1,9 +1,7 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import {Http, URLSearchParams, Headers} from '@angular/http';
-import { Login } from '../../models/login';
 import { User } from 'src/app/models/user';
 import { DatasharingService } from '../datasharing.service';
-import { userInfo } from 'os';
 import {Router} from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { FriendRequest } from 'src/app/models/friendRequest';

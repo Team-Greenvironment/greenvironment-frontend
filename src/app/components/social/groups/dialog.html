@@ -4,6 +4,7 @@
     <input matInput placeholder="Enter groupname" #name>
   </mat-form-field>
 </div>
+<mat-error *ngIf="errorOccurred">{{getErrorMessage()}}</mat-error>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
   <button mat-button cdkFocusInitial (click)="createGroup(name.value)">Create Group</button>

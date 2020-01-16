@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { GroupInfo } from 'src/app/models/groupinfo';
+import {Component, OnInit} from '@angular/core';
+import {GroupInfo} from 'src/app/models/groupinfo';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import { SocialService } from 'src/app/services/social/social.service';
-import { User } from 'src/app/models/user';
-import { DatasharingService } from 'src/app/services/datasharing.service';
-import { Router } from '@angular/router';
+import {SocialService} from 'src/app/services/social/social.service';
+import {User} from 'src/app/models/user';
+import {DatasharingService} from 'src/app/services/datasharing.service';
+import {Router} from '@angular/router';
+import {GraphQLError} from 'graphql';
+import {IGraphqlError} from '../../../models/interfaces/IGraphqlError';
+import {IErrorResponse} from '../../../models/interfaces/IErrorResponse';
 
 // DIALOG COMPONENT to create groups
 @Component({
@@ -12,22 +15,31 @@ import { Router } from '@angular/router';
   templateUrl: 'dialog.html',
 })
 export class DialogCreateGroupComponent {
+  errorOccurred = false;
+  private errorMessage: string;
 
   constructor(
-    public dialogRef: MatDialogRef<DialogCreateGroupComponent>, private social: SocialService) {}
+    public dialogRef: MatDialogRef<DialogCreateGroupComponent>, private social: SocialService) {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   createGroup(name: string) {
-    console.log('create groupe ' + name);
     name = name.trim();
     if (name) {
-    this.social.createGroup(name);
-    this.dialogRef.close();
+      this.social.createGroup(name).subscribe(() => {
+        this.dialogRef.close();
+      }, ((error: IErrorResponse) => {
+        this.errorMessage = error.error.errors[0].message;
+        this.errorOccurred = true;
+      }));
+    }
   }
 
+  getErrorMessage() {
+    return this.errorMessage;
   }
 }
 
@@ -39,11 +51,14 @@ export class DialogCreateGroupComponent {
 })
 export class GroupsComponent implements OnInit {
   user: User;
-  constructor(public dialog: MatDialog, private data: DatasharingService, private router: Router) { }
+
+  constructor(public dialog: MatDialog, private data: DatasharingService, private router: Router) {
+  }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
-    this.user = user; });
+      this.user = user;
+    });
   }
 
   public showGroupProfile(group: GroupInfo) {
