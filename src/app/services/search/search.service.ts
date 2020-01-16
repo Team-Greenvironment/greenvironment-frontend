@@ -46,8 +46,6 @@ export class SearchService extends BaseService {
     super();
   }
 
-  users:  User[];
-
   /**
    * Builds the body for the request
    * @param query - the search query

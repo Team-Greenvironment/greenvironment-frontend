@@ -69,7 +69,7 @@ export class LoginService extends BaseService {
    */
   public login(login: Login) {
     const body = LoginService.buildRequestBody(login);
-    return this.http.post<ILoginRequestResult>(environment.graphQLUrl, body)
+    return this.http.post<ILoginRequestResult>(environment.graphQLUrl, body, {headers: this.headers})
       .pipe(tap(response => {
         const user = new User();
         user.assignFromResponse(response.data.login);
