@@ -27,7 +27,8 @@ const graphqlQuery = `mutation($email: String!, $pwHash: String!) {
     friends {
      id,
      name,
-     level
+     level,
+     profilePicture
     },
     groups {
       id,

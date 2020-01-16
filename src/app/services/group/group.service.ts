@@ -35,7 +35,7 @@ export class GroupService {
           joined
           creator{id name handle}
           admins{id name handle}
-          members{id name handle}
+          members{id name handle profilePicture}
           events{id name dueDate joined}
       }
     }`, variables: {
@@ -60,6 +60,7 @@ export class GroupService {
         user.userID = member.id;
         user.username = member.name;
         user.handle = member.handle;
+        user.profilePicture = user.buildProfilePictureUrl(member.profilePicture);
         group.members.push(user);
       }
       for (const admin of response.data.getGroup.admins) {

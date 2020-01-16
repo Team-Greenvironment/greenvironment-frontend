@@ -49,7 +49,7 @@ export class RegisterService {
     user.points = response.data.register.points;
     user.level = response.data.register.level;
     for (const friend of response.data.register.friends) {
-      user.friends.push(new FriendInfo(friend.id, friend.name, friend.level));
+      user.friends.push(new FriendInfo(friend.id, friend.name, friend.level, friend.profilePicture));
     }
     // user.groupIDs = response.data.register.groups;
     user.chatIDs = response.data.register.chats;
@@ -84,7 +84,8 @@ export class RegisterService {
         friends {
           id,
           name,
-          level
+          level,
+          profilePicture
          },
         groups{id},
         chats{id},

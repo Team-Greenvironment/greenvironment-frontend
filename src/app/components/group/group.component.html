@@ -103,18 +103,7 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <div class="list">
-                <mat-card class="card" *ngFor="let user of groupProfile.members" 
-                [class.selected]="user === selectedUser"
-                tabindex="0">
-                  <mat-card-header>
-                    <div mat-card-avatar class="profile-picture" (click)="showUserProfile(user)"></div>
-                    <mat-card-title class="pointer" (click)="showUserProfile(user)">{{user.username}}</mat-card-title>
-                    <mat-card-subtitle class="pointer" (click)="showUserProfile(user)">{{user.handle}}</mat-card-subtitle>
-                    <div class="button-box">
-                      <button mat-icon-button class="request-button" (click)="sendFriendRequest(user)" [disabled]="!user.allowedToSendRequest"><mat-icon>person_add</mat-icon></button>
-                    </div>
-                  </mat-card-header>
-                </mat-card>
+                <user-list [userList]="groupProfile.members"></user-list>
               </div>
             </mat-expansion-panel>
           </mat-accordion> 

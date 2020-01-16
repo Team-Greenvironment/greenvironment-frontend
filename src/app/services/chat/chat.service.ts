@@ -105,14 +105,16 @@ export class ChatService {
       let memberID: number;
       let memberName: string;
       let memberLevel: number;
+      let profilePicture: string;
       for (const member of chat.members) {
         if (member.id !== this.ownID) {
           memberID = member.id;
           memberName = member.name;
           memberLevel = member.level;
+          profilePicture = member.profilePicture;
         }
       }
-      chatPartners.push(new FriendInfo(memberID, memberName, memberLevel));
+      chatPartners.push(new FriendInfo(memberID, memberName, memberLevel, profilePicture));
     }
 
     return chatPartners;
