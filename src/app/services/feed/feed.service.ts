@@ -14,9 +14,9 @@ export class FeedService {
 
   public newPostsAvailable = new BehaviorSubject<boolean>(true);
   public topPostsAvailable = new BehaviorSubject<boolean>(true);
-  public posts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
-  public newPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
-  public mostLikedPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
+  public posts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
+  public newPosts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
+  public mostLikedPosts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
   private activePostList = 'NEW';
   private mostLikedOffset = 0;
   private newOffset = 0;
@@ -52,9 +52,9 @@ export class FeedService {
           content: pContent
       }};
       return this.http.post(environment.graphQLUrl, body).subscribe(response => {
-        const updatedposts = this.newPosts.getValue();
-        updatedposts.unshift(this.renderPost(response.json()));
-        this.newPosts.next(updatedposts);
+        const updatedPosts = this.newPosts.getValue();
+        updatedPosts.unshift(this.renderPost(response.json()));
+        this.newPosts.next(updatedPosts);
         this.setPost('NEW');
       });
   }
@@ -89,14 +89,14 @@ export class FeedService {
           id: activityId
       }};
       return this.http.post(environment.graphQLUrl, body).subscribe(response => {
-        const updatedposts = this.newPosts.getValue();
-        updatedposts.unshift(this.renderPost(response.json()));
-        this.newPosts.next(updatedposts);
+        const updatedPosts = this.newPosts.getValue();
+        updatedPosts.unshift(this.renderPost(response.json()));
+        this.newPosts.next(updatedPosts);
         this.setPost('NEW');
       });
   }
 
-  public upvote(pPostID: number): any {
+  public upvote(postId: number): any {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
@@ -105,7 +105,7 @@ export class FeedService {
           post{userVote upvotes downvotes}
         }
       }`, variables: {
-          postId: pPostID
+          postId
       }};
 
     return this.http.post(environment.graphQLUrl, body);
@@ -163,12 +163,12 @@ export class FeedService {
       headers.set('Content-Type', 'application/json');
       this.http.post(environment.graphQLUrl, this.buildJson(this.activePostList, this.newOffset))
       .subscribe(response => {
-        let updatedposts = this.newPosts.getValue();
-        updatedposts = updatedposts.concat(this.renderAllPosts(response.json()));
+        let updatedPosts = this.newPosts.getValue();
+        updatedPosts = updatedPosts.concat(this.renderAllPosts(response.json()));
         if (this.renderAllPosts(response.json()).length < 1) {
           this.newPostsAvailable.next(false);
         }
-        this.newPosts.next(updatedposts);
+        this.newPosts.next(updatedPosts);
         this.setPost('NEW');
       });
     } else if (this.activePostList === 'TOP' && this.topPostsAvailable) {
