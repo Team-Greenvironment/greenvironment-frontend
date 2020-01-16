@@ -21,16 +21,19 @@
 
 <mat-card class="post" *ngFor = "let post of childPostList" [class.selected]="post === selectedPost" tabindex="0">
   <mat-card-header>
-  <div id="button-box">
-    <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button" *ngIf="post.deletable">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="deletePost(post)">
-        <span>delete post</span>
+    <div mat-card-avatar>
+      <img class="profile-picture" [src]="post.author.profilePicture"/>  
+    </div>
+    <div id="button-box">
+      <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button" *ngIf="post.deletable">
+        <mat-icon>more_vert</mat-icon>
       </button>
-    </mat-menu>
-  </div>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="deletePost(post)">
+          <span>delete post</span>
+        </button>
+      </mat-menu>
+    </div>
   <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>
       {{post.author.name}}
@@ -56,6 +59,11 @@
       <mat-icon aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'UPVOTE'">keyboard_arrow_down</mat-icon>
     </button>
     {{post.downvotes}}
+    <div *ngIf="post.activity" class="activity-info">
+      <span class="span" [matTooltip]="post.activity.description" matTooltipShowDelay="200">
+        {{post.activity.points}} points earned through <b>{{post.activity.name}}</b>
+      </span>
+    </div>
   </mat-card-actions>
 </mat-card>
 

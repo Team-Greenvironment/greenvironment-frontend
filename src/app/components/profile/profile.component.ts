@@ -1,13 +1,14 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import { User } from 'src/app/models/user';
-import { Actionlist } from 'src/app/models/actionlist';
 import { Levellist } from 'src/app/models/levellist';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
 import { RequestService } from 'src/app/services/request/request.service';
 import { DatasharingService } from '../../services/datasharing.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { reduce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -16,22 +17,19 @@ import { ProfileService } from 'src/app/services/profile/profile.service';
 })
 
 export class ProfileComponent implements OnInit {
-  actionlist: Actionlist = new Actionlist();
-
   levellist: Levellist = new Levellist();
+  ownProfile = false;
   userProfile: User = new User();
   self: User;
   id: string;
   rankname: string;
   profileNotFound = false;
-  displayedColumns = ['points', 'name'];
-  dataSource = new MatTableDataSource(this.actionlist.Actions);
-  displayedLevelColumns = ['level', 'name'];
-  levelSource = this.levellist.levels;
 
   loading = false;
 
   constructor(
+    private http: HttpClient,
+    private _snackBar: MatSnackBar,
     private router: Router,
     private requestService: RequestService,
     private data: DatasharingService,
@@ -48,10 +46,8 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
   ngOnInit() {
     this.loading = true;
-    this.dataSource.sort = this.sort;
     this.id = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
     this.data.currentUserInfo.subscribe(user => {
       this.self = user;
@@ -62,6 +58,9 @@ export class ProfileComponent implements OnInit {
           this.userProfile = response;
           // tslint:disable-next-line:max-line-length
           this.userProfile.allowedToSendRequest = this.requestService.isAllowedToSendRequest(this.userProfile.userID, this.self);
+          if (this.userProfile.userID === this.self.userID) {
+            this.ownProfile = true;
+          } else {this.ownProfile = false; }
           this.rankname = this.levellist.getLevelName(this.userProfile.level);
         } else { this.profileNotFound = true; }
         this.loading = false;
@@ -71,5 +70,20 @@ export class ProfileComponent implements OnInit {
   public sendFriendRequest(user: User) {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);
+  }
+  onFileInput(event) {
+    console.log(event.target.files[0]);
+    const formData: any = new FormData();
+    formData.append('profilePicture', event.target.files[0]);
+
+    this.http.post(environment.greenvironmentUrl + '/upload', formData).subscribe(
+     (response: any) => {
+      this.userProfile.profilePicture = environment.greenvironmentUrl + response.fileName;
+    },
+    (error) => {
+      this._snackBar.open('failed to upload picture', 'okay', {
+      duration: 3000
+      });
+    });
   }
 }

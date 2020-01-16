@@ -1,5 +1,6 @@
 <div id="about">
 <div id="text0" style="text-align: center;">
+  
   <h1>Greenvironment</h1>
   <br> <br> <br> <br> <br>
   <h1 class="mat-display-3">Keep it clean and green!</h1>
@@ -9,7 +10,57 @@
 </div>
 <div id="text1" style="text-align: center;">
   <h1>What's Greenvironment?</h1>
-  <p class="mat-display-1">We, the greenviroment team want to create a network for environmentalists who care for our nature and our planet as much as we do.</p>
+  <p>We, the greenviroment team want to create a network for environmentalists who care for our nature and our planet as much as we do.</p>
+  <br>
+  <h1>What does the level mean?</h1>
+      <p>There are different levels you can reach through green behaviour.
+          Collect 100 points to level up! The levels are called: 
+      </p>
+      <table mat-table [dataSource]="levelSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="level">
+              <th mat-header-cell *matHeaderCellDef> level </th>
+              <td mat-cell *matCellDef="let level"> {{level.level}} </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> level name </th>
+              <td mat-cell *matCellDef="let level"> {{level.name}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedLevelColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedLevelColumns;"></tr>
+      </table>
+      <br>
+  <h1>How to level up?</h1>
+      <p>There is an always growing list of things you can do,
+          to support your environment
+          and earn points to level up at the same time.
+          You can get a different amount of points
+          for differnet actions you can see in the list below:
+      </p>
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+          <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+          
+          <!-- Position Column -->
+          <ng-container matColumnDef="points">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> points </th>
+              <td mat-cell *matCellDef="let action"> {{action.points}} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> action </th>
+            <td mat-cell *matCellDef="let action"> {{action.name}} </td>
+        </ng-container>
+
+        <!-- decriotion Column -->
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> description </th>
+            <td mat-cell *matCellDef="let action"> {{action.description}} </td>
+        </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
 </div>
 <div id="text2" style="text-align: center;">
   <p class="mat-display-1">We believe, that together we can do amazing things to protect our environment and keep it clean and green.</p>

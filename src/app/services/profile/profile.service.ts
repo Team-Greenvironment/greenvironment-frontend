@@ -5,6 +5,7 @@ import { Author } from 'src/app/models/author';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/user';
 import { Observable, Subject } from 'rxjs';
+import { Activity } from 'src/app/models/activity';
 
 @Injectable({
   providedIn: 'root'
@@ -49,9 +50,16 @@ export class ProfileService {
           downvotes,
           userVote,
           deletable,
+          activity{
+            id
+            name
+            description
+            points
+          },
           author{
             name,
             handle,
+            profilePicture
             id},
           createdAt
         }
@@ -74,6 +82,11 @@ export class ProfileService {
       profile.level = response.data.getUser.level;
       profile.friendCount = response.data.getUser.friendCount;
       profile.groupCount = response.data.getUser.groupCount;
+      if (response.data.getUser.profilePicture) {
+        profile.profilePicture = environment.greenvironmentUrl + response.data.getUser.profilePicture;
+      } else {
+        profile.profilePicture = 'assets/images/account_circle-24px.svg';
+      }
       const temp = new Date(Number(response.data.getUser.joinedAt));
       const date = temp.toLocaleString('en-GB');
       profile.joinedAt = date;
@@ -85,10 +98,26 @@ export class ProfileService {
         const downvotes: number = post.downvotes;
         const userVote: string = post.userVote;
         const deletable: boolean = post.deletable;
-        const author = new Author(post.author.id, post.author.name, post.author.handle);
+        let profilePicture: string;
+        if (post.author.profilePicture) {
+          profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
+        } else {
+          profilePicture = 'assets/images/account_circle-24px.svg';
+        }
+        const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
         const ptemp = new Date(Number(post.createdAt));
         const pdate = ptemp.toLocaleString('en-GB');
-        posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, pdate, author));
+        let activity: Activity;
+        if (post.activity) {
+          activity = new Activity(
+          post.activity.id,
+          post.activity.name,
+          post.activity.description,
+          post.activity.points);
+        } else { activity = null; }
+
+        // tslint:disable-next-line: max-line-length
+        posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, pdate, author, activity));
       }
       profile.posts = posts;
       return profile;

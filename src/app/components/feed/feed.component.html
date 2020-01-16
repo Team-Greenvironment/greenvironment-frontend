@@ -1,4 +1,8 @@
-<div id="home">
+<div id="home"
+infinite-scroll
+[infiniteScrollDistance]="0.5"
+[scrollWindow]="false"
+(scrolled)="onScroll()">
   <div [hidden]="!loggedIn">
     <mat-card >      
       <mat-card-content>
@@ -9,18 +13,18 @@
           </button>
         </mat-form-field>
         <p id="check">
-          <mat-checkbox color="primary" [(ngModel)]="checked">I protected the environment.</mat-checkbox>
+          <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked">I protected the environment.</mat-checkbox>
         </p>
         <mat-form-field id="action-chooser" *ngIf="checked">
           <mat-label>What did you do?</mat-label>
-          <mat-select [(ngModel)]="selectedValue" name="action">
+          <mat-select [(ngModel)]="activityId" name="action">
             <mat-option>nothing ;)</mat-option>
-            <mat-option *ngFor="let action of actionlist.Actions" [value]="action.points">
-              {{action.name}}
+            <mat-option *ngFor="let action of actionlist.Actions" [value]="action.id" [matTooltip]="action.description" matTooltipShowDelay="200">
+              {{action.name}} ({{action.description}})
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button *ngIf="empty" color="primary" id="post-button" (click)=createPost(content)>
+        <button mat-raised-button *ngIf="empty" color="primary" id="post-button" (click)=createPost(content,activityId)>
           POST
         </button>
       </mat-card-content>
@@ -37,20 +41,18 @@
   </div>
 
 <div id="chooser-div" style="text-align: center; margin-top: 1em;">
-    <mat-button-toggle-group id="feedchooser" value="new">
+    <mat-button-toggle-group id="feedchooser" [(ngModel)]="view" value="view">
     <mat-button-toggle (click)="showNew()" value="new">New</mat-button-toggle>
     <mat-button-toggle (click)="showMostLiked()" value="mostliked">Most Liked</mat-button-toggle>
   </mat-button-toggle-group>
 </div>
 <div id="complete-feed">
   <div id="feedlist">
-    <div *ngIf = "viewNew">
-      <feed-postlist (voteEvent)="refresh($event)" [childPostList]="parentSelectedPostList"></feed-postlist>
+    <feed-postlist [childPostList]="parentSelectedPostList"></feed-postlist>
+    <div style="height: 60px;" [hidden]='(!loadingNew && view === "new") || (!loadingMostLiked && view === "mostliked") '>
+      <!--<mat-spinner *ngIf='loadingNew && view === "mostLiked"' style="margin:0 auto; margin-top: 2em;" diameter="50"></mat-spinner>-->
+        <mat-spinner style="margin:0 auto; margin-top: 2em;" diameter="50"></mat-spinner>
     </div>
-    <div *ngIf = "viewMostLiked">
-      <feed-postlist (voteEvent)="refresh($event)" [childPostList]="parentSelectedPostList"></feed-postlist>
-    </div>
-    <mat-spinner *ngIf="loading" style="margin:0 auto; margin-top: 5em;" diameter="50"></mat-spinner>
   </div>
 </div>
 </div>

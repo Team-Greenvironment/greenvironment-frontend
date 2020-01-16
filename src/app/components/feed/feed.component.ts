@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from 'src/app/models/post';
 import { FeedService } from 'src/app/services/feed/feed.service';
-import { Actionlist } from 'src/app/models/actionlist';
+import { Activitylist } from 'src/app/models/activity';
 import { DatasharingService } from '../../services/datasharing.service';
+import { ActivityService } from 'src/app/services/activity/activity.service';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -11,71 +12,76 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./feed.component.sass']
 })
 export class FeedComponent implements OnInit {
-  loading = true;
-  checked: boolean; // if the "I protected the environment."-box is checked
-  empty: boolean;
- // points value of the green action
-  value: any;
-  viewNew = true;
-  viewMostLiked = false;
+  loadingNew = true;
+  loadingMostLiked = true;
 
-  feedNew: Array<Post>;
-  feedMostLiked: Array<Post>;
+  checked = false; // if the "I protected the environment."-box is checked
+  view = 'new';
+  empty: any;
+ // id of the green activity
+  value: any;
 
   parentSelectedPostList: Array<Post>;
-
-  actionlist: Actionlist = new Actionlist();
+  actionlist: Activitylist = new Activitylist();
 
   loggedIn = false;
-  userId: number;
   user: User;
 
-  constructor(private feedService: FeedService, private data: DatasharingService) { }
+  constructor(
+    private feedService: FeedService,
+    private data: DatasharingService,
+    private activityService: ActivityService
+    ) { }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
-        this.feedService.getAllPostsRaw().subscribe(response => {
-          this.loading = false;
-          this.feedNew = this.feedService.renderAllPosts(response.json());
-          this.parentSelectedPostList = this.feedNew;
-          this.feedMostLiked = this.feedNew;
-        });
     });
-
+    this.activityService.getActivitys();
+    this.activityService.activitylist.subscribe(response => {
+      this.actionlist = response;
+    });
+    this.feedService.getPosts('NEW');
+    this.feedService.posts.subscribe(response => {
+      if (response.length > 0) {
+        // this.loading = false;
+      }
+      this.parentSelectedPostList = response;
+    });
+    this.feedService.newPostsAvailable.subscribe(response => {
+      this.loadingNew = response;
+    });
+    this.feedService.topPostsAvailable.subscribe(response => {
+      console.log(response);
+      this.loadingMostLiked = response;
+    });
   }
 
-  createPost(pElement) {
-    this.feedService.createPost(pElement.value);
+  createPost(pElement, activityId: string) {
+    if (pElement && activityId && this.checked) {
+    this.feedService.createPostActivity(pElement.value, activityId);
     pElement.value = '';
-    this.feedService.getAllPostsRaw().subscribe(response => {
-      this.feedNew = this.feedService.renderAllPosts(response.json());
-      this.parentSelectedPostList = this.feedNew;
-      this.feedMostLiked = this.feedNew; });
+    this.empty = '';
+    this.view = 'new';
+    } else if (pElement) {
+      this.feedService.createPost(pElement.value);
+      pElement.value = '';
+      this.empty = '';
+      this.view = 'new';
+    }
+  }
+
+  onScroll() {
+    console.log('scrolled');
+    this.feedService.getNextPosts();
   }
 
   showNew() {
-    this.feedService.getAllPostsRaw().subscribe(response => {
-      this.feedNew = this.feedService.renderAllPosts(response.json());
-      this.parentSelectedPostList = this.feedNew; });
-    this.viewNew = true;
-    this.viewMostLiked = false;
+    this.feedService.getPosts('NEW');
   }
 
   showMostLiked() {
-    this.feedService.getAllPostsRaw().subscribe(response => {
-      this.feedMostLiked = this.feedService.renderAllPosts(response.json());
-      this.parentSelectedPostList = this.feedMostLiked; });
-    this.viewNew = false;
-    this.viewMostLiked = true;
+    this.feedService.getPosts('TOP');
   }
-
-
-  refresh($event) {
-    this.feedService.getAllPostsRaw().subscribe(response => {
-      this.parentSelectedPostList = this.feedService.renderAllPosts(response.json());
-    });
-  }
-
 }
