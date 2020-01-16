@@ -168,7 +168,7 @@ export class FeedService {
         if (this.renderAllPosts(response).length < 1) {
           this.newPostsAvailable.next(false);
         }
-        this.newPosts.next(updatedPosts);
+        this.newPosts.next(updatedposts);
         this.setPost('NEW');
       });
     } else if (this.activePostList === 'TOP' && this.topPostsAvailable) {
