@@ -1,37 +1,41 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http} from '@angular/http';
-import {DatasharingService} from '../datasharing.service';
-import {Router} from '@angular/router';
 import {environment} from 'src/environments/environment';
-import { User } from 'src/app/models/user';
+import {HttpClient} from '@angular/common/http';
+import {BaseService} from '../base.service';
+
+const graphqlCreateGroupQuery = `mutation($name: String!) {
+  createGroup(name: $name) {
+    id
+  }
+}`;
 
 @Injectable({
   providedIn: 'root'
 })
-export class SocialService {
+export class SocialService extends BaseService {
 
-  users:  Array<User>;
-  constructor(private http: Http, private data: DatasharingService, private router: Router) {
+  constructor(private http: HttpClient) {
+    super();
   }
 
-  createGroup(name: string) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.buildJsonGroup(name)).subscribe(response => {
-        console.log(response.text()); });
-  }
-
-  public buildJsonGroup(name_: String): any {
-    const body = {
-      query: `mutation($name: String!) {
-        createGroup(name: $name) {
-          id
-        }
-      }`
-      , variables: {
-        name: name_
+  /**
+   * Builds the body for a group creation request
+   * @param name
+   */
+  private static buildGroupCreateBody(name: String): any {
+     return {
+      query: graphqlCreateGroupQuery, variables: {
+        name
       }
     };
-    return body;
+  }
+
+  /**
+   * Creates a group
+   * @param name
+   */
+  createGroup(name: string) {
+    const body = SocialService.buildGroupCreateBody(name);
+    return this.http.post(environment.graphQLUrl, body, {headers: this.headers});
   }
 }

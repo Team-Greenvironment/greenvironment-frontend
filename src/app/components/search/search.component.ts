@@ -18,13 +18,12 @@ export class SearchComponent implements OnInit {
   searchValue = ' ';
   category = 'user';
   user: User;
-  foundUsers: Array<User> = new Array();
-  foundGroups: Array<GroupInfo> = new Array();
+  foundUsers: User[] = [];
+  foundGroups: GroupInfo[] = [];
 
   constructor(
     private searchService: SearchService,
     private requestService: RequestService,
-    private http: Http,
     private router: Router,
     private data: DatasharingService) { }
   ngOnInit() {
@@ -46,19 +45,16 @@ export class SearchComponent implements OnInit {
         this.loading = true;
         this.findUser(searchWord);
       } else if (this.category === 'groupe') {
-        // this.findUserByHandle(searchWord);
         console.log('search group');
       }
     }
   }
 
-  findUser(name: String) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.searchService.buildJsonUser(name))
+  findUser(name: string) {
+    this.searchService.search(name)
       .subscribe(response => {
-        this.foundUsers = this.searchService.renderUsers(response.json());
-        this.foundGroups = this.searchService.renderGroups(response.json());
+        this.foundUsers = this.searchService.getUsersForResponse(response);
+        this.foundGroups = this.searchService.getGroupsForResponse(response);
         for (const foundUser of this.foundUsers) {
           foundUser.allowedToSendRequest = this.requestService.isAllowedToSendRequest(foundUser.userID, this.user);
         }
