@@ -3,11 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Login} from '../../models/login';
 import {User} from 'src/app/models/user';
 import {DatasharingService} from '../datasharing.service';
-import {Router} from '@angular/router';
 import {environment} from 'src/environments/environment';
-import {FriendRequest} from 'src/app/models/friendRequest';
-import {FriendInfo} from 'src/app/models/friendinfo';
-import {GroupInfo} from 'src/app/models/groupinfo';
 import {IUser} from '../../models/interfaces/IUser';
 import {BaseService} from '../base.service';
 import {tap} from 'rxjs/operators';
@@ -49,7 +45,7 @@ const graphqlQuery = `mutation($email: String!, $pwHash: String!) {
 })
 export class LoginService extends BaseService {
 
-  constructor(private http: HttpClient, private datasharingService: DatasharingService, private router: Router) {
+  constructor(private http: HttpClient, private datasharingService: DatasharingService) {
     super();
   }
 
