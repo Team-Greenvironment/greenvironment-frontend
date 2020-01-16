@@ -38,7 +38,7 @@ export class FeedComponent implements OnInit {
       this.user = user;
       this.loggedIn = user.loggedIn;
     });
-    this.activityService.getActivitys();
+    this.activityService.getActivities();
     this.activityService.activitylist.subscribe(response => {
       this.actionlist = response;
     });
