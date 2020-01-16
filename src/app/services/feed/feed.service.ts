@@ -52,15 +52,9 @@ export class FeedService {
           content: pContent
       }};
       return this.http.post(environment.graphQLUrl, body).subscribe(response => {
-<<<<<<< HEAD
         const updatedposts = this.newPosts.getValue();
         updatedposts.unshift(this.renderPost(response));
         this.newPosts.next(updatedposts);
-=======
-        const updatedPosts = this.newPosts.getValue();
-        updatedPosts.unshift(this.renderPost(response.json()));
-        this.newPosts.next(updatedPosts);
->>>>>>> julius-dev
         this.setPost('NEW');
       });
   }
@@ -95,15 +89,9 @@ export class FeedService {
           id: activityId
       }};
       return this.http.post(environment.graphQLUrl, body).subscribe(response => {
-<<<<<<< HEAD
         const updatedposts = this.newPosts.getValue();
         updatedposts.unshift(this.renderPost(response));
         this.newPosts.next(updatedposts);
-=======
-        const updatedPosts = this.newPosts.getValue();
-        updatedPosts.unshift(this.renderPost(response.json()));
-        this.newPosts.next(updatedPosts);
->>>>>>> julius-dev
         this.setPost('NEW');
       });
   }
@@ -175,15 +163,9 @@ export class FeedService {
       headers.set('Content-Type', 'application/json');
       this.http.post(environment.graphQLUrl, this.buildJson(this.activePostList, this.newOffset))
       .subscribe(response => {
-<<<<<<< HEAD
         let updatedposts = this.newPosts.getValue();
         updatedposts = updatedposts.concat(this.renderAllPosts(response));
         if (this.renderAllPosts(response).length < 1) {
-=======
-        let updatedPosts = this.newPosts.getValue();
-        updatedPosts = updatedPosts.concat(this.renderAllPosts(response.json()));
-        if (this.renderAllPosts(response.json()).length < 1) {
->>>>>>> julius-dev
           this.newPostsAvailable.next(false);
         }
         this.newPosts.next(updatedPosts);
