@@ -42,10 +42,27 @@ const graphqlQuery = `query($query: String!, $first: Int, $offset: Int) {
   providedIn: 'root'
 })
 export class SearchService extends BaseService {
-
-  users:  User[];
   constructor(private http: HttpClient, private data: DatasharingService, private router: Router) {
     super();
+  }
+
+  users:  User[];
+
+  /**
+   * Builds the body for the request
+   * @param query - the search query
+   * @param first - the limit of elements to fetch
+   * @param offset - offset
+   */
+  private static buildRequestBody(query: String, first: number = 20, offset: number = 0): any {
+    return {
+      query: graphqlQuery,
+      variables: {
+        query,
+        first,
+        offset
+      }
+    };
   }
 
   /**
@@ -86,24 +103,7 @@ export class SearchService extends BaseService {
    * @param query
    */
   public search(query: string): Observable<ISearchRequestResult> {
-    const body = this.buildRequestBody(query);
+    const body = SearchService.buildRequestBody(query);
     return this.http.post<ISearchRequestResult>(environment.graphQLUrl, body, {headers: this.headers});
-  }
-
-  /**
-   * Builds the body for the request
-   * @param query - the search query
-   * @param first - the limit of elements to fetch
-   * @param offset - offset
-   */
-  private buildRequestBody(query: String, first: number = 20, offset: number = 0): any {
-    return {
-      query: graphqlQuery,
-      variables: {
-        query,
-        first,
-        offset
-      }
-    };
   }
 }

@@ -1,4 +1,7 @@
 import {IGroup} from './IGroup';
+import {ISettings} from './ISettings';
+import {IChat} from './IChat';
+import {IRequest} from './IRequest';
 
 export interface IUser {
 
@@ -8,7 +11,11 @@ export interface IUser {
 
   handle: string;
 
+  email?: string;
+
   profilePicture?: string;
+
+  settings?: string;
 
   level: number;
 
@@ -20,7 +27,13 @@ export interface IUser {
 
   posts: any[];
 
-  joinedAt: Date;
+  chats: IChat[];
+
+  receivedRequests: IRequest[];
+
+  sentRequests: IRequest[];
+
+  joinedAt: string;
 
   friendCount: number;
 
