@@ -37,43 +37,11 @@ export class SelfService {
   }
 
   public updateUserInfo(response: any) {
-    const user: User = new User();
-    let friendRequest: FriendRequest = new FriendRequest();
-    user.loggedIn = true;
-    user.userID = response.data.getSelf.id;
-    user.username = response.data.getSelf.name;
-    user.handle = response.data.getSelf.handle;
-    user.email = response.data.getSelf.email;
-    user.points = response.data.getSelf.points;
-    user.level = response.data.getSelf.level;
-    for (const friend of response.data.getSelf.friends) {
-      user.friends.push(new FriendInfo(
-        friend.id,
-        friend.name,
-        friend.level,
-        user.buildProfilePictureUrl(friend.profilePicture)
-      ));
-    }
-    for (const group of response.data.getSelf.groups) {
-      user.groups.push(new GroupInfo(group.id, group.name));
-    }
-    user.chatIDs = response.data.getSelf.chats;
-    for (const request of response.data.getSelf.sentRequests) {
-      user.sentRequestUserIDs.push(request.receiver.id);
-    }
-    for (const request of response.data.getSelf.receivedRequests) {
-      friendRequest = new FriendRequest();
-      friendRequest.id = request.id;
-      friendRequest.senderUserID = request.sender.id;
-      friendRequest.senderUsername = request.sender.name;
-      friendRequest.senderHandle = request.sender.handle;
-      user.receivedRequests.push(friendRequest);
-    }
-    if (JSON.parse(response.data.getSelf.settings).darkmode === 'true') {
-      user.darkmode = true;
-    }
+    const user = new User();
+    user.assignFromResponse(response.data.getSelf);
     this.data.changeUserInfo(user);
   }
+
   public fakeLogin() {
     const user: User = new User();
     let friendRequest: FriendRequest = new FriendRequest();
@@ -105,6 +73,7 @@ export class SelfService {
         handle,
         points,
         level,
+        profilePicture,
         receivedRequests{id, sender{name, handle, id}},
         sentRequests{receiver{id}},
         friends {
