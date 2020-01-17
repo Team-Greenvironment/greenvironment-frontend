@@ -7,8 +7,8 @@
       fxShow="true" fxHide.gt-sm="true"
       fixedInViewport="false"
       autoFocus="false">
-    <mat-toolbar *ngIf="!loggedIn">Menu</mat-toolbar>
-    <mat-toolbar *ngIf="loggedIn" id="name-bar">
+    <mat-toolbar class="menu-bar" *ngIf="!loggedIn">Menu</mat-toolbar>
+    <mat-toolbar *ngIf="loggedIn" class="menu-bar">
         <div mat-card-avatar>
           <img class="profile-picture" [src]="user.profilePicture"/>  
         </div>
@@ -32,7 +32,7 @@
 
   <!-- TOOLBAR -->
   <mat-sidenav-content>
-    <mat-toolbar color="primary" class="mat-elevation-z4">
+    <mat-toolbar color="accent" class="mat-elevation-z4">
 
       <!--content on SMALL SCREEN-->
       <button
@@ -43,9 +43,10 @@
         fxShow="true" fxHide.gt-sm="true">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <mat-icon svgIcon="logo" style="min-width: 35px;" routerLink="" class="link"></mat-icon>
+      <mat-icon *ngIf="lighttheme" svgIcon="logo" style="min-width: 35px;" routerLink="" class="link"></mat-icon>
+      <mat-icon *ngIf="!lighttheme" svgIcon="logo_green" style="min-width: 35px;" routerLink="" class="link"></mat-icon>
       <span routerLink="" class="link">Greenvironment</span>
-      <nav mat-tab-nav-bar backgroundColor="primary" fxShow="true" fxHide.lt-md="true" routerLinkActive #rla="">
+      <nav mat-tab-nav-bar backgroundColor="accent" color="accent" fxShow="true" fxHide.lt-md="true" routerLinkActive #rla="">
         <div *ngIf="loggedIn">
           <a mat-tab-link class="link"
           *ngFor="let link of navLinksLoggedIn"

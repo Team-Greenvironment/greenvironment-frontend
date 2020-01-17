@@ -70,6 +70,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 // import logo from 'src/assets/gv-new-logo.svg';
 import logo from '!!raw-loader!./gv-new-logo-white.svg';
+import logo_green from '!!raw-loader!./gv-new-logo.svg';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
@@ -162,6 +163,8 @@ const appRoutes: Routes = [
 export class AppModule {
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIconLiteral(
-        'logo', sanitizer.bypassSecurityTrustHtml(logo));
+      'logo', sanitizer.bypassSecurityTrustHtml(logo));
+    iconRegistry.addSvgIconLiteral(
+      'logo_green', sanitizer.bypassSecurityTrustHtml(logo_green));
   }
  }
