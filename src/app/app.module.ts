@@ -68,10 +68,6 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
-// import logo from 'src/assets/gv-new-logo.svg';
-import logo from '!!raw-loader!./gv-new-logo-white.svg';
-import logo_green from '!!raw-loader!./gv-new-logo.svg';
-
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
@@ -162,9 +158,9 @@ const appRoutes: Routes = [
 })
 export class AppModule {
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIconLiteral(
-      'logo', sanitizer.bypassSecurityTrustHtml(logo));
-    iconRegistry.addSvgIconLiteral(
-      'logo_green', sanitizer.bypassSecurityTrustHtml(logo_green));
+    iconRegistry.addSvgIcon(
+      'logo', sanitizer.bypassSecurityTrustResourceUrl('assets/images/gv-logo-white.svg'));
+    iconRegistry.addSvgIcon(
+      'logo_green', sanitizer.bypassSecurityTrustResourceUrl('assets/images/gv-logo-flat.svg'));
   }
  }

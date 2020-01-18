@@ -65,7 +65,7 @@ export class User {
     if (path) {
       return environment.greenvironmentUrl + path;
     } else {
-      return 'assets/images/account_circle-24px.svg';
+      return 'assets/images/default-profilepic.svg';
     }
   }
 }
