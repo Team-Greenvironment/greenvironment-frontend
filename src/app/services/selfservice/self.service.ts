@@ -8,6 +8,7 @@ import {FriendInfo} from 'src/app/models/friendinfo';
 import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
 import {BaseService} from '../base.service';
+import {IFileUploadResult} from '../../models/interfaces/IFileUploadResult';
 
 const getSelfGraphqlQuery = `{
   getSelf{
@@ -65,17 +66,18 @@ export class SelfService extends BaseService {
 
     return this.http.post(url, SelfService.buildGetSelfBody(), {headers: this.headers})
       .pipe(tap(response => {
-        this.stillLoggedIn();
         this.updateUserInfo(response);
-      }, error => {
-        this.notLoggedIn();
       }));
   }
 
-  public stillLoggedIn() {
-  }
-
-  public notLoggedIn() {
+  /**
+   * Uploads a file as a profile picture
+   * @param file
+   */
+  public changeProfilePicture(file: any) {
+    const formData: any = new FormData();
+    formData.append('profilePicture', file);
+    return this.http.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData);
   }
 
   /**
@@ -85,28 +87,6 @@ export class SelfService extends BaseService {
   public updateUserInfo(response: any) {
     const user = new User();
     user.assignFromResponse(response.data.getSelf);
-    this.data.changeUserInfo(user);
-  }
-
-  public fakeLogin() {
-    const user: User = new User();
-    let friendRequest: FriendRequest = new FriendRequest();
-    user.loggedIn = true;
-    user.userID = 1;
-    user.username = 'Rapier';
-    user.handle = 'rapier123';
-    user.email = 'r@r.com';
-    user.points = 100;
-    user.level = 3;
-    user.friends.push(new FriendInfo(1, 'Freund77', 4, 'lalala'));
-
-    friendRequest = new FriendRequest();
-    friendRequest.id = 10;
-    friendRequest.senderUserID = 99;
-    friendRequest.senderUsername = 'Löwe';
-    friendRequest.senderHandle = 'loewe123';
-    user.receivedRequests.push(friendRequest);
-
     this.data.changeUserInfo(user);
   }
 }

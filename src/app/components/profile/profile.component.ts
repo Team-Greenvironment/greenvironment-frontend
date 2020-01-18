@@ -8,7 +8,7 @@ import { ProfileService } from 'src/app/services/profile/profile.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { reduce } from 'rxjs/operators';
+import {SelfService} from '../../services/selfservice/self.service';
 
 @Component({
   selector: 'app-profile',
@@ -33,7 +33,8 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private requestService: RequestService,
     private data: DatasharingService,
-    private profileService: ProfileService) {
+    private profileService: ProfileService,
+    private selfService: SelfService) {
       router.events.forEach((event) => {
         // check if the user is on the profile page (of userY) and routes to the page of userY (e.g. his own page)
         if (event instanceof NavigationEnd) {
@@ -69,18 +70,13 @@ export class ProfileComponent implements OnInit {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);
   }
-  onFileInput(event) {
-    console.log(event.target.files[0]);
-    const formData: any = new FormData();
-    formData.append('profilePicture', event.target.files[0]);
 
-    this.http.post(environment.greenvironmentUrl + '/upload', formData).subscribe(
-     (response: any) => {
+  onFileInput(event) {
+    this.selfService.changeProfilePicture(event.target.files[0]).subscribe((response) => {
       this.userProfile.profilePicture = environment.greenvironmentUrl + response.fileName;
-    },
-    (error) => {
+    }, (error) => {
       this._snackBar.open('failed to upload picture', 'okay', {
-      duration: 3000
+        duration: 3000
       });
     });
   }
