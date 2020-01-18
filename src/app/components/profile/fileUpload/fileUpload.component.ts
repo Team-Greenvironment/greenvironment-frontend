@@ -1,4 +1,4 @@
-import {Component, EventEmitter} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {SelfService} from '../../../services/selfservice/self.service';
 import {environment} from '../../../../environments/environment';
@@ -13,12 +13,12 @@ export class DialogFileUploadComponent {
   public errorOccurred = false;
   public uploading = false;
   private errorMessage: string;
-  public profilePictureUrl: BehaviorSubject<string|null>;
+  public profilePictureUrl: BehaviorSubject<string | null>;
   private file;
   public localFileUrl;
 
   constructor(public dialogRef: MatDialogRef<DialogFileUploadComponent>, private selfService: SelfService) {
-    this.profilePictureUrl = new BehaviorSubject<string|null>(null);
+    this.profilePictureUrl = new BehaviorSubject<string | null>(null);
   }
 
   /**

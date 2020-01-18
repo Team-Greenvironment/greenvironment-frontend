@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Activitylist } from 'src/app/models/activity';
-import { Levellist } from 'src/app/models/levellist';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Activitylist} from 'src/app/models/activity';
+import {Levellist} from 'src/app/models/levellist';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { ActivityService } from 'src/app/services/activity/activity.service';
+import {ActivityService} from 'src/app/services/activity/activity.service';
 
 @Component({
   selector: 'app-about',
@@ -19,9 +19,11 @@ export class AboutComponent implements OnInit {
   displayedLevelColumns = ['level', 'name'];
   levelSource = this.levellist.levels;
 
-  constructor(private activityService: ActivityService) { }
+  constructor(private activityService: ActivityService) {
+  }
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   ngOnInit() {
     this.activityService.getActivities();
     this.activityService.activitylist.subscribe(response => {

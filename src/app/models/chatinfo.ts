@@ -1,9 +1,9 @@
 export class Chatinfo {
-    id: string;
-    date: string;
+  id: string;
+  date: string;
 
-    constructor(pId: string, pDate: string) {
-        this.id = pId;
-        this.date = pDate;
-    }
+  constructor(pId: string, pDate: string) {
+    this.id = pId;
+    this.date = pDate;
+  }
 }

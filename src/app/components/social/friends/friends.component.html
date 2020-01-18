@@ -3,16 +3,16 @@
 </mat-toolbar>
 
 <div id="friendlist">
-    <mat-card class="friend-card" *ngFor="let friend of user.friends" 
-    [class.selected]="friend === selectedFriend" (click)="showFriendProfile(friend)"
-    tabindex="0"
-    matRipple>
-      <mat-card-header>
-        <div mat-card-avatar>
-          <img class="profile-picture" [src]="friend.profilePicture"/>  
-        </div>
-        <mat-card-title>{{friend.name}}</mat-card-title>
-        <mat-card-subtitle>{{friend.rankname}}</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
+  <mat-card class="friend-card" *ngFor="let friend of user.friends"
+            [class.selected]="friend === selectedFriend" (click)="showFriendProfile(friend)"
+            tabindex="0"
+            matRipple>
+    <mat-card-header>
+      <div mat-card-avatar>
+        <img class="profile-picture" [src]="friend.profilePicture"/>
+      </div>
+      <mat-card-title>{{friend.name}}</mat-card-title>
+      <mat-card-subtitle>{{friend.rankname}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
 </div>

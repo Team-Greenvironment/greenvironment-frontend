@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FriendInfo } from 'src/app/models/friendinfo';
-import { ChatService } from 'src/app/services/chat/chat.service';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {FriendInfo} from 'src/app/models/friendinfo';
+import {ChatService} from 'src/app/services/chat/chat.service';
 
 @Component({
   selector: 'chatmanager-chatcontacts',
@@ -12,7 +12,8 @@ export class ChatcontactsComponent implements OnInit {
   @Output() goBackEvent = new EventEmitter<boolean>();
   selectedContact: FriendInfo;
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService) {
+  }
 
   ngOnInit() {
   }

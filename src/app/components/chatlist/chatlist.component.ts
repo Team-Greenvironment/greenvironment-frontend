@@ -1,7 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { Chatinfo } from 'src/app/models/chatinfo';
-import { Chat } from 'src/app/models/chat';
-import { ChatService } from 'src/app/services/chat/chat.service';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Chat} from 'src/app/models/chat';
+import {ChatService} from 'src/app/services/chat/chat.service';
 
 @Component({
   selector: 'chatmanager-chatlist',
@@ -15,7 +14,8 @@ export class ChatlistComponent implements OnInit {
   @Output() showCreateChatEvent = new EventEmitter<boolean>();
   selectedChat: Chat;
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService) {
+  }
 
   ngOnInit() {
 

@@ -1,14 +1,14 @@
-import { Component, OnInit, HostBinding  } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { DatasharingService } from '../../services/datasharing.service';
-import { RequestService } from '../../services/request/request.service';
-import { SettingsService } from '../../services/settings/settings.service';
-import { environment } from 'src/environments/environment';
-import { Levellist } from 'src/app/models/levellist';
-import { Http } from '@angular/http';
-import { Router } from '@angular/router';
-import { User } from 'src/app/models/user';
-import { OverlayContainer} from '@angular/cdk/overlay';
+import {Component, HostBinding, OnInit} from '@angular/core';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {DatasharingService} from '../../services/datasharing.service';
+import {RequestService} from '../../services/request/request.service';
+import {SettingsService} from '../../services/settings/settings.service';
+import {environment} from 'src/environments/environment';
+import {Levellist} from 'src/app/models/levellist';
+import {Http} from '@angular/http';
+import {Router} from '@angular/router';
+import {User} from 'src/app/models/user';
+import {OverlayContainer} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-main-navigation',
@@ -27,6 +27,7 @@ export class MainNavigationComponent implements OnInit {
   ) {
     this.overlay = overlayContainer.getContainerElement();
   }
+
   loggedIn = false;
   userId: number;
   username: string;
@@ -41,18 +42,19 @@ export class MainNavigationComponent implements OnInit {
   overlay;
 
   navLinksLoggedIn = [
-    { path: '', label: 'Home' },
-    { path: this.profileUrl, label: 'Profile' },
-    { path: '/about', label: 'About' },
-    { path: '/imprint', label: 'Imprint' },
+    {path: '', label: 'Home'},
+    {path: this.profileUrl, label: 'Profile'},
+    {path: '/about', label: 'About'},
+    {path: '/imprint', label: 'Imprint'},
   ];
   navLinks = [
-    { path: '', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/imprint', label: 'Imprint' },
+    {path: '', label: 'Home'},
+    {path: '/about', label: 'About'},
+    {path: '/imprint', label: 'Imprint'},
   ];
 
   @HostBinding('class') componentCssClass;
+
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
@@ -75,47 +77,52 @@ export class MainNavigationComponent implements OnInit {
 
   toggleTheme() {
     if (this.overlay.classList.contains('dark-theme')) {
-        this.overlay.classList.remove('dark-theme');
-        this.overlay.classList.add('light-theme');
-        this.onSetTheme('light-theme');
-        this.lighttheme = true;
-        this.settingsService.setDarkModeActive(false);
+      this.overlay.classList.remove('dark-theme');
+      this.overlay.classList.add('light-theme');
+      this.onSetTheme('light-theme');
+      this.lighttheme = true;
+      this.settingsService.setDarkModeActive(false);
     } else if (this.overlay.classList.contains('light-theme')) {
-        this.overlay.classList.remove('light-theme');
-        this.overlay.classList.add('dark-theme');
-        this.onSetTheme('dark-theme');
-        this.lighttheme = false;
-        this.settingsService.setDarkModeActive(true);
+      this.overlay.classList.remove('light-theme');
+      this.overlay.classList.add('dark-theme');
+      this.onSetTheme('dark-theme');
+      this.lighttheme = false;
+      this.settingsService.setDarkModeActive(true);
     } else {
-        this.overlay.classList.add('dark-theme');
-        this.onSetTheme('dark-theme');
-        this.lighttheme = false;
-        this.settingsService.setDarkModeActive(true);
+      this.overlay.classList.add('dark-theme');
+      this.onSetTheme('dark-theme');
+      this.lighttheme = false;
+      this.settingsService.setDarkModeActive(true);
     }
   }
 
   updateLinks() {
     this.navLinksLoggedIn = [
-      { path: '', label: 'Home' },
-      { path: this.profileUrl, label: 'Profile' },
-      { path: '/about', label: 'About' },
-      { path: '/imprint', label: 'Imprint' },
+      {path: '', label: 'Home'},
+      {path: this.profileUrl, label: 'Profile'},
+      {path: '/about', label: 'About'},
+      {path: '/imprint', label: 'Imprint'},
     ];
   }
+
   onSetTheme(theme) {
     this.overlayContainer.getContainerElement().classList.add(theme);
     this.componentCssClass = theme;
   }
+
   logout() {
     const url = environment.graphQLUrl;
 
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    const body = {query: `mutation {
+    const body = {
+      query: `mutation {
         logout
-      }`};
+      }`
+    };
     this.http.post(url, body).subscribe(response => {
-        console.log(response.text()); });
+      console.log(response.text());
+    });
     this.loggedIn = false;
     const user = new User();
     user.loggedIn = false;

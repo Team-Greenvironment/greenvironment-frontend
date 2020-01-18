@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import {Http, URLSearchParams, Headers} from '@angular/http';
-import { Chat } from 'src/app/models/chat';
-import { Chatmessage } from 'src/app/models/chatmessage';
-import { FriendInfo } from 'src/app/models/friendinfo';
-import { DatasharingService } from '../datasharing.service';
-import { environment } from 'src/environments/environment';
+import {Injectable} from '@angular/core';
+import {Headers, Http} from '@angular/http';
+import {Chat} from 'src/app/models/chat';
+import {Chatmessage} from 'src/app/models/chatmessage';
+import {FriendInfo} from 'src/app/models/friendinfo';
+import {DatasharingService} from '../datasharing.service';
+import {environment} from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,9 @@ export class ChatService {
 
   constructor(private http: Http, private data: DatasharingService) {
     this.data.currentUserInfo.subscribe(user => {
-      this.ownID = user.userID; });
-   }
+      this.ownID = user.userID;
+    });
+  }
 
   public getAllChats(): Array<Chat> {
     const url = environment.graphQLUrl;
@@ -27,7 +28,7 @@ export class ChatService {
     headers.set('Content-Type', 'application/json');
 
     this.http.post(url, this.getBodyForGetAllChats())
-    .subscribe(response => {
+      .subscribe(response => {
         this.chats = this.renderAllChats(response.json());
       });
     return this.chats;
@@ -52,9 +53,9 @@ export class ChatService {
       headers.set('Content-Type', 'application/json');
 
       this.http.post(url, this.getBodyForGetChatsByID(chatId))
-      .subscribe(response => {
-        this.updateChat(response.json());
-      });
+        .subscribe(response => {
+          this.updateChat(response.json());
+        });
     }
     return this.chats;
   }
@@ -68,9 +69,9 @@ export class ChatService {
       headers.set('Content-Type', 'application/json');
 
       this.http.post(url, this.getBodyForGetChatsByID(chatId))
-      .subscribe(response => {
-        this.updateChat(response.json());
-      });
+        .subscribe(response => {
+          this.updateChat(response.json());
+        });
     }
     return this.chats;
   }
@@ -97,9 +98,9 @@ export class ChatService {
     headers.set('Content-Type', 'application/json');
 
     this.http.post(url, this.getBodyForRequestOfAllChatPartners())
-    .subscribe(response => {
-      temp = response.json();
-    });
+      .subscribe(response => {
+        temp = response.json();
+      });
 
     for (const chat of temp.data.getSelf.chats) {
       let memberID: number;
@@ -137,8 +138,8 @@ export class ChatService {
     headers.set('Content-Type', 'application/json');
 
     this.http.post(url, this.getBodyForGetMessagesInChat(pChatID)).subscribe(response => {
-        messages = this.renderMessages(response.json());
-      });
+      messages = this.renderMessages(response.json());
+    });
     return messages;
   }
 
@@ -153,13 +154,13 @@ export class ChatService {
 
   public renderMessages(pResponse: any): Array<Chatmessage> {
     const messages = new Array<Chatmessage>();
-      for (const message of pResponse.data.getChat.messages) {
-        if (message.author.id === this.ownID) {
-          messages.push(new Chatmessage(message.content, message.createdAt, true));
-        } else {
-          messages.push(new Chatmessage(message.content, message.createdAt, false));
-        }
+    for (const message of pResponse.data.getChat.messages) {
+      if (message.author.id === this.ownID) {
+        messages.push(new Chatmessage(message.content, message.createdAt, true));
+      } else {
+        messages.push(new Chatmessage(message.content, message.createdAt, false));
       }
+    }
     return messages;
   }
 
@@ -210,38 +211,44 @@ export class ChatService {
 
   getBodyForNewChat(pUserID: number) {
     this.arr = [pUserID];
-    const body =  {query: `mutation($userID: number[]) {
+    const body = {
+      query: `mutation($userID: number[]) {
         createChat(members: $userID) {id}
       }`, variables: {
-          members: this.arr
-      }};
+        members: this.arr
+      }
+    };
 
-      return body;
+    return body;
   }
 
   getBodyForRequestOfAllChatPartners() {
-    const body =  {query: `query {
+    const body = {
+      query: `query {
         getSelf {
           chats(first: 1000, offset: 0) {members{name, id, level}}
         }}`
-      };
+    };
 
-      return body;
+    return body;
   }
 
   getBodyForSendMessage(pchatID: number, pContent: string) {
-    const body =  {query: `mutation($chatId: ID!, $content: String!) {
+    const body = {
+      query: `mutation($chatId: ID!, $content: String!) {
         sendMessage(chatId: $chatId, content: $content) {id}
       }`, variables: {
-          chatId: pchatID,
-          content: pContent
-      }};
+        chatId: pchatID,
+        content: pContent
+      }
+    };
 
-      return body;
+    return body;
   }
 
   getBodyForGetAllChats() {
-    const body =  {query: `query {
+    const body = {
+      query: `query {
         getSelf {
           chats(first: 10, offset: 0) {
             id, members{name, id, level},
@@ -251,29 +258,33 @@ export class ChatService {
           }
         }
       }`
-      };
+    };
     return body;
   }
 
   getBodyForGetChatsByID(pChatID: number) {
-    const body =  {query: `query($chatID: ID!) {
+    const body = {
+      query: `query($chatID: ID!) {
         getChat(chatId: $chatID) {id, members{name, id, level},
           messages(first: 1000, offset: 0) {author {id}, createdAt, content}}
         }
       }`, variables: {
-          chatId: pChatID
-      }};
+        chatId: pChatID
+      }
+    };
     return body;
   }
 
   getBodyForGetMessagesInChat(pChatID: number) {
-    const body =  {query: `query($chatId: ID!) {
+    const body = {
+      query: `query($chatId: ID!) {
         getChat(chatId: $chatId) {
           messages(first: 1000, offset: 0) {author {id}, createdAt, content}
         }
       }`, variables: {
-          chatId: pChatID
-      }};
+        chatId: pChatID
+      }
+    };
     return body;
   }
 }

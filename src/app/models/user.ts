@@ -1,9 +1,9 @@
-import { FriendRequest } from 'src/app/models/friendRequest';
-import { FriendInfo } from 'src/app/models/friendinfo';
-import { GroupInfo } from 'src/app/models/groupinfo';
-import { Post } from 'src/app/models/post';
+import {FriendRequest} from 'src/app/models/friendRequest';
+import {FriendInfo} from 'src/app/models/friendinfo';
+import {GroupInfo} from 'src/app/models/groupinfo';
+import {Post} from 'src/app/models/post';
 import {IUser} from './interfaces/IUser';
-import { environment } from 'src/environments/environment';
+import {environment} from 'src/environments/environment';
 
 export class User {
   loggedIn = false;

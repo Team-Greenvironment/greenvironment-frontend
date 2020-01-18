@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RegisterService} from '../../services/register/register.service';
 import {Registration} from '../../models/registration';
-import {Router} from '@angular/router';
-import {Md5} from 'ts-md5/dist/md5';
-import { parseWebDriverCommand } from 'blocking-proxy/built/lib/webdriver_commands';
 import * as sha512 from 'js-sha512';
 
 @Component({
@@ -28,7 +25,7 @@ export class RegisterComponent implements OnInit {
     this.errorMessage = error.errors[0].message;
   }
 
-  onClickSubmit(pUsername: string, pEmail: string, pPasswordHash: string, pPasswordHashRepeat: string ) {
+  onClickSubmit(pUsername: string, pEmail: string, pPasswordHash: string, pPasswordHashRepeat: string) {
     this.errorOccurred = false;
     this.errorMessage = ' ';
     if (this.passwordSame(pPasswordHash, pPasswordHashRepeat)) {
@@ -50,7 +47,8 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
 }
 

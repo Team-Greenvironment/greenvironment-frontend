@@ -115,11 +115,13 @@ export class ProfileService extends BaseService {
         let activity: Activity;
         if (post.activity) {
           activity = new Activity(
-          post.activity.id,
-          post.activity.name,
-          post.activity.description,
-          post.activity.points);
-        } else { activity = null; }
+            post.activity.id,
+            post.activity.name,
+            post.activity.description,
+            post.activity.points);
+        } else {
+          activity = null;
+        }
 
         // tslint:disable-next-line: max-line-length
         posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, pdate, author, activity));

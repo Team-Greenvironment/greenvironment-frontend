@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { DatasharingService } from './datasharing.service';
+import {DatasharingService} from './datasharing.service';
 
 describe('DatasharingService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
-import {Router, NavigationEnd} from '@angular/router';
-import { User } from 'src/app/models/user';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
+import {User} from 'src/app/models/user';
 import {MatSort} from '@angular/material/sort';
-import { RequestService } from 'src/app/services/request/request.service';
-import { DatasharingService } from '../../services/datasharing.service';
-import { GroupService } from 'src/app/services/group/group.service';
-import { Group } from 'src/app/models/group';
-import { Event } from 'src/app/models/event';
+import {RequestService} from 'src/app/services/request/request.service';
+import {DatasharingService} from '../../services/datasharing.service';
+import {GroupService} from 'src/app/services/group/group.service';
+import {Group} from 'src/app/models/group';
+import {Event} from 'src/app/models/event';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 // DIALOG COMPONENT to create events
@@ -21,8 +21,8 @@ export class DialogCreateEventComponent {
     public dialogRef: MatDialogRef<DialogCreateEventComponent>,
     private group: GroupService,
     private router: Router) {
-      this.groupId = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
-    }
+    this.groupId = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -63,20 +63,21 @@ export class GroupComponent implements OnInit {
     private requestService: RequestService,
     private data: DatasharingService,
     private groupService: GroupService) {
-      router.events.forEach((event) => {
-        // check if url changes
-        if (event instanceof NavigationEnd) {
-          const possibleID = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
-          if (this.id !== possibleID && this.id && this.router.url.includes('group/')) {
-            // reload the group
-            console.log('search for group id: ' + this.router.url.substr(this.router.url.lastIndexOf('/') + 1));
-            this.ngOnInit();
-          }
+    router.events.forEach((event) => {
+      // check if url changes
+      if (event instanceof NavigationEnd) {
+        const possibleID = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
+        if (this.id !== possibleID && this.id && this.router.url.includes('group/')) {
+          // reload the group
+          console.log('search for group id: ' + this.router.url.substr(this.router.url.lastIndexOf('/') + 1));
+          this.ngOnInit();
         }
-      });
+      }
+    });
   }
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   ngOnInit() {
     this.loading = true;
     this.id = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
@@ -98,7 +99,9 @@ export class GroupComponent implements OnInit {
         for (const member of this.groupProfile.members) {
           member.allowedToSendRequest = this.requestService.isAllowedToSendRequest(member.userID, this.self);
         }
-      } else { this.groupNotFound = true; }
+      } else {
+        this.groupNotFound = true;
+      }
       this.loading = false;
     });
   }

@@ -4,5 +4,5 @@ export interface IGraphqlError {
 
   path: string[];
 
-  location: {line: number; column: number}[];
+  location: { line: number; column: number }[];
 }
