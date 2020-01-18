@@ -4,10 +4,10 @@ infinite-scroll
 [scrollWindow]="false"
 (scrolled)="onScroll()">
   <div [hidden]="!loggedIn">
-    <mat-card >      
+    <mat-card >
       <mat-card-content>
         <mat-form-field id="input">
-          <textarea matInput #content type="text" [(ngModel)]="empty" mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
+          <textarea matInput #content type="text" [(ngModel)]="textInputValue" mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
           <button mat-button matSuffix mat-icon-button>
             <mat-icon>add</mat-icon>
           </button>
@@ -24,14 +24,15 @@ infinite-scroll
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button *ngIf="empty" color="primary" id="post-button" (click)=createPost(content,activityId)>
+        <mat-error *ngIf="errorOccurred && textInputValue">{{getErrorMessage()}}</mat-error>
+        <button mat-raised-button *ngIf="textInputValue" color="primary" id="post-button" (click)=createPost(content,activityId)>
           POST
         </button>
       </mat-card-content>
     </mat-card>
   </div>
   <div [hidden]="loggedIn">
-    <mat-card id="info">      
+    <mat-card id="info">
       <mat-card-header>
         <mat-card-title >
           You need to <a routerLink="/login" class="primary-color">login</a> to post something.

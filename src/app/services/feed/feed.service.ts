@@ -5,7 +5,7 @@ import { Author } from 'src/app/models/author';
 import { environment } from 'src/environments/environment';
 import { Activity } from 'src/app/models/activity';
 import { BehaviorSubject } from 'rxjs';
-import { User } from 'src/app/models/user';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -51,12 +51,12 @@ export class FeedService {
       }`, variables: {
           content: pContent
       }};
-      return this.http.post(environment.graphQLUrl, body).subscribe(response => {
+      return this.http.post(environment.graphQLUrl, body).pipe(tap(response => {
         const updatedposts = this.newPosts.getValue();
         updatedposts.unshift(this.renderPost(response));
         this.newPosts.next(updatedposts);
         this.setPost('NEW');
-      });
+      }));
   }
 
   public createPostActivity(pContent: String, activityId: String) {
@@ -88,12 +88,12 @@ export class FeedService {
           content: pContent,
           id: activityId
       }};
-      return this.http.post(environment.graphQLUrl, body).subscribe(response => {
+      return this.http.post(environment.graphQLUrl, body).pipe(tap(response => {
         const updatedposts = this.newPosts.getValue();
         updatedposts.unshift(this.renderPost(response));
         this.newPosts.next(updatedposts);
         this.setPost('NEW');
-      });
+      }));
   }
 
   public upvote(postId: number): any {
