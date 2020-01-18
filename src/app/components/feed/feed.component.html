@@ -7,7 +7,7 @@ infinite-scroll
     <mat-card >
       <mat-card-content>
         <mat-form-field id="input">
-          <textarea matInput #content type="text" [(ngModel)]="textInputValue" mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
+          <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue" mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
           <button mat-button matSuffix mat-icon-button>
             <mat-icon>add</mat-icon>
           </button>

@@ -49,9 +49,6 @@ export class FeedComponent implements OnInit {
     });
     this.feedService.getPosts('NEW');
     this.feedService.posts.subscribe(response => {
-      if (response.length > 0) {
-        // this.loading = false;
-      }
       this.parentSelectedPostList = response;
     });
     this.feedService.newPostsAvailable.subscribe(response => {
@@ -103,5 +100,15 @@ export class FeedComponent implements OnInit {
    */
   getErrorMessage() {
     return this.errorMessage;
+  }
+
+  /**
+   * Executed when the text in the input field changes.
+   */
+  private onTextInputChange() {
+    if (this.errorOccurred) {
+      this.errorOccurred = false;
+      this.errorMessage = '';
+    }
   }
 }
