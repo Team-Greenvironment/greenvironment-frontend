@@ -39,27 +39,32 @@ export class DialogFileUploadComponent {
    * Fired when the ok button was pressed
    */
   onOkClicked() {
-    this.errorOccurred = false;
-    this.uploading = true;
-    this.selfService.changeProfilePicture(this.file).subscribe((response) => {
-      this.uploading = false;
-      if (response.success) {
-        this.profilePictureUrl.next(environment.greenvironmentUrl + response.fileName);
-        this.dialogRef.close();
-      } else {
-        this.errorMessage = response.error;
+    if (this.file) {
+      this.errorOccurred = false;
+      this.uploading = true;
+      this.selfService.changeProfilePicture(this.file).subscribe((response) => {
+        this.uploading = false;
+        if (response.success) {
+          this.profilePictureUrl.next(environment.greenvironmentUrl + response.fileName);
+          this.dialogRef.close();
+        } else {
+          this.errorMessage = response.error;
+          this.errorOccurred = true;
+        }
+      }, (error) => {
+        this.uploading = false;
         this.errorOccurred = true;
-      }
-    }, (error) => {
-      this.uploading = false;
+        console.log(error);
+        if (error.error) {
+          this.errorMessage = error.error.error;
+        } else {
+          this.errorMessage = 'Failed to upload the profile picture.';
+        }
+      });
+    } else {
       this.errorOccurred = true;
-      console.log(error);
-      if (error.error) {
-        this.errorMessage = error.error.error;
-      } else {
-        this.errorMessage = 'Failed to upload the profile picture.';
-      }
-    });
+      this.errorMessage = 'Please select a file to upload.';
+    }
   }
 
   /**
