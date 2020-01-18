@@ -239,7 +239,7 @@ export class FeedService {
       if (post.author.profilePicture) {
         profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
       } else {
-        profilePicture = 'assets/images/account_circle-24px.svg';
+        profilePicture = 'assets/images/default-profilepic.svg';
       }
     const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
     const temp = new Date(Number(post.createdAt));
@@ -271,7 +271,7 @@ export class FeedService {
       if (post.author.profilePicture) {
         profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
       } else {
-        profilePicture = 'assets/images/account_circle-24px.svg';
+        profilePicture = 'assets/images/default-profilepic.svg';
       }
       const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
       const temp = new Date(Number(post.createdAt));
