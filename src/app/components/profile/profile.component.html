@@ -1,7 +1,7 @@
 <div id="profile-page">
     <div id="profilecontainer" *ngIf="!profileNotFound && !loading">
         <!--on small screen-->
-        <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.gt-sm="true">
+        <mat-toolbar id="toolbar" fxShow="true" fxHide.gt-sm="true">
             <mat-toolbar-row>
                 <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
                     <img class="profile-picture" [src]="userProfile.profilePicture"/>  
@@ -43,7 +43,7 @@
             </mat-toolbar-row>
         </mat-toolbar>
         <!--on big screen-->
-        <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.lt-md="true">
+        <mat-toolbar id="toolbar" fxShow="true" fxHide.lt-md="true">
             <mat-toolbar-row>
                 <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
                     <img class="profile-picture" [src]="userProfile.profilePicture"/>  

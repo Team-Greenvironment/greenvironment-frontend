@@ -1,50 +1,50 @@
 @import '~@angular/material/theming';
 // Plus imports for other components in your app.
-
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat-core();
-
-$md-gvgreen: (
-    50 : #e0f7e7,
-    100 : #b3ebc3,
-    200 : #80de9c,
-    300 : #4dd174,
-    400 : #26c756,
-    500 : #00bd38,
-    600 : #00b732,
-    700 : #00ae2b,
-    800 : #00a624,
-    900 : #009817,
-    A100 : #c3ffc9,
-    A200 : #90ff9a,
-    A400 : #5dff6b,
-    A700 : #44ff54,
+$mat-black: (
+    50 : #e4e4e4,
+    100 : #bcbcbc,
+    200 : #909090,
+    300 : #646464,
+    400 : #424242,
+    500 : #212121,
+    600 : #1d1d1d,
+    700 : #181818,
+    800 : #141414,
+    900 : #0b0b0b,
+    A100 : #e76c6c,
+    A200 : #e04040,
+    A400 : #ec0000,
+    A700 : #d30000,
     contrast: (
         50 : #000000,
         100 : #000000,
         200 : #000000,
-        300 : #000000,
-        400 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
         500 : #ffffff,
         600 : #ffffff,
         700 : #ffffff,
         800 : #ffffff,
         900 : #ffffff,
         A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
     )
 );
+
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $primary: mat-palette($mat-light-green);
 $primary-color: mat-color($primary);
-$accent:  mat-palette($mat-brown, A200, A100, A400);
+$accent:  mat-palette($mat-light-green);
 // The warn palette is optional (defaults to red).
 $warn:    mat-palette($mat-red);
 
@@ -61,7 +61,7 @@ $light-theme: map_merge($light-theme, (background: $background));
 
 
 $dark-primary: mat-palette($mat-light-green);
-$dark-accent:  mat-palette($mat-brown, A200, A100, A400);
+$dark-accent:  mat-palette($mat-black);
 $dark-warn:    mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
