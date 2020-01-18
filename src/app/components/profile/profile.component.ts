@@ -9,13 +9,14 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SelfService} from '../../services/selfservice/self.service';
+import {MatDialog} from '@angular/material';
+import {DialogFileUploadComponent} from './fileUpload/fileUpload.component';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.sass']
 })
-
 export class ProfileComponent implements OnInit {
   levellist: Levellist = new Levellist();
   ownProfile = false;
@@ -34,7 +35,8 @@ export class ProfileComponent implements OnInit {
     private requestService: RequestService,
     private data: DatasharingService,
     private profileService: ProfileService,
-    private selfService: SelfService) {
+    private selfService: SelfService,
+    public dialog: MatDialog) {
       router.events.forEach((event) => {
         // check if the user is on the profile page (of userY) and routes to the page of userY (e.g. his own page)
         if (event instanceof NavigationEnd) {
@@ -71,13 +73,17 @@ export class ProfileComponent implements OnInit {
     this.requestService.sendFriendRequest(user);
   }
 
-  onFileInput(event) {
-    this.selfService.changeProfilePicture(event.target.files[0]).subscribe((response) => {
-      this.userProfile.profilePicture = environment.greenvironmentUrl + response.fileName;
-    }, (error) => {
-      this._snackBar.open('failed to upload picture', 'okay', {
-        duration: 3000
-      });
+  /**
+   * Opens the file upload dialog
+   */
+  openFileUploadDialog() {
+    const dialogRef = this.dialog.open(DialogFileUploadComponent, {
+      width: '400px'
+    });
+    dialogRef.componentInstance.profilePictureUrl.subscribe((profilePictureUrl) => {
+      if (profilePictureUrl) {
+        this.userProfile.profilePicture = profilePictureUrl;
+      }
     });
   }
 }

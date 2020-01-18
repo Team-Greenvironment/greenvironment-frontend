@@ -65,8 +65,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/';
+import {MatNativeDateModule, MatProgressBarModule} from '@angular/material/';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {DialogFileUploadComponent} from './components/profile/fileUpload/fileUpload.component';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
@@ -107,6 +108,7 @@ const appRoutes: Routes = [
     GroupComponent,
     DialogCreateEventComponent,
     UserlistComponent,
+    DialogFileUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -124,7 +126,7 @@ const appRoutes: Routes = [
     MatIconModule,
     BrowserAnimationsModule,
     MatSliderModule,
-    MatFormFieldModule ,
+    MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
     MatToolbarModule,
@@ -151,8 +153,13 @@ const appRoutes: Routes = [
     MatExpansionModule,
     MatDatepickerModule,
     MatSnackBarModule,
+    MatProgressBarModule,
   ],
-  entryComponents: [ DialogCreateGroupComponent, DialogCreateEventComponent ],
+  entryComponents: [
+    DialogCreateGroupComponent,
+    DialogCreateEventComponent,
+    DialogFileUploadComponent
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
