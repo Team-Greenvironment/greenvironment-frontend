@@ -58,9 +58,7 @@ export class ProfileComponent implements OnInit {
           this.userProfile = response;
           // tslint:disable-next-line:max-line-length
           this.userProfile.allowedToSendRequest = this.requestService.isAllowedToSendRequest(this.userProfile.userID, this.self);
-          if (this.userProfile.userID === this.self.userID) {
-            this.ownProfile = true;
-          } else {this.ownProfile = false; }
+          this.ownProfile = this.userProfile.userID === this.self.userID;
           this.rankname = this.levellist.getLevelName(this.userProfile.level);
         } else { this.profileNotFound = true; }
         this.loading = false;

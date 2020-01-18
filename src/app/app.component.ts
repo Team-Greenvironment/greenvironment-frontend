@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       if (user.loggedIn !== true) {
-        this.selfservice.checkIfLoggedIn();
+        this.selfservice.checkIfLoggedIn().subscribe();
       }
     });
   }

@@ -46,19 +46,29 @@ export class User {
     } catch (err) {
       console.error(err);
     }
-    this.friends = userDataResponse.friends
-      .map(friend => new FriendInfo(
-        friend.id, friend.name,
-        friend.level,
-        this.buildProfilePictureUrl(friend.profilePicture)
-      ));
-    this.groups = userDataResponse.groups
-      .map(group => new GroupInfo(group.id, group.name));
-    this.chatIDs = userDataResponse.chats.map(chat => chat.id);
-    this.sentRequestUserIDs = userDataResponse.sentRequests
-      .map(request => request.receiver.id);
-    this.receivedRequests = userDataResponse.receivedRequests
-      .map(request => new FriendRequest(request.id, request.sender.id, request.sender.handle, request.sender.name));
+    if (userDataResponse.friends) {
+      this.friends = userDataResponse.friends
+        .map(friend => new FriendInfo(
+          friend.id, friend.name,
+          friend.level,
+          this.buildProfilePictureUrl(friend.profilePicture)
+        ));
+    }
+    if (userDataResponse.groups) {
+      this.groups = userDataResponse.groups
+        .map(group => new GroupInfo(group.id, group.name));
+    }
+    if (userDataResponse.chats) {
+      this.chatIDs = userDataResponse.chats.map(chat => chat.id);
+    }
+    if (userDataResponse.sentRequests) {
+      this.sentRequestUserIDs = userDataResponse.sentRequests
+        .map(request => request.receiver.id);
+    }
+    if (userDataResponse.receivedRequests) {
+      this.receivedRequests = userDataResponse.receivedRequests
+        .map(request => new FriendRequest(request.id, request.sender.id, request.sender.handle, request.sender.name));
+    }
   }
 
   buildProfilePictureUrl(path: string): string {

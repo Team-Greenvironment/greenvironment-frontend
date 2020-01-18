@@ -1,41 +1,87 @@
-import { Injectable, EventEmitter, Output } from '@angular/core';
-import {Http, URLSearchParams, Headers} from '@angular/http';
-import { User } from 'src/app/models/user';
-import { DatasharingService } from '../datasharing.service';
+import {Injectable} from '@angular/core';
+import {User} from 'src/app/models/user';
+import {DatasharingService} from '../datasharing.service';
 import {Router} from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { FriendRequest } from 'src/app/models/friendRequest';
-import { FriendInfo } from 'src/app/models/friendinfo';
-import { GroupInfo } from 'src/app/models/groupinfo';
+import {environment} from 'src/environments/environment';
+import {FriendRequest} from 'src/app/models/friendRequest';
+import {FriendInfo} from 'src/app/models/friendinfo';
+import {HttpClient} from '@angular/common/http';
+import {tap} from 'rxjs/operators';
+import {BaseService} from '../base.service';
+
+const getSelfGraphqlQuery = `{
+  getSelf{
+    id,
+    name,
+    email,
+    handle,
+    points,
+    level,
+    profilePicture,
+    receivedRequests{id, sender{name, handle, id}},
+    sentRequests{receiver{id}},
+    friends {
+     id,
+     name,
+     level,
+     profilePicture,
+    },
+    groups {
+      id,
+      name
+    },
+    chats{
+      id
+    },
+    settings
+  }
+}`;
 
 @Injectable({
   providedIn: 'root'
 })
-export class SelfService {
+export class SelfService extends BaseService {
 
-  constructor(private http: Http, private data: DatasharingService, private router: Router) { }
+  constructor(private http: HttpClient, private data: DatasharingService) {
+    super();
+  }
 
+  /**
+   * Builds the getself request body
+   */
+  private static buildGetSelfBody(): any {
+    return {
+      query: getSelfGraphqlQuery, variables: {}
+    };
+  }
+
+  /**
+   * Checks if the user is still logged in
+   */
   public checkIfLoggedIn() {
     const url = environment.graphQLUrl;
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    return this.http.post(url, this.buildJson())
-      .subscribe(response => {
+    return this.http.post(url, SelfService.buildGetSelfBody(), {headers: this.headers})
+      .pipe(tap(response => {
         this.stillLoggedIn();
-        this.updateUserInfo(response.json());
+        this.updateUserInfo(response);
       }, error => {
         this.notLoggedIn();
-        // this.fakeLogin();
-      }
-      );
+      }));
   }
+
   public stillLoggedIn() {
   }
 
   public notLoggedIn() {
   }
 
+  /**
+   * Updates the info on a user
+   * @param response
+   */
   public updateUserInfo(response: any) {
     const user = new User();
     user.assignFromResponse(response.data.getSelf);
@@ -62,37 +108,5 @@ export class SelfService {
     user.receivedRequests.push(friendRequest);
 
     this.data.changeUserInfo(user);
-  }
-
-  public buildJson(): any {
-    const body =  {query: `{
-      getSelf{
-        id,
-        name,
-        email,
-        handle,
-        points,
-        level,
-        profilePicture,
-        receivedRequests{id, sender{name, handle, id}},
-        sentRequests{receiver{id}},
-        friends {
-         id,
-         name,
-         level,
-         profilePicture,
-        },
-        groups {
-          id,
-          name
-        },
-        chats{
-          id
-        },
-        settings
-      }
-    }`, variables: {
-      }};
-    return body;
   }
 }
