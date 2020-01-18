@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
-import { User } from 'src/app/models/user';
-import { environment } from 'src/environments/environment';
+import {User} from 'src/app/models/user';
+import {environment} from 'src/environments/environment';
 import {DatasharingService} from '../datasharing.service';
 
 @Injectable({
@@ -9,7 +9,8 @@ import {DatasharingService} from '../datasharing.service';
 })
 export class SettingsService {
 
-  users:  Array<User>;
+  users: Array<User>;
+
   constructor(private http: Http, private data: DatasharingService) {
   }
 
@@ -20,7 +21,8 @@ export class SettingsService {
     headers.set('Content-Type', 'application/json');
     const body = this.buildJsonDarkMode('darkmode: ' + '\'' + active + '\'');
     this.http.post(url, body).subscribe(response => {
-        console.log(response.text()); });
+      console.log(response.text());
+    });
   }
 
   public buildJsonDarkMode(setting_: string): any {

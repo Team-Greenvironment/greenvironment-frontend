@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Activitylist, Activity } from 'src/app/models/activity';
-import { environment } from 'src/environments/environment';
-import { Http } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {Activity, Activitylist} from 'src/app/models/activity';
+import {environment} from 'src/environments/environment';
+import {Http} from '@angular/http';
 
 
 @Injectable({
@@ -12,13 +12,14 @@ export class ActivityService {
 
   public activitylist = new BehaviorSubject<Activitylist>(new Activitylist());
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+  }
 
   changeUserInfo(pActivitylist: Activitylist) {
     this.activitylist.next(pActivitylist);
   }
 
-  public getActivitys() {
+  public getActivities() {
     if (this.activitylist.getValue().Actions.length < 1) {
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
@@ -30,11 +31,11 @@ export class ActivityService {
   }
 
   public buildJson(): any {
-    const body =  {query: `query{getActivities{
+    const body = {
+      query: `query{getActivities{
       id name description points
-    }}`, variables: {
-
-      }};
+    }}`, variables: {}
+    };
     return body;
   }
 

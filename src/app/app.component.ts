@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { User } from './models/user';
-import { DatasharingService } from './services/datasharing.service';
-import { SelfService } from './services/selfservice/self.service';
+import {Component, OnInit} from '@angular/core';
+import {DatasharingService} from './services/datasharing.service';
+import {SelfService} from './services/selfservice/self.service';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +9,13 @@ import { SelfService } from './services/selfservice/self.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private data: DatasharingService, private selfservice: SelfService) { }
+  constructor(private data: DatasharingService, private selfservice: SelfService) {
+  }
 
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       if (user.loggedIn !== true) {
-        this.selfservice.checkIfLoggedIn();
+        this.selfservice.checkIfLoggedIn().subscribe();
       }
     });
   }

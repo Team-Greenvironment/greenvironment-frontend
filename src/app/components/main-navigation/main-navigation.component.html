@@ -1,20 +1,22 @@
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet"> <!-- getting the google material fonts -->
-<meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"> <!-- diables zoom -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+      rel="stylesheet"> <!-- getting the google material fonts -->
+<meta name="viewport"
+      content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"> <!-- diables zoom -->
 <mat-sidenav-container class="mat-typography">
 
   <!-- SIDENAV -->
-  <mat-sidenav #drawer class="sidenav" 
-      fxShow="true" fxHide.gt-sm="true"
-      fixedInViewport="false"
-      autoFocus="false">
+  <mat-sidenav #drawer class="sidenav"
+               fxShow="true" fxHide.gt-sm="true"
+               fixedInViewport="false"
+               autoFocus="false">
     <mat-toolbar class="menu-bar" *ngIf="!loggedIn">Menu</mat-toolbar>
     <mat-toolbar *ngIf="loggedIn" class="menu-bar">
-        <div mat-card-avatar>
-          <img class="profile-picture" [src]="user.profilePicture"/>  
-        </div>
-        <div class="hello-text-box">
-          <span class="hello-text">Hello, {{user.username}}</span>
-        </div>
+      <div mat-card-avatar>
+        <img class="profile-picture" [src]="user.profilePicture"/>
+      </div>
+      <div class="hello-text-box">
+        <span class="hello-text">Hello, {{user.username}}</span>
+      </div>
     </mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="" (click)="drawer.close()">Home</a>
@@ -24,8 +26,10 @@
       <mat-divider></mat-divider>
       <div id="link-box">
         <a mat-stroked-button *ngIf="!loggedIn" class="link-button" routerLink="/register" (click)="drawer.close()">Register</a>
-        <a mat-stroked-button *ngIf="!loggedIn" class="link-button" routerLink="/login" (click)="drawer.toggle()">Login</a>
-        <a mat-stroked-button *ngIf="loggedIn" class="link-button" (click)="logout()" (click)="drawer.toggle()">log out</a>
+        <a mat-stroked-button *ngIf="!loggedIn" class="link-button" routerLink="/login"
+           (click)="drawer.toggle()">Login</a>
+        <a mat-stroked-button *ngIf="loggedIn" class="link-button" (click)="logout()" (click)="drawer.toggle()">log
+          out</a>
       </div>
     </mat-nav-list>
   </mat-sidenav>
@@ -46,26 +50,27 @@
       <mat-icon *ngIf="lighttheme" svgIcon="logo" style="min-width: 35px;" routerLink="" class="link"></mat-icon>
       <mat-icon *ngIf="!lighttheme" svgIcon="logo_green" style="min-width: 35px;" routerLink="" class="link"></mat-icon>
       <span routerLink="" class="link">Greenvironment</span>
-      <nav mat-tab-nav-bar backgroundColor="accent" color="accent" fxShow="true" fxHide.lt-md="true" routerLinkActive #rla="">
+      <nav mat-tab-nav-bar backgroundColor="accent" color="accent" fxShow="true" fxHide.lt-md="true" routerLinkActive
+           #rla="">
         <div *ngIf="loggedIn">
           <a mat-tab-link class="link"
-          *ngFor="let link of navLinksLoggedIn"
-          [routerLink]="link.path"
-          (click)="activeLink = link"
-          routerLinkActive #rla="routerLinkActive"
-          [routerLinkActiveOptions]="{exact:true}"
-          [active]="rla.isActive">
+             *ngFor="let link of navLinksLoggedIn"
+             [routerLink]="link.path"
+             (click)="activeLink = link"
+             routerLinkActive #rla="routerLinkActive"
+             [routerLinkActiveOptions]="{exact:true}"
+             [active]="rla.isActive">
             {{link.label}}
           </a>
         </div>
         <div *ngIf="!loggedIn">
           <a mat-tab-link class="link"
-          *ngFor="let link of navLinks"
-          [routerLink]="link.path"
-          (click)="activeLink = link"
-          routerLinkActive #rla="routerLinkActive"
-          [routerLinkActiveOptions]="{exact:true}"
-          [active]="rla.isActive">
+             *ngFor="let link of navLinks"
+             [routerLink]="link.path"
+             (click)="activeLink = link"
+             routerLinkActive #rla="routerLinkActive"
+             [routerLinkActiveOptions]="{exact:true}"
+             [active]="rla.isActive">
             {{link.label}}
           </a>
         </div>
@@ -73,10 +78,13 @@
 
       <!--content on BIG SCREEN-->
       <div id="menu-button-box">
-        <span class="mat-button" *ngIf="loggedIn" fxShow="true" fxHide.lt-md="true" routerLink={{profileUrl}}>Hello, {{user.username}}</span>
+        <span class="mat-button" *ngIf="loggedIn" fxShow="true" fxHide.lt-md="true"
+              routerLink={{profileUrl}}>Hello, {{user.username}}</span>
         <span class="mat-button" *ngIf="!loggedIn" fxShow="true" fxHide.lt-md="true" routerLink="/login"><span>Hello, Sign in</span></span>
         <button mat-icon-button [matMenuTriggerFor]="requestMenu" [disabled]="!loggedIn" id="menu-button">
-          <mat-icon [matBadge]="user.receivedRequests.length" [matBadgeHidden]="!(user.receivedRequests.length > 0)" matBadgeColor="accent">notifications</mat-icon>
+          <mat-icon [matBadge]="user.receivedRequests.length" [matBadgeHidden]="!(user.receivedRequests.length > 0)"
+                    matBadgeColor="accent">notifications
+          </mat-icon>
         </button>
 
         <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button">
@@ -86,7 +94,8 @@
 
       <mat-menu #requestMenu="matMenu">
         <span mat-menu-item disableRipple="true" disabled="true">friend requests:</span>
-        <button mat-menu-item *ngFor = "let request of user.receivedRequests" [class.selected]="request === selectedRequest" (click)="$event.stopPropagation();" disableRipple="true">
+        <button mat-menu-item *ngFor="let request of user.receivedRequests"
+                [class.selected]="request === selectedRequest" (click)="$event.stopPropagation();" disableRipple="true">
           <button mat-icon-button (click)=acceptRequest(request.senderUserID) (click)="$event.stopPropagation();">
             <mat-icon>check</mat-icon>
           </button>
@@ -95,7 +104,7 @@
           </button>
           <span>{{request.senderUsername}}</span>
           <span>&nbsp; @{{request.senderHandle}}</span>
-        </button> 
+        </button>
       </mat-menu>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="$event.stopPropagation();">
@@ -108,16 +117,16 @@
           </mat-slide-toggle>
         </button>
         <div [hidden]="!loggedIn">
-          <button mat-menu-item (click)="logout()" >
+          <button mat-menu-item (click)="logout()">
             <mat-icon>exit_to_app</mat-icon>
             <span>log out</span>
-          </button> 
+          </button>
         </div>
         <div [hidden]="loggedIn">
           <button mat-menu-item routerLink="/login">
             <mat-icon>exit_to_app</mat-icon>
             <span>login</span>
-          </button> 
+          </button>
         </div>
       </mat-menu>
 

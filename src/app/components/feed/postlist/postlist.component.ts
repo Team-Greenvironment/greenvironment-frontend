@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Post } from 'src/app/models/post';
-import { FeedService } from 'src/app/services/feed/feed.service';
-import { Router } from '@angular/router';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Post} from 'src/app/models/post';
+import {FeedService} from 'src/app/services/feed/feed.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'feed-postlist',
@@ -14,7 +14,8 @@ export class PostlistComponent implements OnInit {
   @Output() voteEvent = new EventEmitter<boolean>();
   selectedPost: Post;
 
-  constructor(private feedService: FeedService, private router: Router) { }
+  constructor(private feedService: FeedService, private router: Router) {
+  }
 
   ngOnInit() {
   }
@@ -22,18 +23,18 @@ export class PostlistComponent implements OnInit {
   voteUp(pPost: Post) {
     this.feedService.upvote(pPost.id).subscribe(response => {
       // this.voteEvent.emit(true);
-      pPost.userVote = response.json().data.vote.post.userVote;
-      pPost.upvotes = response.json().data.vote.post.upvotes;
-      pPost.downvotes = response.json().data.vote.post.downvotes;
+      pPost.userVote = response.data.vote.post.userVote;
+      pPost.upvotes = response.data.vote.post.upvotes;
+      pPost.downvotes = response.data.vote.post.downvotes;
     });
   }
 
   voteDown(pPost: Post) {
     this.feedService.downvote(pPost.id).subscribe(response => {
       // this.voteEvent.emit(true);
-      pPost.userVote = response.json().data.vote.post.userVote;
-      pPost.upvotes = response.json().data.vote.post.upvotes;
-      pPost.downvotes = response.json().data.vote.post.downvotes;
+      pPost.userVote = response.data.vote.post.userVote;
+      pPost.upvotes = response.data.vote.post.upvotes;
+      pPost.downvotes = response.data.vote.post.downvotes;
     });
   }
 

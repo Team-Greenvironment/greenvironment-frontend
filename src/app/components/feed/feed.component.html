@@ -1,58 +1,64 @@
 <div id="home"
-infinite-scroll
-[infiniteScrollDistance]="0.5"
-[scrollWindow]="false"
-(scrolled)="onScroll()">
+     infinite-scroll
+     [infiniteScrollDistance]="0.5"
+     [scrollWindow]="false"
+     (scrolled)="onScroll()">
   <div [hidden]="!loggedIn">
-    <mat-card >      
+    <mat-card>
       <mat-card-content>
         <mat-form-field id="input">
-          <textarea matInput #content type="text" [(ngModel)]="empty" mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
+          <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue"
+                    mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
           <button mat-button matSuffix mat-icon-button>
             <mat-icon>add</mat-icon>
           </button>
         </mat-form-field>
         <p id="check">
-          <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked">I protected the environment.</mat-checkbox>
+          <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked">I protected the environment.
+          </mat-checkbox>
         </p>
         <mat-form-field id="action-chooser" *ngIf="checked">
           <mat-label>What did you do?</mat-label>
           <mat-select [(ngModel)]="activityId" name="action">
             <mat-option>nothing ;)</mat-option>
-            <mat-option *ngFor="let action of actionlist.Actions" [value]="action.id" [matTooltip]="action.description" matTooltipShowDelay="200">
+            <mat-option *ngFor="let action of actionlist.Actions" [value]="action.id" [matTooltip]="action.description"
+                        matTooltipShowDelay="200">
               {{action.name}} ({{action.description}})
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button *ngIf="empty" color="primary" id="post-button" (click)=createPost(content,activityId)>
+        <mat-error *ngIf="errorOccurred && textInputValue">{{getErrorMessage()}}</mat-error>
+        <button mat-raised-button *ngIf="textInputValue" color="primary" id="post-button"
+                (click)=createPost(content,activityId)>
           POST
         </button>
       </mat-card-content>
     </mat-card>
   </div>
   <div [hidden]="loggedIn">
-    <mat-card id="info">      
+    <mat-card id="info">
       <mat-card-header>
-        <mat-card-title >
+        <mat-card-title>
           You need to <a routerLink="/login" class="primary-color">login</a> to post something.
         </mat-card-title>
       </mat-card-header>
     </mat-card>
   </div>
 
-<div id="chooser-div" style="text-align: center; margin-top: 1em;">
+  <div id="chooser-div" style="text-align: center; margin-top: 1em;">
     <mat-button-toggle-group id="feedchooser" [(ngModel)]="view" value="view">
-    <mat-button-toggle (click)="showNew()" value="new">New</mat-button-toggle>
-    <mat-button-toggle (click)="showMostLiked()" value="mostliked">Most Liked</mat-button-toggle>
-  </mat-button-toggle-group>
-</div>
-<div id="complete-feed">
-  <div id="feedlist">
-    <feed-postlist [childPostList]="parentSelectedPostList"></feed-postlist>
-    <div style="height: 60px;" [hidden]='(!loadingNew && view === "new") || (!loadingMostLiked && view === "mostliked") '>
-      <!--<mat-spinner *ngIf='loadingNew && view === "mostLiked"' style="margin:0 auto; margin-top: 2em;" diameter="50"></mat-spinner>-->
+      <mat-button-toggle (click)="showNew()" value="new">New</mat-button-toggle>
+      <mat-button-toggle (click)="showMostLiked()" value="mostliked">Most Liked</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div id="complete-feed">
+    <div id="feedlist">
+      <feed-postlist [childPostList]="parentSelectedPostList"></feed-postlist>
+      <div style="height: 60px;"
+           [hidden]='(!loadingNew && view === "new") || (!loadingMostLiked && view === "mostliked") '>
+        <!--<mat-spinner *ngIf='loadingNew && view === "mostLiked"' style="margin:0 auto; margin-top: 2em;" diameter="50"></mat-spinner>-->
         <mat-spinner style="margin:0 auto; margin-top: 2em;" diameter="50"></mat-spinner>
+      </div>
     </div>
   </div>
-</div>
 </div>

@@ -1,97 +1,83 @@
 <div id="profile-page">
-    <div id="profilecontainer" *ngIf="!profileNotFound && !loading">
-        <!--on small screen-->
-        <mat-toolbar id="toolbar" fxShow="true" fxHide.gt-sm="true">
-            <mat-toolbar-row>
-                <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
-                    <img class="profile-picture" [src]="userProfile.profilePicture"/>  
-                    <mat-icon id="icon">camera_alt</mat-icon>
-                    <input #fileInput type="file" accept="image/*" (change)="onFileInput($event)" style="display:none;" />
-                </div>
-                <div *ngIf="!ownProfile">
-                    <img class="profile-picture" [src]="userProfile.profilePicture"/>
-                </div>
-                
-                <span id="username">{{userProfile.username}}</span>
-                <button mat-icon-button 
-                class="request-button" 
-                (click)="sendFriendRequest(userProfile)" 
+  <div id="profilecontainer" *ngIf="!profileNotFound && !loading">
+    <!--on small screen-->
+    <mat-toolbar id="toolbar" fxShow="true" fxHide.gt-sm="true">
+      <mat-toolbar-row>
+        <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="openFileUploadDialog()">
+          <img class="profile-picture" [src]="userProfile.profilePicture"/>
+          <mat-icon id="icon">camera_alt</mat-icon>
+        </div>
+        <div *ngIf="!ownProfile">
+          <img class="profile-picture" [src]="userProfile.profilePicture"/>
+        </div>
+
+        <span id="username">{{userProfile.username}}</span>
+        <button mat-icon-button
+                class="request-button"
+                (click)="sendFriendRequest(userProfile)"
                 [disabled]="!userProfile.allowedToSendRequest">
-                    <mat-icon>person_add</mat-icon>
-                </button>
-            </mat-toolbar-row>
-            <mat-toolbar-row> 
-                <div class="info-box"> 
-                    <span id="handle">@{{userProfile.handle}}</span>
-                </div>  
-            </mat-toolbar-row>
-            <mat-toolbar-row>
-                <div>
-                    <span class="info">{{rankname}} ({{userProfile.points}} points)</span>
-                </div>
-            </mat-toolbar-row>
-            <mat-toolbar-row>
-                <div>
-                    <span class="info">{{userProfile.friendCount}} friends</span>
-                    <span class="info">{{userProfile.groupCount}} groups</span>
-                </div>
-            </mat-toolbar-row>
-            <mat-toolbar-row>
-                <div>
-                    <span class="info">joined on {{userProfile.joinedAt}}</span>
-                </div>
-            </mat-toolbar-row>
-        </mat-toolbar>
-        <!--on big screen-->
-        <mat-toolbar id="toolbar" fxShow="true" fxHide.lt-md="true">
-            <mat-toolbar-row>
-                <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="fileInput.click()">
-                    <img class="profile-picture" [src]="userProfile.profilePicture"/>  
-                    <mat-icon id="icon">camera_alt</mat-icon>
-                    <input #fileInput type="file" accept="image/*" (change)="onFileInput($event)" style="display:none;" />
-                </div>
-                <div *ngIf="!ownProfile">
-                    <img class="profile-picture" [src]="userProfile.profilePicture"/>
-                </div>
-                <span id="username">{{userProfile.username}}</span>
-                <span id="handle">@{{userProfile.handle}}</span>
-                <button mat-icon-button 
-                    class="request-button" 
-                    (click)="sendFriendRequest(userProfile)" 
-                    [disabled]="!userProfile.allowedToSendRequest">
-                    <mat-icon>person_add</mat-icon>
-                </button>
-            </mat-toolbar-row>
-            <mat-toolbar-row>
-                <div class="info-box">
-                    <span class="info">{{rankname}} ({{userProfile.points}} points)</span>
-                    <span class="info">{{userProfile.friendCount}} friends</span>
-                    <span class="info">{{userProfile.groupCount}} groups</span>
-                    <span class="info">joined on {{userProfile.joinedAt}}</span>
-                </div>
-            </mat-toolbar-row>
-        </mat-toolbar>
-        <div id="postlist">
-            <feed-postlist [childPostList]="this.userProfile.posts"></feed-postlist>  
+          <mat-icon>person_add</mat-icon>
+        </button>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <div class="info-box">
+          <span id="handle">@{{userProfile.handle}}</span>
         </div>
-        <div id="profile">
-                
-                    <!--<table style="width:100%">
-                        <tr>
-                            <th>points </th>
-                            <th>action</th>
-                        </tr>
-                        <tr *ngFor= "let action of actionlist.actions">
-                            <td>{{action.points}}</td>
-                            <td>{{action.name}}</td>
-                        </tr>
-                    </table>-->
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <div>
+          <span class="info">{{rankname}} ({{userProfile.points}} points)</span>
         </div>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <div>
+          <span class="info">{{userProfile.friendCount}} friends</span>
+          <span class="info">{{userProfile.groupCount}} groups</span>
+        </div>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <div>
+          <span class="info">joined on {{userProfile.joinedAt}}</span>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <!--on big screen-->
+    <mat-toolbar id="toolbar" fxShow="true" fxHide.lt-md="true">
+      <mat-toolbar-row>
+        <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="openFileUploadDialog()">
+          <img class="profile-picture" [src]="userProfile.profilePicture"/>
+          <mat-icon id="icon">camera_alt</mat-icon>
+        </div>
+        <div *ngIf="!ownProfile">
+          <img class="profile-picture" [src]="userProfile.profilePicture"/>
+        </div>
+        <span id="username">{{userProfile.username}}</span>
+        <span id="handle">@{{userProfile.handle}}</span>
+        <button mat-icon-button
+                class="request-button"
+                (click)="sendFriendRequest(userProfile)"
+                [disabled]="!userProfile.allowedToSendRequest">
+          <mat-icon>person_add</mat-icon>
+        </button>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <div class="info-box">
+          <span class="info">{{rankname}} ({{userProfile.points}} points)</span>
+          <span class="info">{{userProfile.friendCount}} friends</span>
+          <span class="info">{{userProfile.groupCount}} groups</span>
+          <span class="info">joined on {{userProfile.joinedAt}}</span>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <div id="postlist">
+      <feed-postlist [childPostList]="this.userProfile.posts"></feed-postlist>
     </div>
-    <div id="profilecontainer" *ngIf="profileNotFound">
-        <h1>Profile not found :(</h1>
+    <div id="profile">
     </div>
-    <mat-spinner *ngIf="loading" style="margin:0 auto; margin-top: 10em;" diameter="100"></mat-spinner>
+  </div>
+  <div id="profilecontainer" *ngIf="profileNotFound">
+    <h1>Profile not found :(</h1>
+  </div>
+  <mat-spinner *ngIf="loading" style="margin:0 auto; margin-top: 10em;" diameter="100"></mat-spinner>
 </div>
 
-  

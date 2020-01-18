@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Post } from 'src/app/models/post';
-import { Author } from 'src/app/models/author';
-import { environment } from 'src/environments/environment';
-import { Activity } from 'src/app/models/activity';
-import { BehaviorSubject } from 'rxjs';
-import { User } from 'src/app/models/user';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Post} from 'src/app/models/post';
+import {Author} from 'src/app/models/author';
+import {environment} from 'src/environments/environment';
+import {Activity} from 'src/app/models/activity';
+import {BehaviorSubject} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,20 +14,22 @@ export class FeedService {
 
   public newPostsAvailable = new BehaviorSubject<boolean>(true);
   public topPostsAvailable = new BehaviorSubject<boolean>(true);
-  public posts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
-  public newPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
-  public mostLikedPosts: BehaviorSubject<Post[]> = new BehaviorSubject(new Array());
+  public posts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
+  public newPosts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
+  public mostLikedPosts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
   private activePostList = 'NEW';
   private mostLikedOffset = 0;
   private newOffset = 0;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   public createPost(pContent: String) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    const body = {query: `mutation($content: String!) {
+    const body = {
+      query: `mutation($content: String!) {
         createPost(content: $content) {
           id,
           content,
@@ -49,21 +51,23 @@ export class FeedService {
             id},
           createdAt}
       }`, variables: {
-          content: pContent
-      }};
-      return this.http.post(environment.graphQLUrl, body).subscribe(response => {
-        const updatedposts = this.newPosts.getValue();
-        updatedposts.unshift(this.renderPost(response));
-        this.newPosts.next(updatedposts);
-        this.setPost('NEW');
-      });
+        content: pContent
+      }
+    };
+    return this.http.post(environment.graphQLUrl, body).pipe(tap(response => {
+      const updatedposts = this.newPosts.getValue();
+      updatedposts.unshift(this.renderPost(response));
+      this.newPosts.next(updatedposts);
+      this.setPost('NEW');
+    }));
   }
 
   public createPostActivity(pContent: String, activityId: String) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    const body = {query: `mutation($content: String!, $id: ID) {
+    const body = {
+      query: `mutation($content: String!, $id: ID) {
         createPost(content: $content activityId: $id) {
           id,
           content,
@@ -85,28 +89,31 @@ export class FeedService {
             id},
           createdAt}
       }`, variables: {
-          content: pContent,
-          id: activityId
-      }};
-      return this.http.post(environment.graphQLUrl, body).subscribe(response => {
-        const updatedposts = this.newPosts.getValue();
-        updatedposts.unshift(this.renderPost(response));
-        this.newPosts.next(updatedposts);
-        this.setPost('NEW');
-      });
+        content: pContent,
+        id: activityId
+      }
+    };
+    return this.http.post(environment.graphQLUrl, body).pipe(tap(response => {
+      const updatedposts = this.newPosts.getValue();
+      updatedposts.unshift(this.renderPost(response));
+      this.newPosts.next(updatedposts);
+      this.setPost('NEW');
+    }));
   }
 
-  public upvote(pPostID: number): any {
+  public upvote(postId: number): any {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    const body = {query: `mutation($postId: ID!) {
+    const body = {
+      query: `mutation($postId: ID!) {
         vote(postId: $postId, type: UPVOTE) {
           post{userVote upvotes downvotes}
         }
       }`, variables: {
-          postId: pPostID
-      }};
+        postId
+      }
+    };
 
     return this.http.post(environment.graphQLUrl, body);
   }
@@ -115,13 +122,15 @@ export class FeedService {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    const body = {query: `mutation($postId: ID!) {
+    const body = {
+      query: `mutation($postId: ID!) {
         vote(postId: $postId, type: DOWNVOTE) {
           post{userVote upvotes downvotes}
         }
       }`, variables: {
-          postId: pPostID
-      }};
+        postId: pPostID
+      }
+    };
 
     return this.http.post(environment.graphQLUrl, body);
   }
@@ -130,30 +139,33 @@ export class FeedService {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    const body = {query: `mutation($postId: ID!) {
+    const body = {
+      query: `mutation($postId: ID!) {
         deletePost(postId: $postId)
       }`, variables: {
-          postId: pPostID
-      }};
+        postId: pPostID
+      }
+    };
 
     return this.http.post(environment.graphQLUrl, body);
   }
 
   public getPosts(sort: string) {
     if ((sort === 'NEW' && this.newPosts.getValue().length === 0) ||
-    (sort === 'TOP' && this.mostLikedPosts.getValue().length === 0)) {
+      (sort === 'TOP' && this.mostLikedPosts.getValue().length === 0)) {
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
       this.http.post(environment.graphQLUrl, this.buildJson(sort, 0))
-      .subscribe(response => {
-        if (sort === 'NEW') {
-          this.newPosts.next(this.renderAllPosts(response));
-        } else if (sort === 'TOP') {
-          this.mostLikedPosts.next(this.renderAllPosts(response));
-        }
-        this.setPost(sort);
-      });
-    } this.setPost(sort);
+        .subscribe(response => {
+          if (sort === 'NEW') {
+            this.newPosts.next(this.renderAllPosts(response));
+          } else if (sort === 'TOP') {
+            this.mostLikedPosts.next(this.renderAllPosts(response));
+          }
+          this.setPost(sort);
+        });
+    }
+    this.setPost(sort);
   }
 
   public getNextPosts() {
@@ -162,29 +174,29 @@ export class FeedService {
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
       this.http.post(environment.graphQLUrl, this.buildJson(this.activePostList, this.newOffset))
-      .subscribe(response => {
-        let updatedposts = this.newPosts.getValue();
-        updatedposts = updatedposts.concat(this.renderAllPosts(response));
-        if (this.renderAllPosts(response).length < 1) {
-          this.newPostsAvailable.next(false);
-        }
-        this.newPosts.next(updatedposts);
-        this.setPost('NEW');
-      });
+        .subscribe(response => {
+          let updatedposts = this.newPosts.getValue();
+          updatedposts = updatedposts.concat(this.renderAllPosts(response));
+          if (this.renderAllPosts(response).length < 1) {
+            this.newPostsAvailable.next(false);
+          }
+          this.newPosts.next(updatedposts);
+          this.setPost('NEW');
+        });
     } else if (this.activePostList === 'TOP' && this.topPostsAvailable) {
       this.mostLikedOffset += 10;
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
       this.http.post(environment.graphQLUrl, this.buildJson(this.activePostList, this.mostLikedOffset))
-      .subscribe(response => {
-        let updatedposts = this.mostLikedPosts.getValue();
-        updatedposts = updatedposts.concat(this.renderAllPosts(response));
-        if (this.renderAllPosts(response).length < 1) {
-          this.topPostsAvailable.next(false);
-        }
-        this.mostLikedPosts.next(updatedposts);
-        this.setPost('TOP');
-      });
+        .subscribe(response => {
+          let updatedposts = this.mostLikedPosts.getValue();
+          updatedposts = updatedposts.concat(this.renderAllPosts(response));
+          if (this.renderAllPosts(response).length < 1) {
+            this.topPostsAvailable.next(false);
+          }
+          this.mostLikedPosts.next(updatedposts);
+          this.setPost('TOP');
+        });
     }
   }
 
@@ -198,7 +210,8 @@ export class FeedService {
   }
 
   buildJson(sort: string, offset: number) {
-    const body =  {query: `query($offset: Int, $sort: SortType){
+    const body = {
+      query: `query($offset: Int, $sort: SortType){
         getPosts (first: 10, offset: $offset, sort: $sort) {
           id,
           content,
@@ -222,8 +235,9 @@ export class FeedService {
       }`, variables: {
         offset,
         sort
-      }};
-      return body;
+      }
+    };
+    return body;
   }
 
   public renderPost(response: any): Post {
@@ -236,11 +250,11 @@ export class FeedService {
     const userVote: string = post.userVote;
     const deletable: boolean = post.deletable;
     let profilePicture: string;
-      if (post.author.profilePicture) {
-        profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
-      } else {
-        profilePicture = 'assets/images/account_circle-24px.svg';
-      }
+    if (post.author.profilePicture) {
+      profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
+    } else {
+      profilePicture = 'assets/images/default-profilepic.svg';
+    }
     const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
     const temp = new Date(Number(post.createdAt));
     const date = temp.toLocaleString('en-GB');
@@ -251,7 +265,9 @@ export class FeedService {
         post.activity.name,
         post.activity.description,
         post.activity.points);
-      } else { activity = null; }
+    } else {
+      activity = null;
+    }
 
     return new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, date, author, activity);
   }
@@ -271,19 +287,21 @@ export class FeedService {
       if (post.author.profilePicture) {
         profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
       } else {
-        profilePicture = 'assets/images/account_circle-24px.svg';
+        profilePicture = 'assets/images/default-profilepic.svg';
       }
       const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
       const temp = new Date(Number(post.createdAt));
       const date = temp.toLocaleString('en-GB');
       let activity: Activity;
       if (post.activity) {
-      activity = new Activity(
-        post.activity.id,
-        post.activity.name,
-        post.activity.description,
-        post.activity.points);
-      } else { activity = null; }
+        activity = new Activity(
+          post.activity.id,
+          post.activity.name,
+          post.activity.description,
+          post.activity.points);
+      } else {
+        activity = null;
+      }
       posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, date, author, activity));
     }
     return posts;

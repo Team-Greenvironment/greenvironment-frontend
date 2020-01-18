@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { User } from 'src/app/models/user';
-import { RequestService } from 'src/app/services/request/request.service';
-import { Router } from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
+import {User} from 'src/app/models/user';
+import {RequestService} from 'src/app/services/request/request.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'user-list',
@@ -13,7 +13,8 @@ export class UserlistComponent implements OnInit {
   @Input() userList: Array<User>;
   selectedUser: User;
 
-  constructor(private requestService: RequestService, private router: Router) { }
+  constructor(private requestService: RequestService, private router: Router) {
+  }
 
   ngOnInit() {
   }

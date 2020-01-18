@@ -1,4 +1,3 @@
-
 export class Activity {
   id: number;
   name: string;
@@ -14,5 +13,5 @@ export class Activity {
 }
 
 export class Activitylist {
-  Actions: Activity[] = new Array();
+  Actions: Activity[] = [];
 }

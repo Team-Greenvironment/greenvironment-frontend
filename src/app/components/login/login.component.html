@@ -1,24 +1,25 @@
 <div id="login">
-<mat-card style="text-align: center;" >   
-  <mat-card-title>
-    Login
-  </mat-card-title>   
-  <mat-card-content>
-    <div class="example-container" (keyup.enter)="onClickSubmit(email.value,password.value)">
-      <mat-error *ngIf="errorOccurred">{{getErrorMessage()}}</mat-error>
-      <mat-form-field>
-        <input matInput placeholder="Enter your email" #email  >
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" #password>
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-      </mat-form-field>
-    </div>
-    <button mat-raised-button color="primary" (click)="onClickSubmit(email.value,password.value)">Login</button>
-    <p>You aren't part of greenvironment yet?</p>
-    <a mat-stroked-button color="primary" routerLink="/register">Register</a>
-  </mat-card-content>
-</mat-card>
+  <mat-card style="text-align: center;">
+    <mat-card-title>
+      Login
+    </mat-card-title>
+    <mat-card-content>
+      <div class="example-container" (keyup.enter)="onClickSubmit(email.value,password.value)">
+        <mat-error *ngIf="errorOccurred">{{getErrorMessage()}}</mat-error>
+        <mat-form-field>
+          <input matInput placeholder="Enter your email" #email>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" #password>
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="primary" (click)="onClickSubmit(email.value,password.value)">Login</button>
+      <p>You aren't part of greenvironment yet?</p>
+      <a mat-stroked-button color="primary" routerLink="/register">Register</a>
+    </mat-card-content>
+  </mat-card>
 </div>

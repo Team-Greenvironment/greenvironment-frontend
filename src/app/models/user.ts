@@ -1,9 +1,9 @@
-import { FriendRequest } from 'src/app/models/friendRequest';
-import { FriendInfo } from 'src/app/models/friendinfo';
-import { GroupInfo } from 'src/app/models/groupinfo';
-import { Post } from 'src/app/models/post';
+import {FriendRequest} from 'src/app/models/friendRequest';
+import {FriendInfo} from 'src/app/models/friendinfo';
+import {GroupInfo} from 'src/app/models/groupinfo';
+import {Post} from 'src/app/models/post';
 import {IUser} from './interfaces/IUser';
-import { environment } from 'src/environments/environment';
+import {environment} from 'src/environments/environment';
 
 export class User {
   loggedIn = false;
@@ -46,26 +46,36 @@ export class User {
     } catch (err) {
       console.error(err);
     }
-    this.friends = userDataResponse.friends
-      .map(friend => new FriendInfo(
-        friend.id, friend.name,
-        friend.level,
-        this.buildProfilePictureUrl(friend.profilePicture)
-      ));
-    this.groups = userDataResponse.groups
-      .map(group => new GroupInfo(group.id, group.name));
-    this.chatIDs = userDataResponse.chats.map(chat => chat.id);
-    this.sentRequestUserIDs = userDataResponse.sentRequests
-      .map(request => request.receiver.id);
-    this.receivedRequests = userDataResponse.receivedRequests
-      .map(request => new FriendRequest(request.id, request.sender.id, request.sender.handle, request.sender.name));
+    if (userDataResponse.friends) {
+      this.friends = userDataResponse.friends
+        .map(friend => new FriendInfo(
+          friend.id, friend.name,
+          friend.level,
+          this.buildProfilePictureUrl(friend.profilePicture)
+        ));
+    }
+    if (userDataResponse.groups) {
+      this.groups = userDataResponse.groups
+        .map(group => new GroupInfo(group.id, group.name));
+    }
+    if (userDataResponse.chats) {
+      this.chatIDs = userDataResponse.chats.map(chat => chat.id);
+    }
+    if (userDataResponse.sentRequests) {
+      this.sentRequestUserIDs = userDataResponse.sentRequests
+        .map(request => request.receiver.id);
+    }
+    if (userDataResponse.receivedRequests) {
+      this.receivedRequests = userDataResponse.receivedRequests
+        .map(request => new FriendRequest(request.id, request.sender.id, request.sender.handle, request.sender.name));
+    }
   }
 
   buildProfilePictureUrl(path: string): string {
     if (path) {
       return environment.greenvironmentUrl + path;
     } else {
-      return 'assets/images/account_circle-24px.svg';
+      return 'assets/images/default-profilepic.svg';
     }
   }
 }

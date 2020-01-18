@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { Author } from 'src/app/models/author';
-import { environment } from 'src/environments/environment';
-import { User } from 'src/app/models/user';
-import { Event } from 'src/app/models/event';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { Group } from 'src/app/models/group';
+import {Injectable} from '@angular/core';
+import {Http} from '@angular/http';
+import {environment} from 'src/environments/environment';
+import {User} from 'src/app/models/user';
+import {Event} from 'src/app/models/event';
+import {BehaviorSubject} from 'rxjs';
+import {Group} from 'src/app/models/group';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,8 @@ export class GroupService {
 
   public group: BehaviorSubject<Group> = new BehaviorSubject(new Group());
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+  }
 
   public getGroupData(groupId: string) {
     const headers = new Headers();
@@ -39,7 +39,7 @@ export class GroupService {
           events{id name dueDate joined}
       }
     }`, variables: {
-      groupId: id
+        groupId: id
       }
     };
     return body;
@@ -83,7 +83,8 @@ export class GroupService {
   public createEvent(name: string, date: string, groupId: string) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    const body = {query: `mutation($groupId: ID!, $name: String, $date: String) {
+    const body = {
+      query: `mutation($groupId: ID!, $name: String, $date: String) {
         createEvent(name: $name, dueDate: $date, groupId: $groupId) {
           id
           name
@@ -91,10 +92,11 @@ export class GroupService {
           joined
         }
       }`, variables: {
-          name: name,
-          date: date,
-          groupId: groupId
-      }};
+        name: name,
+        date: date,
+        groupId: groupId
+      }
+    };
 
     this.http.post(environment.graphQLUrl, body).subscribe(response => {
       const event = response.json().data.createEvent;
@@ -109,26 +111,30 @@ export class GroupService {
   public joinEvent(eventId: string) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    const body = {query: `mutation($eventId: ID!) {
+    const body = {
+      query: `mutation($eventId: ID!) {
       joinEvent(eventId: $eventId) {
         joined
       }
     }`, variables: {
-          eventId: eventId
-      }};
+        eventId: eventId
+      }
+    };
     return this.http.post(environment.graphQLUrl, body);
   }
 
   public leaveEvent(eventId: string) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    const body = {query: `mutation($eventId: ID!) {
+    const body = {
+      query: `mutation($eventId: ID!) {
       leaveEvent(eventId: $eventId) {
         joined
       }
     }`, variables: {
-          eventId: eventId
-      }};
+        eventId: eventId
+      }
+    };
     return this.http.post(environment.graphQLUrl, body);
   }
 
