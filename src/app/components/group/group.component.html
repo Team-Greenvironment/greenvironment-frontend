@@ -1,7 +1,7 @@
 <div id="profile-page">
     <div id="profilecontainer" *ngIf="!groupNotFound && !loading">
         <!--on small screen-->
-        <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.gt-sm="true">
+        <mat-toolbar id="toolbar" fxShow="true" fxHide.gt-sm="true">
             <mat-toolbar-row>
                 <div class="profile-picture"></div>
                 <span id="username">{{groupProfile.name}}</span>
@@ -34,7 +34,7 @@
             </mat-toolbar-row>
         </mat-toolbar>
         <!--on big screen-->
-        <mat-toolbar color="primary" id="toolbar" fxShow="true" fxHide.lt-md="true">
+        <mat-toolbar id="toolbar" fxShow="true" fxHide.lt-md="true">
             <mat-toolbar-row>
                 <div class="profile-picture"></div>
                 <span id="username">{{groupProfile.name}}</span>
