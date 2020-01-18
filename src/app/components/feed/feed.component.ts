@@ -105,7 +105,7 @@ export class FeedComponent implements OnInit {
   /**
    * Executed when the text in the input field changes.
    */
-  private onTextInputChange() {
+  onTextInputChange() {
     if (this.errorOccurred) {
       this.errorOccurred = false;
       this.errorMessage = '';
