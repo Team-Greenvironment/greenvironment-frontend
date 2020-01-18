@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { User } from '../models/user';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {User} from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,8 @@ export class DatasharingService {
   currentUserInfo = this.userInfoSource.asObservable();
   currentChatIDs = this.chatIDsSource.asObservable();
 
-  constructor() { }
+  constructor() {
+  }
 
   changeUserInfo(pUserInfo: User) {
     this.userInfoSource.next(pUserInfo);

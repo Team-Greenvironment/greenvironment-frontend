@@ -23,7 +23,7 @@ export class SocialService extends BaseService {
    * @param name
    */
   private static buildGroupCreateBody(name: String): any {
-     return {
+    return {
       query: graphqlCreateGroupQuery, variables: {
         name
       }

@@ -8,7 +8,6 @@ import {Observable} from 'rxjs';
 import {ISearchResult} from '../../models/interfaces/ISearchResult';
 import {environment} from '../../../environments/environment';
 import {BaseService} from '../base.service';
-import {tap} from 'rxjs/operators';
 
 interface ISearchRequestResult {
   data: {
@@ -69,19 +68,19 @@ export class SearchService extends BaseService {
    */
   public getUsersForResponse(response: ISearchRequestResult): User[] {
     const users = new Array<User>();
-      for (const foundUser of response.data.search.users) {
-        const user = new User();
-        user.profilePicture = user.buildProfilePictureUrl(foundUser.profilePicture);
-        user.username = foundUser.name;
-        user.userID = foundUser.id;
-        user.handle = foundUser.handle;
-        user.points = foundUser.points;
-        user.level = foundUser.level;
-        // @ts-ignore
-        user.friends = foundUser.friends;
-        users.push(user);
-      }
-      return users;
+    for (const foundUser of response.data.search.users) {
+      const user = new User();
+      user.profilePicture = user.buildProfilePictureUrl(foundUser.profilePicture);
+      user.username = foundUser.name;
+      user.userID = foundUser.id;
+      user.handle = foundUser.handle;
+      user.points = foundUser.points;
+      user.level = foundUser.level;
+      // @ts-ignore
+      user.friends = foundUser.friends;
+      users.push(user);
+    }
+    return users;
   }
 
   /**
@@ -90,10 +89,10 @@ export class SearchService extends BaseService {
    */
   public getGroupsForResponse(response: ISearchRequestResult): Array<GroupInfo> {
     const groups = new Array<GroupInfo>();
-      for (const group of response.data.search.groups) {
-        groups.push(new GroupInfo(group.id, group.name));
-      }
-      return groups;
+    for (const group of response.data.search.groups) {
+      groups.push(new GroupInfo(group.id, group.name));
+    }
+    return groups;
   }
 
   /**

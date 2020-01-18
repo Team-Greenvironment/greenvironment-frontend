@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import { Login } from 'src/app/models/login';
-import { LoginService } from 'src/app/services/login/login.service';
+import {Login} from 'src/app/models/login';
+import {LoginService} from 'src/app/services/login/login.service';
 import {Router} from '@angular/router';
 import * as sha512 from 'js-sha512';
 import {IErrorResponse} from '../../models/interfaces/IErrorResponse';
@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(private loginService: LoginService, private router: Router) {
     this.login = {passwordHash: null, email: null};
   }
+
   login: Login;
   hide = true;
   errorOccurred = false;
@@ -43,7 +44,7 @@ export class LoginComponent implements OnInit {
     this.errorMessage = ' ';
     this.login.email = pEmail.trim().toLowerCase();
     this.login.passwordHash = sha512.sha512(pPasswordHash);
-    this.loginService.login(this.login).subscribe( () => {
+    this.loginService.login(this.login).subscribe(() => {
       this.router.navigateByUrl('').catch((error) => {
         this.errorMessage = error.message;
         this.errorOccurred = true;
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }
 

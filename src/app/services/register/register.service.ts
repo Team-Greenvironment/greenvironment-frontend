@@ -1,19 +1,20 @@
-import { Injectable } from '@angular/core';
-import {Http, URLSearchParams, Headers} from '@angular/http';
-import { Registration } from '../../models/registration';
+import {Injectable} from '@angular/core';
+import {Headers, Http} from '@angular/http';
+import {Registration} from '../../models/registration';
 import {Router} from '@angular/router';
-import { DatasharingService } from '../datasharing.service';
-import { User } from 'src/app/models/user';
-import { environment } from 'src/environments/environment';
-import { FriendRequest } from 'src/app/models/friendRequest';
-import { FriendInfo } from 'src/app/models/friendinfo';
+import {DatasharingService} from '../datasharing.service';
+import {User} from 'src/app/models/user';
+import {environment} from 'src/environments/environment';
+import {FriendRequest} from 'src/app/models/friendRequest';
+import {FriendInfo} from 'src/app/models/friendinfo';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
 
-  constructor(private http: Http, private data: DatasharingService, private router: Router) { }
+  constructor(private http: Http, private data: DatasharingService, private router: Router) {
+  }
 
   public register(registration: Registration, errorCb: any) {
 
@@ -25,10 +26,10 @@ export class RegisterService {
 
     return this.http.post(url, this.buildJson(registration))
       .subscribe(response => {
-        console.log(response.text());
-        this.registerSuccess();
-        this.updateUserInfo(response.json());
-      }, errorCb
+          console.log(response.text());
+          this.registerSuccess();
+          this.updateUserInfo(response.json());
+        }, errorCb
       );
   }
 
@@ -72,7 +73,8 @@ export class RegisterService {
   }
 
   public buildJson(registration: Registration): any {
-    const body =  {query: `mutation($username: String, $email: String, $pwHash: String) {
+    const body = {
+      query: `mutation($username: String, $email: String, $pwHash: String) {
       register(username: $username, email: $email, passwordHash: $pwHash) {
         id,
         name,
@@ -95,7 +97,8 @@ export class RegisterService {
         email: registration.email,
         pwHash: registration.passwordHash,
         username: registration.username,
-      }};
+      }
+    };
     return body;
   }
 }

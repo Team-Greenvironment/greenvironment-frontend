@@ -1,5 +1,4 @@
 import {IGroup} from './IGroup';
-import {ISettings} from './ISettings';
 import {IChat} from './IChat';
 import {IRequest} from './IRequest';
 

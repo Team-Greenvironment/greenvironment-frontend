@@ -5,8 +5,6 @@ import {SocialService} from 'src/app/services/social/social.service';
 import {User} from 'src/app/models/user';
 import {DatasharingService} from 'src/app/services/datasharing.service';
 import {Router} from '@angular/router';
-import {GraphQLError} from 'graphql';
-import {IGraphqlError} from '../../../models/interfaces/IGraphqlError';
 import {IErrorResponse} from '../../../models/interfaces/IErrorResponse';
 
 // DIALOG COMPONENT to create groups

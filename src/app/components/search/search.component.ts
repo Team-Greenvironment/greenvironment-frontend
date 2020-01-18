@@ -1,12 +1,10 @@
-import { Component, OnInit} from '@angular/core';
-import { SearchService } from 'src/app/services/search/search.service';
-import { RequestService } from 'src/app/services/request/request.service';
-import {Headers, Http} from '@angular/http';
-import { User } from 'src/app/models/user';
-import {environment} from 'src/environments/environment';
-import { Router } from '@angular/router';
-import { DatasharingService } from '../../services/datasharing.service';
-import { GroupInfo } from 'src/app/models/groupinfo';
+import {Component, OnInit} from '@angular/core';
+import {SearchService} from 'src/app/services/search/search.service';
+import {RequestService} from 'src/app/services/request/request.service';
+import {User} from 'src/app/models/user';
+import {Router} from '@angular/router';
+import {DatasharingService} from '../../services/datasharing.service';
+import {GroupInfo} from 'src/app/models/groupinfo';
 
 @Component({
   selector: 'home-search',
@@ -25,7 +23,9 @@ export class SearchComponent implements OnInit {
     private searchService: SearchService,
     private requestService: RequestService,
     private router: Router,
-    private data: DatasharingService) { }
+    private data: DatasharingService) {
+  }
+
   ngOnInit() {
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;

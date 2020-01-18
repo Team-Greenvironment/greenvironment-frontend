@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Post } from 'src/app/models/post';
-import { FeedService } from 'src/app/services/feed/feed.service';
-import { Router } from '@angular/router';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Post} from 'src/app/models/post';
+import {FeedService} from 'src/app/services/feed/feed.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'feed-postlist',
@@ -14,7 +14,8 @@ export class PostlistComponent implements OnInit {
   @Output() voteEvent = new EventEmitter<boolean>();
   selectedPost: Post;
 
-  constructor(private feedService: FeedService, private router: Router) { }
+  constructor(private feedService: FeedService, private router: Router) {
+  }
 
   ngOnInit() {
   }

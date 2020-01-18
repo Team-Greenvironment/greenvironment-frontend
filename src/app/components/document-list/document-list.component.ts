@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
 
-import { DocumentService } from 'src/app/services/document.service';
+import {DocumentService} from 'src/app/services/document.service';
 
 @Component({
   selector: 'app-document-list',
@@ -13,7 +13,8 @@ export class DocumentListComponent implements OnInit, OnDestroy {
   currentDoc: string;
   private _docSub: Subscription;
 
-  constructor(private documentService: DocumentService) { }
+  constructor(private documentService: DocumentService) {
+  }
 
   ngOnInit() {
     this.documents = this.documentService.documents;
