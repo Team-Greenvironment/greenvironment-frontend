@@ -17,8 +17,14 @@ $mat-card-header-size: 40px !default
 
   .mat-card-content
     overflow: auto
+    margin: 0
     ::ng-deep a
       color: $primary-color
+  .mat-card-actions
+    padding: 0
+
+  ::ng-deep p 
+    margin: 0
 
   a:hover
     cursor: pointer
@@ -31,6 +37,16 @@ $mat-card-header-size: 40px !default
     max-width: 100%
     height: auto
     border-radius: 4px
+  ::ng-deep video
+    width: 100%
+    max-height: 40vh
+    outline: none
+    user-select: none
+  ::ng-deep audio
+    width: 100%
+    max-height: 40vh
+    outline: none
+    user-select: none
 
   .mat-button
     min-width: 32px !important
