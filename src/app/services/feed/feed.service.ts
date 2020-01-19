@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Post} from 'src/app/models/post';
 import {Author} from 'src/app/models/author';
 import {environment} from 'src/environments/environment';
@@ -180,7 +180,7 @@ export class FeedService extends BaseService {
       }
     };
 
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers});
+    return this.http.post(environment.graphQLUrl, body, {headers: this.headers}).pipe(this.retryRated());
   }
 
   /**
@@ -194,7 +194,7 @@ export class FeedService extends BaseService {
       }
     };
 
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers});
+    return this.http.post(environment.graphQLUrl, body, {headers: this.headers}).pipe(this.retryRated());
   }
 
   /**
@@ -209,8 +209,8 @@ export class FeedService extends BaseService {
         postId: pPostID
       }
     };
-
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers});
+    return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+      .pipe(this.retryRated());
   }
 
   /**
@@ -222,7 +222,9 @@ export class FeedService extends BaseService {
     this.postsAvailable.next(true);
     this.posts.next([]);
     return this.http.post(environment.graphQLUrl, FeedService.buildGetPostBody(sort, 0),
-      {headers: this.headers}).subscribe(response => {
+      {headers: this.headers})
+      .pipe(this.retryRated())
+      .subscribe(response => {
         this.posts.next(this.constructAllPosts(response));
         this.activePostList = sort;
       });
@@ -235,6 +237,7 @@ export class FeedService extends BaseService {
     this.offset += this.offsetStep;
     const body = FeedService.buildGetPostBody(this.activePostList, this.offset);
     this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+      .pipe(this.retryRated())
       .subscribe(response => {
         const posts = this.constructAllPosts(response);
         const updatedPostList = this.posts.getValue().concat(posts);
