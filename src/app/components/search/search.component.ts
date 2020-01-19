@@ -44,8 +44,6 @@ export class SearchComponent implements OnInit {
       if (this.category === 'user') {
         this.loading = true;
         this.findUser(searchWord);
-      } else if (this.category === 'groupe') {
-        console.log('search group');
       }
     }
   }

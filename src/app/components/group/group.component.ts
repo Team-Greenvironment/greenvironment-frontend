@@ -32,8 +32,6 @@ export class DialogCreateEventComponent {
     name = name.trim();
     if (name && date && time) {
       date = date + ' ' + time;
-      console.log(date);
-      console.log(new Date(date).getTime().toString());
       this.group.createEvent(name, (new Date(date)).getTime().toString(), this.groupId);
       this.dialogRef.close();
     }
@@ -69,7 +67,6 @@ export class GroupComponent implements OnInit {
         const possibleID = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
         if (this.id !== possibleID && this.id && this.router.url.includes('group/')) {
           // reload the group
-          console.log('search for group id: ' + this.router.url.substr(this.router.url.lastIndexOf('/') + 1));
           this.ngOnInit();
         }
       }

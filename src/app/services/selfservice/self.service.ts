@@ -62,6 +62,7 @@ export class SelfService extends BaseService {
     headers.set('Content-Type', 'application/json');
 
     return this.http.post(url, SelfService.buildGetSelfBody(), {headers: this.headers})
+      .pipe(this.retryRated())
       .pipe(tap(response => {
         this.updateUserInfo(response);
       }));
@@ -74,7 +75,8 @@ export class SelfService extends BaseService {
   public changeProfilePicture(file: any) {
     const formData: any = new FormData();
     formData.append('profilePicture', file);
-    return this.http.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData);
+    return this.http.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData)
+      .pipe(this.retryRated());
   }
 
   /**

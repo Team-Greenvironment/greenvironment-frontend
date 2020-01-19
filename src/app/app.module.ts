@@ -6,8 +6,6 @@ import {SocketIoConfig, SocketIoModule} from 'ngx-socket-io';
 import {HttpModule} from '@angular/http';
 
 import {AppComponent} from './app.component';
-import {DocumentListComponent} from './components/document-list/document-list.component';
-import {DocumentComponent} from './components/document/document.component';
 import {RegisterComponent} from './components/register/register.component';
 import {LoginComponent} from './components/login/login.component';
 import {ChatComponent} from './components/chat/chat.component';
@@ -81,8 +79,6 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    DocumentListComponent,
-    DocumentComponent,
     RegisterComponent,
     LoginComponent,
     ChatComponent,

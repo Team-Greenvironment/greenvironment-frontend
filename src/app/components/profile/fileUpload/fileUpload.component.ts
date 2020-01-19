@@ -54,7 +54,7 @@ export class DialogFileUploadComponent {
       }, (error) => {
         this.uploading = false;
         this.errorOccurred = true;
-        console.log(error);
+        console.error(error);
         if (error.error) {
           this.errorMessage = error.error.error;
         } else {
