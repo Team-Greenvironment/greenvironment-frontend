@@ -39,6 +39,7 @@ export class FeedComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('init feedcomponent');
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
@@ -55,7 +56,6 @@ export class FeedComponent implements OnInit {
       this.loadingNew = response;
     });
     this.feedService.topPostsAvailable.subscribe(response => {
-      console.log(response);
       this.loadingMostLiked = response;
     });
   }
@@ -83,7 +83,6 @@ export class FeedComponent implements OnInit {
   }
 
   onScroll() {
-    console.log('scrolled');
     this.feedService.getNextPosts();
   }
 
