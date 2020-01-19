@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Post} from 'src/app/models/post';
-import {FeedService} from 'src/app/services/feed/feed.service';
+import {FeedService, Sort} from 'src/app/services/feed/feed.service';
 import {Activitylist} from 'src/app/models/activity';
 import {DatasharingService} from '../../services/datasharing.service';
 import {ActivityService} from 'src/app/services/activity/activity.service';
@@ -47,32 +47,33 @@ export class FeedComponent implements OnInit {
     this.activityService.activitylist.subscribe(response => {
       this.actionlist = response;
     });
-    this.feedService.getPosts('NEW');
+    this.feedService.getPosts(Sort.NEW);
     this.feedService.posts.subscribe(response => {
       this.parentSelectedPostList = response;
     });
-    this.feedService.newPostsAvailable.subscribe(response => {
-      this.loadingNew = response;
-    });
-    this.feedService.topPostsAvailable.subscribe(response => {
-      console.log(response);
-      this.loadingMostLiked = response;
+    this.feedService.postsAvailable.subscribe(available => {
+      this.loadingMostLiked = this.loadingNew = available;
     });
   }
 
-  createPost(pElement, activityId: string) {
-    if (pElement && activityId && this.checked) {
-      this.feedService.createPostActivity(pElement.value, activityId).subscribe(() => {
-        pElement.value = '';
+  /**
+   * Creates a new post
+   * @param postElement
+   * @param activityId
+   */
+  createPost(postElement, activityId: string) {
+    if (postElement && activityId && this.checked) {
+      this.feedService.createPostActivity(postElement.value, activityId).subscribe(() => {
+        postElement.value = '';
         this.textInputValue = '';
         this.view = 'new';
       }, (error: IErrorResponse) => {
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
       });
-    } else if (pElement) {
-      this.feedService.createPost(pElement.value).subscribe(() => {
-        pElement.value = '';
+    } else if (postElement) {
+      this.feedService.createPost(postElement.value).subscribe(() => {
+        postElement.value = '';
         this.textInputValue = '';
         this.view = 'new';
       }, (error: IErrorResponse) => {
@@ -82,17 +83,25 @@ export class FeedComponent implements OnInit {
     }
   }
 
+  /**
+   * Fetches the next posts when scrolled
+   */
   onScroll() {
-    console.log('scrolled');
     this.feedService.getNextPosts();
   }
 
+  /**
+   * Shows the feed sorted by new
+   */
   showNew() {
-    this.feedService.getPosts('NEW');
+    this.feedService.getPosts(Sort.NEW);
   }
 
+  /**
+   * Shows the feed sorted by top
+   */
   showMostLiked() {
-    this.feedService.getPosts('TOP');
+    this.feedService.getPosts(Sort.TOP);
   }
 
   /**

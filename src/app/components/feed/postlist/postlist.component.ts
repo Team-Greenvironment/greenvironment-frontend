@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class PostlistComponent implements OnInit {
 
-  @Input() childPostList: Array<Post>;
+  @Input() childPostList: Post[];
   @Output() voteEvent = new EventEmitter<boolean>();
   selectedPost: Post;
 
