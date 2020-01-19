@@ -101,6 +101,7 @@ export class SearchService extends BaseService {
    */
   public search(query: string): Observable<ISearchRequestResult> {
     const body = SearchService.buildRequestBody(query);
-    return this.http.post<ISearchRequestResult>(environment.graphQLUrl, body, {headers: this.headers});
+    return this.http.post<ISearchRequestResult>(environment.graphQLUrl, body, {headers: this.headers})
+      .pipe(this.retryRated());
   }
 }

@@ -77,7 +77,9 @@ export class ProfileService extends BaseService {
   public getUserData(userId: string) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, ProfileService.buildGetProfileBody(userId)).subscribe(result => {
+    this.http.post(environment.graphQLUrl, ProfileService.buildGetProfileBody(userId))
+      .pipe(this.retryRated())
+      .subscribe(result => {
       this.proflile.next(this.getProfileData(result));
       return this.proflile;
     });

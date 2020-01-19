@@ -1,24 +1,3 @@
-<!--<div class="feeditem" *ngFor = "let post of childPostList" [class.selected]="post === selectedPost">
-  <div class="itemhead">
-    <div class="usertag">
-      <span class="title">{{post.author.name}}</span>
-      <span class="handle"><a href="profile/{{post.author.id}}">@{{post.author.handle}}</a></span>
-    </div>
-    <span class="date">{{post.date}}</span>
-  </div>
-  <div class="itembody">
-    <div class='text'>
-        <p [innerHTML]="post.htmlContent" id="content"></p>
-    </div>
-    <div class="vote">
-      <button id="down" type='submit'><span><i class="fa fa-thumbs-o-down fa-2x" aria-hidden="true" (click)="voteDown(post)"></i></span></button>
-      <span id="downvotes">{{post.downvotes}}</span>
-      <button id="up" type='submit'><span><i class="fa fa-thumbs-o-up fa-2x" aria-hidden="true" (click)="voteUp(post)"></i></span></button>
-      <span id="upvotes">{{post.upvotes}}</span>
-    </div>
-  </div>
-</div>-->
-
 <mat-card class="post" *ngFor="let post of childPostList" [class.selected]="post === selectedPost" tabindex="0">
   <mat-card-header>
     <div mat-card-avatar>
@@ -34,17 +13,14 @@
         </button>
       </mat-menu>
     </div>
-    <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>
       {{post.author.name}}
-      <!--<a class="mat-card-subtitle" routerLink="/profile/{{post.author.id}}">@{{post.author.handle}}</a>-->
       <a class="mat-card-subtitle" (click)="showUserProfile(this.post)">@{{post.author.handle}}</a>
       <p class="mat-card-subtitle">&nbsp; {{post.date}}</p>
     </mat-card-title>
     <mat-card-subtitle>
     </mat-card-subtitle>
   </mat-card-header>
-  <!--<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
   <mat-card-content>
     <p [innerHTML]="post.htmlContent"></p>
   </mat-card-content>
@@ -66,4 +42,3 @@
     </div>
   </mat-card-actions>
 </mat-card>
-

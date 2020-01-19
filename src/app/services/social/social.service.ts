@@ -36,6 +36,7 @@ export class SocialService extends BaseService {
    */
   createGroup(name: string) {
     const body = SocialService.buildGroupCreateBody(name);
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers});
+    return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+      .pipe(this.retryRated());
   }
 }

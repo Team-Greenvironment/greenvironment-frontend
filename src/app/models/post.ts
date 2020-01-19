@@ -13,28 +13,27 @@ export class Post {
   author: Author;
   activity: Activity;
 
-  // TODO: constructor properties need normal names
   constructor(
-    pId: number,
-    pContent: string,
-    pHtmlContent: string,
-    pUpvotes: number,
-    pDownvotes: number,
-    pUserVote: string,
-    pDeletable: boolean,
-    pDate: string,
-    pAuthor: Author,
-    pactivity: Activity
+    id: number,
+    content: string,
+    htmlContent: string,
+    upvotes: number,
+    downvotes: number,
+    userVotes: string,
+    deletable: boolean,
+    date: string,
+    author: Author,
+    activity: Activity
   ) {
-    this.id = pId;
-    this.content = pContent;
-    this.htmlContent = pHtmlContent;
-    this.upvotes = pUpvotes;
-    this.downvotes = pDownvotes;
-    this.userVote = pUserVote;
-    this.deletable = pDeletable;
-    this.date = pDate;
-    this.author = pAuthor;
-    this.activity = pactivity;
+    this.id = id;
+    this.content = content;
+    this.htmlContent = htmlContent;
+    this.upvotes = upvotes;
+    this.downvotes = downvotes;
+    this.userVote = userVotes;
+    this.deletable = deletable;
+    this.date = date;
+    this.author = author;
+    this.activity = activity;
   }
 }
