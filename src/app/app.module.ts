@@ -20,7 +20,6 @@ import {DialogCreateEventComponent, GroupComponent} from './components/group/gro
 import {ChatmanagerComponent} from './components/chatmanager/chatmanager.component';
 import {ChatlistComponent} from './components/chatlist/chatlist.component';
 import {PostlistComponent} from './components/feed/postlist/postlist.component';
-import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {ProfileComponent} from './components/profile/profile.component';
 import {ImprintComponent} from './components/imprint/imprint.component';
@@ -63,6 +62,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MatProgressBarModule} from '@angular/material/';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DialogFileUploadComponent} from './components/profile/fileUpload/fileUpload.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
@@ -110,7 +111,6 @@ const appRoutes: Routes = [
     FormsModule,
     HttpModule,
     SocketIoModule.forRoot(config),
-    GraphQLModule,
     HttpClientModule,
     InfiniteScrollModule,
     MatDatepickerModule,
@@ -149,6 +149,7 @@ const appRoutes: Routes = [
     MatDatepickerModule,
     MatSnackBarModule,
     MatProgressBarModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   entryComponents: [
     DialogCreateGroupComponent,
