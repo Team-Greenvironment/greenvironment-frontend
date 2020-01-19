@@ -6,7 +6,21 @@ html, body
   height: 100%
 
 
+::ng-deep body
+  scrollbar-color: #aaa #ddd
+  scrollbar-width: thin
+  .dark-theme
+    scrollbar-color: #ddd #666
 
+::ng-deep ::-webkit-scrollbar
+  width: 4px
 
+::ng-deep ::-webkit-scrollbar-track
+  background: #ddd
+  .dark-theme
+    background: #666
 
-
+::ng-deep ::-webkit-scrollbar-thumb
+  background: #aaa
+  .dark-theme
+    background: #ddd
