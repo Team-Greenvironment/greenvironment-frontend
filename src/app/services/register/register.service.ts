@@ -26,7 +26,6 @@ export class RegisterService {
 
     return this.http.post(url, this.buildJson(registration))
       .subscribe(response => {
-          console.log(response.text());
           this.registerSuccess();
           this.updateUserInfo(response.json());
         }, errorCb
@@ -34,8 +33,6 @@ export class RegisterService {
   }
 
   public registerSuccess() {
-    console.log('alles supi dupi');
-    // do routing
     this.router.navigateByUrl('');
   }
 

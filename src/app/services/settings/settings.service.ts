@@ -20,9 +20,7 @@ export class SettingsService {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
     const body = this.buildJsonDarkMode('darkmode: ' + '\'' + active + '\'');
-    this.http.post(url, body).subscribe(response => {
-      console.log(response.text());
-    });
+    this.http.post(url, body).subscribe();
   }
 
   public buildJsonDarkMode(setting_: string): any {

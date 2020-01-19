@@ -39,7 +39,6 @@ export class FeedComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init feedcomponent');
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
@@ -67,7 +66,10 @@ export class FeedComponent implements OnInit {
       this.feedService.createPostActivity(postElement.value, activityId).subscribe(() => {
         postElement.value = '';
         this.textInputValue = '';
-        this.view = 'new';
+        this.checked = false;
+        if (this.view !== 'new') {
+          this.showNew();
+        }
       }, (error: IErrorResponse) => {
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
@@ -76,7 +78,10 @@ export class FeedComponent implements OnInit {
       this.feedService.createPost(postElement.value).subscribe(() => {
         postElement.value = '';
         this.textInputValue = '';
-        this.view = 'new';
+        this.checked = false;
+        if (this.view !== 'new') {
+          this.showNew();
+        }
       }, (error: IErrorResponse) => {
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
@@ -95,6 +100,7 @@ export class FeedComponent implements OnInit {
    * Shows the feed sorted by new
    */
   showNew() {
+    this.view = 'new';
     this.feedService.getPosts(Sort.NEW);
   }
 
@@ -102,6 +108,7 @@ export class FeedComponent implements OnInit {
    * Shows the feed sorted by top
    */
   showMostLiked() {
+    this.view = 'mostliked';
     this.feedService.getPosts(Sort.TOP);
   }
 

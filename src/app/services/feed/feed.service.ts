@@ -163,7 +163,7 @@ export class FeedService extends BaseService {
       .pipe(tap(response => {
         if (this.activePostList === Sort.NEW) {
           const updatedPosts = this.posts.getValue();
-          updatedPosts.push(this.constructPost(response));
+          updatedPosts.unshift(this.constructPost(response));
           this.posts.next(updatedPosts);
         }
       }));
