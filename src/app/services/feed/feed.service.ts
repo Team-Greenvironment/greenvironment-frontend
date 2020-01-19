@@ -151,6 +151,7 @@ export class FeedService {
   }
 
   public getPosts(sort: string) {
+    console.log('feedservice: getPosts()');
     if ((sort === 'NEW' && this.newPosts.getValue().length === 0) ||
       (sort === 'TOP' && this.mostLikedPosts.getValue().length === 0)) {
       const headers = new Headers();

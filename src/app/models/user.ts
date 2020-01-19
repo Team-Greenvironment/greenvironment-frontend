@@ -41,10 +41,12 @@ export class User {
     this.joinedAt = userDataResponse.joinedAt;
     this.friendCount = userDataResponse.friendCount;
     this.groupCount = userDataResponse.groupCount;
-    try {
-      this.darkmode = !!JSON.parse(userDataResponse.settings).darkmode;
-    } catch (err) {
-      console.error(err);
+    if (userDataResponse.settings) {
+      try {
+        this.darkmode = !!JSON.parse(userDataResponse.settings).darkmode;
+      } catch (err) {
+        console.error(err);
+      }
     }
     if (userDataResponse.friends) {
       this.friends = userDataResponse.friends

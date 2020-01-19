@@ -1,5 +1,5 @@
 <div id="file-upload-dialog">
-  <h1 mat-dialog-title align="center">Upload a new Profile Picture!</h1>
+  <h1 mat-dialog-title align="center">Upload a new profile picture!</h1>
   <div class="uploadDialogContent" mat-dialog-content>
     <input style="display: none" id="input-file" type="file" accept="image/*" (change)="onFileInputChange($event)" #name>
     <label for="input-file" class="mat-button mat-raised-button mat-primary">Choose File</label>
@@ -7,9 +7,9 @@
       <h2 *ngIf="localFileUrl">Preview:</h2>
       <img *ngIf="localFileUrl" id="inputPreview" [src]="localFileUrl"/>
     </div>
-    <mat-progress-bar *ngIf="uploading" mode="indeterminate"></mat-progress-bar>
+    <mat-progress-bar id="progress-bar" *ngIf="uploading" mode="indeterminate"></mat-progress-bar>
   </div>
-  <mat-error *ngIf="errorOccurred">{{getErrorMessage()}}</mat-error>
+  <mat-error id="error" *ngIf="errorOccurred">{{getErrorMessage()}}</mat-error>
   <div mat-dialog-actions align="end">
     <button mat-button (click)="onCancelClicked()">Cancel</button>
     <button class="confirmationButton" mat-raised-button cdkFocusInitial (click)="onOkClicked()">Upload</button>
