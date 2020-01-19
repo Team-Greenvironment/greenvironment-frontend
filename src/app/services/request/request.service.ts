@@ -19,6 +19,9 @@ export class RequestService {
     if (!self.loggedIn) {
       return false;
     } else {
+      if (userID === self.userID) {
+        return false;
+      }
       for (const receiverID of self.sentRequestUserIDs) {
         if (userID === receiverID ||
           userID === self.userID) {

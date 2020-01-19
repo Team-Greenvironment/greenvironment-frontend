@@ -39,6 +39,7 @@ export class FeedComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('init feedcomponent');
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
