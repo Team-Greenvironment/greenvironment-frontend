@@ -1,83 +1,59 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import {environment} from 'src/environments/environment';
 import {User} from 'src/app/models/user';
 import {Event} from 'src/app/models/event';
 import {BehaviorSubject} from 'rxjs';
 import {Group} from 'src/app/models/group';
+import {tap} from 'rxjs/operators';
+import {BaseService} from '../base.service';
+import {IFileUploadResult} from '../../models/interfaces/IFileUploadResult';
+
+const getGroupGraphqlQuery = `query($groupId: ID!) {
+  getGroup(groupId:$groupId){
+      id
+      name
+      joined
+      picture
+      creator{id name handle}
+      admins{id name handle}
+      members{id name handle profilePicture}
+      events{id name dueDate joined}
+  }
+}`;
 
 @Injectable({
   providedIn: 'root'
 })
-export class GroupService {
+export class GroupService extends BaseService {
 
   public group: BehaviorSubject<Group> = new BehaviorSubject(new Group());
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
+    super();
+  }
+
+  /**
+   * Builds the getGroup request body
+   */
+  private static buildGetGroupBody(id: string): any {
+    return {
+      query: getGroupGraphqlQuery, variables: {groupId: id}
+    };
   }
 
   public getGroupData(groupId: string) {
+    const url = environment.graphQLUrl;
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.buildGetGroupJson(groupId)).subscribe(result => {
-      // push onto subject
-      this.group.next(this.renderGroup(result.json()));
-      return this.group;
-    });
-  }
 
-  public buildGetGroupJson(id: string): any {
-    const body = {
-      query: `query($groupId: ID!) {
-      getGroup(groupId:$groupId){
-          id
-          name
-          joined
-          creator{id name handle}
-          admins{id name handle}
-          members{id name handle profilePicture}
-          events{id name dueDate joined}
-      }
-    }`, variables: {
-        groupId: id
-      }
-    };
-    return body;
-  }
-
-  public renderGroup(response: any): Group {
-    const group = new Group();
-    if (response.data.getGroup != null) {
-      group.id = response.data.getGroup.id;
-      group.name = response.data.getGroup.name;
-      group.creator.userID = response.data.getGroup.creator.id;
-      group.creator.handle = response.data.getGroup.creator.handle;
-      group.creator.username = response.data.getGroup.creator.name;
-      group.joined = response.data.getGroup.joined;
-
-      for (const member of response.data.getGroup.members) {
-        const user = new User();
-        user.userID = member.id;
-        user.username = member.name;
-        user.handle = member.handle;
-        user.profilePicture = user.buildProfilePictureUrl(member.profilePicture);
-        group.members.push(user);
-      }
-      for (const admin of response.data.getGroup.admins) {
-        const user = new User();
-        user.userID = admin.id;
-        user.username = admin.name;
-        user.handle = admin.handle;
-        group.admins.push(user);
-      }
-      for (const event of response.data.getGroup.events) {
-        const temp = new Date(Number(event.dueDate));
-        const date = temp.toLocaleString('en-GB');
-        group.events.push(new Event(event.id, event.name, date, event.joined));
-      }
-      return group;
-    }
-    return null;
+    return this.http.post(url, GroupService.buildGetGroupBody, {headers: this.headers})
+      .pipe(this.retryRated())
+      .pipe(tap(response => {
+        const group_ = new Group();
+        this.group.next(group_.assignFromResponse(response));
+        return this.group;
+      }));
   }
 
   public createEvent(name: string, date: string, groupId: string) {
@@ -98,14 +74,15 @@ export class GroupService {
       }
     };
 
-    this.http.post(environment.graphQLUrl, body).subscribe(response => {
-      const event = response.json().data.createEvent;
-      const temp = new Date(Number(event.dueDate));
-      const pdate = temp.toLocaleString('en-GB');
-      this.group.next(
-        this.renderGroup(this.group.getValue().events.push(new Event(event.id, event.name, pdate, event.joined)))
-      );
-    });
+    this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+    .pipe(this.retryRated())
+    .pipe(tap(response => {
+      const event = new Event();
+      event.assignFromResponse(response.json().data.createEvent);
+      const group = this.group.getValue();
+      group.events.push(event);
+      this.group.next(group);
+    }));
   }
 
   public joinEvent(eventId: string) {
@@ -120,7 +97,8 @@ export class GroupService {
         eventId: eventId
       }
     };
-    return this.http.post(environment.graphQLUrl, body);
+    return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+      .pipe(this.retryRated());
   }
 
   public leaveEvent(eventId: string) {
@@ -135,7 +113,8 @@ export class GroupService {
         eventId: eventId
       }
     };
-    return this.http.post(environment.graphQLUrl, body);
+    return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+      .pipe(this.retryRated());
   }
 
 }

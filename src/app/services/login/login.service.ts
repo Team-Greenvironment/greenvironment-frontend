@@ -33,7 +33,8 @@ const graphqlQuery = `mutation($email: String!, $pwHash: String!) {
     },
     groups {
       id,
-      name
+      name,
+      picture
     },
     chats{
       id

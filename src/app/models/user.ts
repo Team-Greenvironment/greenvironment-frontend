@@ -57,8 +57,12 @@ export class User {
         ));
     }
     if (userDataResponse.groups) {
+      /*for (const group of userDataResponse.groups) {
+      const group_ = new Group();
+      this.groups.push(group_.assignFromResponse(group));
+      } doesnt work because of circular injection*/
       this.groups = userDataResponse.groups
-        .map(group => new GroupInfo(group.id, group.name));
+        .map(group => new GroupInfo(group.id, group.name, group.picture));
     }
     if (userDataResponse.chats) {
       this.chatIDs = userDataResponse.chats.map(chat => chat.id);
@@ -71,6 +75,7 @@ export class User {
       this.receivedRequests = userDataResponse.receivedRequests
         .map(request => new FriendRequest(request.id, request.sender.id, request.sender.handle, request.sender.name));
     }
+    return this;
   }
 
   buildProfilePictureUrl(path: string): string {

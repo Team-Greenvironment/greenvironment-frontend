@@ -3,7 +3,14 @@
     <!--on small screen-->
     <mat-toolbar id="toolbar" fxShow="true" fxHide.gt-sm="true">
       <mat-toolbar-row>
-        <div class="profile-picture"></div>
+        <div class="hover-box" matTooltip="upload new picture" *ngIf="isAdmin" (click)="openFileUploadDialog()">
+          <img class="profile-picture" [src]="groupProfile.picture"/>
+          <mat-icon id="icon">camera_alt</mat-icon>
+        </div>
+        <div *ngIf="!isAdmin">
+          <img class="profile-picture" [src]="groupProfile.picture"/>
+        </div>
+
         <span id="username">{{groupProfile.name}}</span>
         <div class="button-box">
           <button mat-icon-button
@@ -38,7 +45,13 @@
     <!--on big screen-->
     <mat-toolbar id="toolbar" fxShow="true" fxHide.lt-md="true">
       <mat-toolbar-row>
-        <div class="profile-picture"></div>
+        <div class="hover-box" matTooltip="upload new picture" *ngIf="isAdmin" (click)="openFileUploadDialog()">
+          <img class="profile-picture" [src]="groupProfile.picture"/>
+          <mat-icon id="icon">camera_alt</mat-icon>
+        </div>
+        <div *ngIf="!isAdmin">
+          <img class="profile-picture" [src]="groupProfile.picture"/>
+        </div>
         <span id="username">{{groupProfile.name}}</span>
         <span id="handle" class="pointer"
               (click)="showUserProfile(groupProfile.creator)">created by {{groupProfile.creator.username}}
