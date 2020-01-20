@@ -78,22 +78,28 @@ $mat-card-header-size: 40px !default
     &.voted
      scale: 0.9
 
+  .voteCount
+    display: inline
+
   @media (max-width: 959px)
     .activity-info > .span
       margin-left: 1em
       width: calc(100% - 1em)
       display: block
       text-align: left
-      font-style: italic
     .postVoteButtons
       text-align: end
       margin-right: 0.5em
+      display: flex
+      align-items: center
       .voteButton
         scale: 1
         &.voted
           scale: 1.1
 
     .mat-card-actions
-      text-align: end
+      display: flex
+      justify-content: end
+      align-items: center
 
 

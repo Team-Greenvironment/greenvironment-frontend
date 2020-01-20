@@ -35,12 +35,12 @@
         <mat-icon class="voteButton voted" aria-hidden="false" color="primary" *ngIf="post.userVote == 'UPVOTE'">thumb_up</mat-icon>
         <mat-icon class="voteButton" aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'DOWNVOTE'">thumb_up</mat-icon>
       </button>
-      {{post.upvotes}}
+      <div class="voteCount">{{post.upvotes}}</div>
       <button mat-button (click)="voteDown(post)" matTooltip="vote down" matTooltipShowDelay="500">
         <mat-icon class="voteButton voted" aria-hidden="false" color="primary" *ngIf="post.userVote == 'DOWNVOTE'">thumb_down</mat-icon>
         <mat-icon class="voteButton" aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'UPVOTE'">thumb_down</mat-icon>
       </button>
-      {{post.downvotes}}
+      <div class="voteCount">{{post.downvotes}}</div>
     </div>
     <div *ngIf="post.activity" class="activity-info" fxHide.lt-md="true">
       <span class="span" [matTooltip]="post.activity.description" matTooltipShowDelay="200">
