@@ -17,7 +17,7 @@ $mat-card-header-size: 40px !default
 
   .mat-card-content
     overflow: auto
-    margin: 0 1em
+    margin: 0.5em 1em 0
     ::ng-deep a
       color: $primary-color
   .mat-card-actions
@@ -26,8 +26,14 @@ $mat-card-header-size: 40px !default
   ::ng-deep p
     margin: 0
 
-  a:hover
+  .postlistUsername, a
     cursor: pointer
+    margin-right: 0.4em
+    &:hover
+      text-decoration: underline
+
+  .postVoteButtons
+    display: inline-block
 
   #button-box
     text-align: right
@@ -61,6 +67,7 @@ $mat-card-header-size: 40px !default
     border-radius: 50%
     width: $mat-card-header-size
     height: $mat-card-header-size
+    cursor: pointer
 
   .activity-info
     display: contents
@@ -73,5 +80,29 @@ $mat-card-header-size: 40px !default
     transition-duration: 0.125s
     &.voted
      scale: 0.9
+
+  .voteCount
+    display: inline
+
+  @media (max-width: 959px)
+    .activity-info > .span
+      margin-left: 1em
+      width: calc(100% - 1em)
+      display: block
+      text-align: left
+    .postVoteButtons
+      text-align: end
+      margin-right: 0.5em
+      display: flex
+      align-items: center
+      .voteButton
+        scale: 1
+        &.voted
+          scale: 1.1
+
+    .mat-card-actions
+      display: flex
+      justify-content: end
+      align-items: center
 
 

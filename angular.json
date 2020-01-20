@@ -29,7 +29,8 @@
             ],
             "styles": [
               "src/styles/greenvironment-material-theme.scss",
-              "src/styles.sass"
+              "src/styles.sass",
+              "./node_modules/ngx-lightbox/lightbox.css"
             ],
             "scripts": []
           },
