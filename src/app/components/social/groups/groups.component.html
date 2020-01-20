@@ -2,7 +2,7 @@
   <span>Groups</span>
   <div id="button-box">
     <button mat-icon-button (click)="openDialog()" matTooltip="create group" matTooltipPosition="left"
-            matTooltipShowDelay="500">
+      matTooltipShowDelay="500">
       <mat-icon>group_add</mat-icon>
     </button>
   </div>
@@ -10,7 +10,8 @@
 
 <div id="grouplist">
   <mat-card class="group-card" *ngFor="let group of user.groups"
-            [class.selected]="group === selectedGroup" (click)="showGroupProfile(group)">
+    matRipple
+    [class.selected]="group === selectedGroup" (click)="showGroupProfile(group)">
     <mat-card-header>
       <div mat-card-avatar>
         <img class="group-picture" [src]="group.picture"/>
