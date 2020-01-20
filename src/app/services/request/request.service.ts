@@ -1,18 +1,74 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http} from '@angular/http';
 import {DatasharingService} from '../datasharing.service';
 import {Router} from '@angular/router';
-import {environment} from 'src/environments/environment';
 import {User} from 'src/app/models/user';
 import {GroupInfo} from 'src/app/models/groupinfo';
+import {HttpClient} from '@angular/common/http';
+import {BaseService} from '../base.service';
 
+
+const denyRequestGqlQuery = `mutation($id: ID!) {
+  denyRequest(sender: $id, type: FRIENDREQUEST)
+}`;
+
+const acceptRequestGqlQuery = `mutation($id: ID!) {
+  acceptRequest(sender: $id, type: FRIENDREQUEST)
+}`;
+
+const sendRequestGqlQuery = `mutation($id: ID!, $type: RequestType) {
+  sendRequest(receiver: $id, type: $type) {
+    id
+  }
+}`;
 
 @Injectable({
   providedIn: 'root'
 })
-export class RequestService {
+export class RequestService extends BaseService {
 
-  constructor(private http: Http, private data: DatasharingService, private router: Router) {
+  constructor(http: HttpClient, private data: DatasharingService, private router: Router) {
+    super(http);
+  }
+
+  private static buildDenyRequestBody(id: number): any {
+    return {
+      query: denyRequestGqlQuery
+      , variables: {
+        id
+      }
+    };
+  }
+
+  private static buildAcceptRequestBody(id: number): any {
+    return {
+      query: acceptRequestGqlQuery
+      , variables: {
+        id
+      }
+    };
+  }
+
+  private static buildJoinGroupBody(id: number): any {
+    return {
+      query: `mutation($id: ID!) {
+        joinGroup(id: $id) {
+          id
+        }
+      }`
+      , variables: {
+        id
+      }
+    };
+  }
+
+  private static buildSendRequestBody(id: number, type: String): any {
+    return {
+      query: sendRequestGqlQuery
+      , variables: {
+        id,
+        type
+      }
+    };
   }
 
   public isAllowedToSendRequest(userID: number, self: User): boolean {
@@ -55,74 +111,38 @@ export class RequestService {
     return true;
   }
 
+  /**
+   * Sends a send request
+   * @param user
+   */
   public sendFriendRequest(user: User) {
-    this.data.addSentRequestUserID(user.userID);
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.buildJsonRequest(user.userID, 'FRIENDREQUEST'))
-      .subscribe(response => {
+    this.postGraphql(RequestService.buildSendRequestBody(user.userID, 'FRIENDREQUEST'))
+      .subscribe(() => {
+        this.data.addSentRequestUserID(user.userID);
       });
   }
 
+  /**
+   * Joins a group
+   * @param group
+   */
   public joinGroup(group: GroupInfo) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.buildJsonJoinGroup(group.id))
-      .subscribe(response => {
-      });
+    return this.postGraphql(RequestService.buildJoinGroupBody(group.id));
   }
 
-  public buildJsonRequest(id_: number, type_: String): any {
-    const body = {
-      query: `mutation($id: ID!, $type: RequestType) {
-        sendRequest(receiver: $id, type: $type) {
-          id
-        }
-      }`
-      , variables: {
-        id: id_,
-        type: type_
-      }
-    };
-    return body;
+  /**
+   * Accepts a request
+   * @param id
+   */
+  public acceptRequest(id: number) {
+    return this.postGraphql(RequestService.buildAcceptRequestBody(id));
   }
 
-  public buildJsonJoinGroup(id_: number): any {
-    const body = {
-      query: `mutation($id: ID!) {
-        joinGroup(id: $id) {
-          id
-        }
-      }`
-      , variables: {
-        id: id_
-      }
-    };
-    return body;
+  /**
+   * Denys a request
+   * @param id
+   */
+  public denyRequest(id: number) {
+    return this.postGraphql(RequestService.buildDenyRequestBody(id));
   }
-
-  public buildJsonAcceptRequest(id_: number): any {
-    const body = {
-      query: `mutation($id: ID!) {
-        acceptRequest(sender: $id, type: FRIENDREQUEST)
-      }`
-      , variables: {
-        id: id_
-      }
-    };
-    return body;
-  }
-
-  public buildJsonDenyRequest(id_: number): any {
-    const body = {
-      query: `mutation($id: ID!) {
-        denyRequest(sender: $id, type: FRIENDREQUEST)
-      }`
-      , variables: {
-        id: id_
-      }
-    };
-    return body;
-  }
-
 }

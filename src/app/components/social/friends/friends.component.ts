@@ -16,7 +16,7 @@ export class FriendsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.currentUserInfo.subscribe(user => {
+    this.data.currentUser.subscribe(user => {
       this.user = user;
     });
   }

@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.currentUserInfo.subscribe(user => {
+    this.data.currentUser.subscribe(user => {
       this.loggedIn = user.loggedIn;
     });
   }

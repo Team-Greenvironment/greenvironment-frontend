@@ -43,13 +43,17 @@ const graphqlQuery = `mutation($email: String!, $pwHash: String!) {
   }
 }`;
 
+const logoutGqlQuery = `mutation {
+        logout
+      }`;
+
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService extends BaseService {
 
-  constructor(private http: HttpClient, private datasharingService: DatasharingService) {
-    super();
+  constructor(http: HttpClient, private datasharingService: DatasharingService) {
+    super(http);
   }
 
   /**
@@ -67,16 +71,32 @@ export class LoginService extends BaseService {
   }
 
   /**
+   * Builds a logout request
+   */
+  public static buildLogoutBody(): any {
+    return {
+      query: logoutGqlQuery
+    };
+  }
+
+  /**
    * Performs a login request and returns the data of the logged in user.
    * @param login
    */
   public login(login: Login) {
     const body = LoginService.buildRequestBody(login);
-    return this.http.post<ILoginRequestResult>(environment.graphQLUrl, body, {headers: this.headers})
+    return this.postGraphql<ILoginRequestResult>(body, null, 0)
       .pipe(tap(response => {
         const user = new User();
         user.assignFromResponse(response.data.login);
         this.datasharingService.changeUserInfo(user);
       }));
+  }
+
+  /**
+   * Loggs out
+   */
+  public logout() {
+    return this.postGraphql(LoginService.buildLogoutBody());
   }
 }
