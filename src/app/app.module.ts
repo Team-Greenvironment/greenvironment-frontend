@@ -20,6 +20,8 @@ import {ChatlistComponent} from './components/chatlist/chatlist.component';
 import {PostlistComponent} from './components/feed/postlist/postlist.component';
 import {HttpClientModule} from '@angular/common/http';
 import {ProfileComponent} from './components/profile/profile.component';
+import {DialogFileUploadComponent} from './components/profile/fileUpload/fileUpload.component';
+import {DialogGroupFileUploadComponent} from './components/group/fileUpload/fileUpload.component';
 import {ImprintComponent} from './components/imprint/imprint.component';
 import {AboutComponent} from './components/about/about.component';
 import {ChatcontactsComponent} from './components/chatmanager/chatcontacts/chatcontacts.component';
@@ -59,7 +61,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MatProgressBarModule} from '@angular/material/';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {DialogFileUploadComponent} from './components/profile/fileUpload/fileUpload.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
@@ -101,6 +102,7 @@ const appRoutes: Routes = [
     DialogCreateEventComponent,
     UserlistComponent,
     DialogFileUploadComponent,
+    DialogGroupFileUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -150,7 +152,8 @@ const appRoutes: Routes = [
   entryComponents: [
     DialogCreateGroupComponent,
     DialogCreateEventComponent,
-    DialogFileUploadComponent
+    DialogFileUploadComponent,
+    DialogGroupFileUploadComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

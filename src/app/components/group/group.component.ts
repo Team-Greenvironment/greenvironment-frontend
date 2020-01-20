@@ -8,6 +8,7 @@ import {GroupService} from 'src/app/services/group/group.service';
 import {Group} from 'src/app/models/group';
 import {Event} from 'src/app/models/event';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {DialogGroupFileUploadComponent} from './fileUpload/fileUpload.component';
 
 // DIALOG COMPONENT to create events
 @Component({
@@ -81,7 +82,7 @@ export class GroupComponent implements OnInit {
     this.data.currentUserInfo.subscribe(user => {
       this.self = user;
     });
-    this.groupService.getGroupData(this.id);
+    this.groupService.getGroupData(this.id).subscribe();
     this.groupService.group.subscribe(response => {
       this.isAdmin = false;
       if (response) {
@@ -106,6 +107,21 @@ export class GroupComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogCreateEventComponent, {
       width: '250px'
+    });
+  }
+
+  /**
+   * Opens the file upload dialog
+   */
+  openFileUploadDialog() {
+    const dialogRef = this.dialog.open(DialogGroupFileUploadComponent, {
+      width: '400px'
+    });
+    dialogRef.componentInstance.groupId = this.groupProfile.id;
+    dialogRef.componentInstance.profilePictureUrl.subscribe((profilePictureUrl) => {
+      if (profilePictureUrl) {
+        this.groupProfile.picture = profilePictureUrl;
+      }
     });
   }
 

@@ -31,7 +31,9 @@
                   [class.selected]="group === selectedGroup"
                   tabindex="0">
           <mat-card-header>
-            <div mat-card-avatar class="profile-picture" (click)="showGroupProfile(group)"></div>
+            <div mat-card-avatar>
+              <img class="group-picture" [src]="group.picture" (click)="showGroupProfile(group)"/>
+            </div>
             <mat-card-title class="pointer" (click)="showGroupProfile(group)">{{group.name}}</mat-card-title>
             <div class="icon-box">
               <button mat-icon-button class="request-button" (click)="joinGroup(group)"

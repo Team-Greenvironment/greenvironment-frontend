@@ -6,6 +6,8 @@ export interface IGroup {
 
   name: string;
 
+  picture: string;
+
   creator: IUser;
 
   admins: IUser[];
