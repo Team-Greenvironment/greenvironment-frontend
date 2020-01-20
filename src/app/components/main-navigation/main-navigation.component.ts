@@ -61,7 +61,7 @@ export class MainNavigationComponent implements OnInit {
       this.toggleTheme();
       this.darkModeButtonChecked = true;
     }
-    this.data.currentUserInfo.subscribe(user => {
+    this.data.currentUser.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
       this.userId = user.userID;
@@ -132,7 +132,7 @@ export class MainNavigationComponent implements OnInit {
       this.loggedIn = false;
       const user = new User();
       user.loggedIn = false;
-      this.data.changeUserInfo(user);
+      this.data.currentUser.next(user);
       this.router.navigate(['login']);
     });
   }

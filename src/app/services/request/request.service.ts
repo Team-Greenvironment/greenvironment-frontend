@@ -127,8 +127,7 @@ export class RequestService extends BaseService {
    * @param group
    */
   public joinGroup(group: GroupInfo) {
-    this.postGraphql(RequestService.buildJoinGroupBody(group.id))
-      .subscribe();
+    return this.postGraphql(RequestService.buildJoinGroupBody(group.id));
   }
 
   /**

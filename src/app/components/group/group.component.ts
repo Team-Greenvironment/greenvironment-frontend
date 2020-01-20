@@ -23,8 +23,7 @@ export class DialogCreateEventComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogCreateEventComponent>,
     private group: GroupService,
-    private router: Router,
-    private datasharingService: DatasharingService) {
+    private router: Router) {
     this.groupId = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
   }
 
@@ -44,7 +43,7 @@ export class DialogCreateEventComponent {
     if (name && date && time) {
       date = date + ' ' + time;
       this.group.createEvent(name, (new Date(date)).getTime().toString(), this.groupId)
-        .subscribe(() => {
+        .subscribe((response) => {
           this.dialogRef.close();
         }, (error) => {
           if (error.error) {
@@ -85,7 +84,8 @@ export class GroupComponent implements OnInit {
     public dialog: MatDialog,
     private requestService: RequestService,
     private data: DatasharingService,
-    private groupService: GroupService) {
+    private groupService: GroupService,
+    private datasharingService: DatasharingService) {
     router.events.forEach((event) => {
       // check if url changes
       if (event instanceof NavigationEnd) {
@@ -103,7 +103,7 @@ export class GroupComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.id = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
-    this.data.currentUserInfo.subscribe(user => {
+    this.data.currentUser.subscribe(user => {
       this.self = user;
     });
     this.groupService.getGroupData(this.id).subscribe();
@@ -151,7 +151,10 @@ export class GroupComponent implements OnInit {
 
   public joinGroup(group: Group) {
     group.allowedToJoinGroup = false;
-    this.requestService.joinGroup(group);
+    this.requestService.joinGroup(group)
+      .subscribe(() => {
+        this.datasharingService.addGroupToUser(group);
+      });
   }
 
   public joinEvent(event: Event) {
