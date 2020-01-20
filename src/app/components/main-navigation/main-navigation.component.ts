@@ -56,6 +56,10 @@ export class MainNavigationComponent implements OnInit {
   @HostBinding('class') componentCssClass;
 
   ngOnInit() {
+    if (this.lighttheme && this.getThemeFromLocalStorage() === 'dark-theme') {
+      this.toggleTheme();
+      this.darkModeButtonChecked = true;
+    }
     this.data.currentUserInfo.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
@@ -70,9 +74,17 @@ export class MainNavigationComponent implements OnInit {
         // IF user activated darkmode and logged in after that
       } else if (this.user.loggedIn && !this.user.darkmode && !this.lighttheme) {
         this.settingsService.setDarkModeActive(true);
+        this.darkModeButtonChecked = true;
       }
       this.updateLinks();
     });
+  }
+
+  /**
+   * Returns the saved theme from the local storage
+   */
+  private getThemeFromLocalStorage(): string {
+    return localStorage.getItem('theme');
   }
 
   toggleTheme() {
@@ -108,6 +120,7 @@ export class MainNavigationComponent implements OnInit {
   onSetTheme(theme) {
     this.overlayContainer.getContainerElement().classList.add(theme);
     this.componentCssClass = theme;
+    localStorage.setItem('theme', theme);
   }
 
   logout() {
