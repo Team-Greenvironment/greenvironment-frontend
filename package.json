@@ -35,8 +35,9 @@
     "hammerjs": "^2.0.8",
     "js-sha512": "^0.8.0",
     "ngx-infinite-scroll": "^8.0.1",
+    "ngx-lightbox": "^2.1.1",
     "ngx-socket-io": "^2.1.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "rxjs": "~6.3.3",
     "ts-md5": "^1.2.7",
     "zone.js": "^0.8.29"
