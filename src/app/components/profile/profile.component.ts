@@ -6,7 +6,6 @@ import {RequestService} from 'src/app/services/request/request.service';
 import {DatasharingService} from '../../services/datasharing.service';
 import {ProfileService} from 'src/app/services/profile/profile.service';
 import {HttpClient} from '@angular/common/http';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {SelfService} from '../../services/selfservice/self.service';
 import {MatDialog} from '@angular/material';
 import {DialogFileUploadComponent} from './fileUpload/fileUpload.component';
@@ -29,7 +28,6 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private _snackBar: MatSnackBar,
     private router: Router,
     private requestService: RequestService,
     private data: DatasharingService,

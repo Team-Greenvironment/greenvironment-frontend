@@ -1,13 +1,19 @@
+import {IEvent} from './interfaces/IEvent';
+
 export class Event {
   id: string;
   name: string;
   date: string;
   joined: boolean;
 
-  constructor(pId: string, pName: string, pdate: string, pjoined: boolean) {
-    this.id = pId;
-    this.name = pName;
-    this.date = pdate;
-    this.joined = pjoined;
+  public assignFromResponse(eventDataResponse: IEvent) {
+    this.id = eventDataResponse.id;
+    this.name = eventDataResponse.name;
+    const temp = new Date(Number(eventDataResponse.dueDate));
+    this.date = temp.toLocaleString('en-GB');
+    this.joined = eventDataResponse.joined;
+
+    return this;
   }
+
 }

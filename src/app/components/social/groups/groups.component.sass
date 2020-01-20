@@ -9,14 +9,30 @@
   box-sizing: border-box
   width: 100%
   margin-top: 0.5em
-  cursor: pointer
-
+  outline: none
+  user-select: none
+  ::ng-deep .mat-card-header-text
+    width: 1000%
+    margin: auto 0 auto 24px
   .mat-card-subtitle
     margin: 0
-
+    word-break: break-all
+  .mat-card-title
+    margin: 0
+    word-break: break-all
+$mat-card-header-size: 52px !default
 .group-picture
-  background-image: url(https://material.angular.io/assets/img/examples/shiba1.jpg)
+  height: $mat-card-header-size
+  width: $mat-card-header-size
+  border-radius: 50%
+  flex-shrink: 0
   background-size: cover
+  transition-duration: 0.5s
+  z-index: 10
+  object-fit: cover
+.mat-card-avatar
+  height: $mat-card-header-size
+  width: $mat-card-header-size
 
 #button-box
   text-align: right
