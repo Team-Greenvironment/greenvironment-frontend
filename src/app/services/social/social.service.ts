@@ -36,6 +36,6 @@ export class SocialService extends BaseService {
    */
   createGroup(name: string) {
     const body = SocialService.buildGroupCreateBody(name);
-    return this.postGraphql(body);
+    return this.postGraphql(body, null,  0);
   }
 }
