@@ -16,7 +16,7 @@ export class ChatService {
   chats: Array<Chat> = [];
 
   constructor(private http: Http, private data: DatasharingService) {
-    this.data.currentUserInfo.subscribe(user => {
+    this.data.currentUser.subscribe(user => {
       this.ownID = user.userID;
     });
   }

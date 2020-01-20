@@ -1,7 +1,7 @@
 {
   "name": "greenvironment",
   "short_name": "greenvironment",
-  "theme_color": "#1976d2",
+  "theme_color": "#8bc34a",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",

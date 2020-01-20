@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import { HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {delay, mergeMap, retryWhen} from 'rxjs/operators';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {delay, mergeMap, retry, retryWhen} from 'rxjs/operators';
 import {Observable, of, throwError} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 const httpTooManyCode = 429;
 const httpHeaderRateRetry = 'Retry-After';
@@ -11,9 +12,31 @@ const httpHeaderRateRetry = 'Retry-After';
 })
 export abstract class BaseService {
   protected headers: HttpHeaders;
-  protected constructor() {
+  protected constructor(protected http?: HttpClient) {
     this.headers = new HttpHeaders();
     this.headers.set('Content-Type', 'application/json');
+  }
+
+  /**
+   * Does a http post request
+   * @param url
+   * @param body
+   * @param options
+   * @param retryLimit
+   */
+  protected post<T>(url: string, body: any, options?: any, retryLimit: number = 3): Observable<any | T> {
+    return this.http.post<T>(url, body, Object.assign({headers: this.headers}, options))
+      .pipe(this.retryRated(retryLimit));
+  }
+
+  /**
+   * Does a http post to the graphql url
+   * @param body
+   * @param options
+   * @param retryLimit
+   */
+  protected postGraphql<T>(body: any, options?: any, retryLimit: number = 3): Observable<any | T> {
+    return this.post<T>(environment.graphQLUrl, body, options, retryLimit);
   }
 
   /**

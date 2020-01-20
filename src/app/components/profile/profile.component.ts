@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.id = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
-    this.data.currentUserInfo.subscribe(user => {
+    this.data.currentUser.subscribe(user => {
       this.self = user;
     });
     this.profileService.getUserData(this.id);

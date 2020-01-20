@@ -5,10 +5,10 @@ import {RequestService} from '../../services/request/request.service';
 import {SettingsService} from '../../services/settings/settings.service';
 import {environment} from 'src/environments/environment';
 import {Levellist} from 'src/app/models/levellist';
-import {Http} from '@angular/http';
 import {Router} from '@angular/router';
 import {User} from 'src/app/models/user';
 import {OverlayContainer} from '@angular/cdk/overlay';
+import {LoginService} from '../../services/login/login.service';
 
 @Component({
   selector: 'app-main-navigation',
@@ -21,9 +21,10 @@ export class MainNavigationComponent implements OnInit {
     public overlayContainer: OverlayContainer,
     private data: DatasharingService,
     private settingsService: SettingsService,
-    private requestservice: RequestService,
+    private requestService: RequestService,
     private breakpointObserver: BreakpointObserver,
-    private http: Http, private router: Router,
+    private loginService: LoginService,
+    private router: Router,
   ) {
     this.overlay = overlayContainer.getContainerElement();
   }
@@ -56,7 +57,11 @@ export class MainNavigationComponent implements OnInit {
   @HostBinding('class') componentCssClass;
 
   ngOnInit() {
-    this.data.currentUserInfo.subscribe(user => {
+    if (this.lighttheme && this.getThemeFromLocalStorage() === 'dark-theme') {
+      this.toggleTheme();
+      this.darkModeButtonChecked = true;
+    }
+    this.data.currentUser.subscribe(user => {
       this.user = user;
       this.loggedIn = user.loggedIn;
       this.userId = user.userID;
@@ -70,9 +75,17 @@ export class MainNavigationComponent implements OnInit {
         // IF user activated darkmode and logged in after that
       } else if (this.user.loggedIn && !this.user.darkmode && !this.lighttheme) {
         this.settingsService.setDarkModeActive(true);
+        this.darkModeButtonChecked = true;
       }
       this.updateLinks();
     });
+  }
+
+  /**
+   * Returns the saved theme from the local storage
+   */
+  private getThemeFromLocalStorage(): string {
+    return localStorage.getItem('theme');
   }
 
   toggleTheme() {
@@ -108,52 +121,49 @@ export class MainNavigationComponent implements OnInit {
   onSetTheme(theme) {
     this.overlayContainer.getContainerElement().classList.add(theme);
     this.componentCssClass = theme;
+    localStorage.setItem('theme', theme);
   }
 
+  /**
+   * Logs out
+   */
   logout() {
-    const url = environment.graphQLUrl;
-
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    const body = {
-      query: `mutation {
-        logout
-      }`
-    };
-    this.http.post(url, body).subscribe(response => {
+    this.loginService.logout().subscribe(() => {
+      this.loggedIn = false;
+      const user = new User();
+      user.loggedIn = false;
+      this.data.currentUser.next(user);
+      this.router.navigate(['login']);
     });
-    this.loggedIn = false;
-    const user = new User();
-    user.loggedIn = false;
-    this.data.changeUserInfo(user);
-    this.router.navigate(['login']);
   }
 
+  /**
+   * Accepts a request
+   * @param id
+   */
   acceptRequest(id: number) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.requestservice.buildJsonAcceptRequest(id))
-      .subscribe(response => {
-        for (let i = 0; i < this.user.receivedRequests.length; i++) {
-          if (this.user.receivedRequests[i].senderUserID === id) {
-            this.user.receivedRequests.splice(i, 1);
-            return;
-          }
+    this.requestService.acceptRequest(id).subscribe(response => {
+      for (let i = 0; i < this.user.receivedRequests.length; i++) {
+        if (this.user.receivedRequests[i].senderUserID === id) {
+          this.user.receivedRequests.splice(i, 1);
+          return;
         }
-      });
+      }
+    });
   }
 
+  /**
+   * Denys a request
+   * @param id
+   */
   denyRequest(id: number) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.requestservice.buildJsonDenyRequest(id))
-      .subscribe(response => {
-        for (let i = 0; i < this.user.receivedRequests.length; i++) {
-          if (this.user.receivedRequests[i].senderUserID === id) {
-            this.user.receivedRequests.splice(i, 1);
-            return;
-          }
+    this.requestService.denyRequest(id).subscribe(() => {
+      for (let i = 0; i < this.user.receivedRequests.length; i++) {
+        if (this.user.receivedRequests[i].senderUserID === id) {
+          this.user.receivedRequests.splice(i, 1);
+          return;
         }
-      });
+      }
+    });
   }
 }

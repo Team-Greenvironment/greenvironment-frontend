@@ -41,8 +41,8 @@ const getSelfGraphqlQuery = `{
 })
 export class SelfService extends BaseService {
 
-  constructor(private http: HttpClient, private data: DatasharingService) {
-    super();
+  constructor(http: HttpClient, private data: DatasharingService) {
+    super(http);
   }
 
   /**
@@ -62,8 +62,7 @@ export class SelfService extends BaseService {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    return this.http.post(url, SelfService.buildGetSelfBody(), {headers: this.headers})
-      .pipe(this.retryRated())
+    return this.postGraphql(SelfService.buildGetSelfBody())
       .pipe(tap(response => {
         this.updateUserInfo(response);
       }));
@@ -76,7 +75,7 @@ export class SelfService extends BaseService {
   public changeProfilePicture(file: any) {
     const formData: any = new FormData();
     formData.append('profilePicture', file);
-    return this.http.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData)
+    return this.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData, null, 0)
       .pipe(this.retryRated());
   }
 

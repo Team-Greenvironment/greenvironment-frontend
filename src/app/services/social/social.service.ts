@@ -14,8 +14,8 @@ const graphqlCreateGroupQuery = `mutation($name: String!) {
 })
 export class SocialService extends BaseService {
 
-  constructor(private http: HttpClient) {
-    super();
+  constructor(http: HttpClient) {
+    super(http);
   }
 
   /**
@@ -36,7 +36,6 @@ export class SocialService extends BaseService {
    */
   createGroup(name: string) {
     const body = SocialService.buildGroupCreateBody(name);
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
-      .pipe(this.retryRated());
+    return this.postGraphql(body);
   }
 }
