@@ -257,7 +257,7 @@ export class FeedService extends BaseService {
           }
         }
         this.posts.next(posts);
-        if (posts.length < this.offsetStep) {
+        if (response.data.getPosts.length < this.offsetStep) {
           this.postsAvailable.next(false);
         }
       });
