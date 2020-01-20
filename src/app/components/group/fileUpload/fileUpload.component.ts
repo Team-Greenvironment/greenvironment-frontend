@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
-import {SelfService} from '../../../services/selfservice/self.service';
+import {GroupService} from '../../../services/group/group.service';
 import {environment} from '../../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
 
@@ -16,8 +16,9 @@ export class DialogGroupFileUploadComponent {
   public profilePictureUrl: BehaviorSubject<string | null>;
   private file;
   public localFileUrl;
+  groupId: number;
 
-  constructor(public dialogRef: MatDialogRef<DialogGroupFileUploadComponent>, private selfService: SelfService) {
+  constructor(public dialogRef: MatDialogRef<DialogGroupFileUploadComponent>, private groupService: GroupService) {
     this.profilePictureUrl = new BehaviorSubject<string | null>(null);
   }
 
@@ -42,7 +43,7 @@ export class DialogGroupFileUploadComponent {
     if (this.file) {
       this.errorOccurred = false;
       this.uploading = true;
-      this.selfService.changeProfilePicture(this.file).subscribe((response) => {
+      this.groupService.changeProfilePicture(this.file, this.groupId).subscribe((response) => {
         this.uploading = false;
         if (response.success) {
           this.profilePictureUrl.next(environment.greenvironmentUrl + response.fileName);

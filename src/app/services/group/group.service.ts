@@ -44,21 +44,17 @@ export class GroupService extends BaseService {
 
   public getGroupData(groupId: string) {
     const url = environment.graphQLUrl;
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
 
-    return this.http.post(url, GroupService.buildGetGroupBody, {headers: this.headers})
+    return this.http.post(url, GroupService.buildGetGroupBody(groupId), {headers: this.headers})
       .pipe(this.retryRated())
       .pipe(tap(response => {
         const group_ = new Group();
-        this.group.next(group_.assignFromResponse(response));
-        return this.group;
+        this.group.next(group_.assignFromResponse(response.data.getGroup));
+        return this.group.getValue();
       }));
   }
 
   public createEvent(name: string, date: string, groupId: string) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
     const body = {
       query: `mutation($groupId: ID!, $name: String, $date: String) {
         createEvent(name: $name, dueDate: $date, groupId: $groupId) {
@@ -78,7 +74,7 @@ export class GroupService extends BaseService {
     .pipe(this.retryRated())
     .pipe(tap(response => {
       const event = new Event();
-      event.assignFromResponse(response.json().data.createEvent);
+      event.assignFromResponse(response.data.createEvent);
       const group = this.group.getValue();
       group.events.push(event);
       this.group.next(group);
@@ -114,6 +110,14 @@ export class GroupService extends BaseService {
       }
     };
     return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+      .pipe(this.retryRated());
+  }
+
+  public changeProfilePicture(file: any, id: number) {
+    const formData: any = new FormData();
+    formData.append('groupPicture', file);
+    formData.append('groupId', id);
+    return this.http.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData)
       .pipe(this.retryRated());
   }
 
