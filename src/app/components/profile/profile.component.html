@@ -3,11 +3,11 @@
     <!--on small screen-->
     <mat-toolbar id="toolbar" fxShow="true" fxHide.gt-sm="true">
       <mat-toolbar-row>
-        <div class="hover-box" matTooltip="upload new picture" *ngIf="ownProfile" (click)="openFileUploadDialog()">
+        <div class="hover-box profile-picture-container" matTooltip="upload new picture" *ngIf="ownProfile" (click)="openFileUploadDialog()">
           <img class="profile-picture" [src]="userProfile.profilePicture"/>
           <mat-icon id="icon">camera_alt</mat-icon>
         </div>
-        <div *ngIf="!ownProfile">
+        <div class="profile-picture-container" *ngIf="!ownProfile" (click)="openPfpLightbox()">
           <img class="profile-picture" [src]="userProfile.profilePicture"/>
         </div>
 
@@ -44,11 +44,11 @@
     <!--on big screen-->
     <mat-toolbar id="toolbar" fxShow="true" fxHide.lt-md="true">
       <mat-toolbar-row>
-        <div class="hover-box user-profile-picture" matTooltip="upload new picture" *ngIf="ownProfile" (click)="openFileUploadDialog()">
+        <div class="hover-box profile-picture-container" matTooltip="upload new picture" *ngIf="ownProfile" (click)="openFileUploadDialog()">
           <img class="profile-picture" [src]="userProfile.profilePicture"/>
           <mat-icon id="icon">camera_alt</mat-icon>
         </div>
-        <div class="user-profile-picture" *ngIf="!ownProfile" (click)="openPfpLightbox()">
+        <div class="profile-picture-container" *ngIf="!ownProfile" (click)="openPfpLightbox()">
           <img class="profile-picture" [src]="userProfile.profilePicture" />
         </div>
         <span id="username">{{userProfile.username}}</span>
