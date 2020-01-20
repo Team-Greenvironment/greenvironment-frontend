@@ -5,22 +5,26 @@ html, body
   margin: 0
   height: 100%
 
+$scrollbar-color: transparent
+$scrollbar-thumb-color: #aaa
+$scrollbar-color-dark: transparent
+$scrollbar-thumb-color-dark: #aaa
 
 ::ng-deep body
-  scrollbar-color: #aaa #ddd
+  scrollbar-color: $scrollbar-color $scrollbar-thumb-color
   scrollbar-width: thin
   .dark-theme
-    scrollbar-color: #ddd #666
+    scrollbar-color: $scrollbar-color-dark $scrollbar-thumb-color-dark
 
 ::ng-deep ::-webkit-scrollbar
   width: 4px
 
 ::ng-deep ::-webkit-scrollbar-track
-  background: #ddd
+  background: $scrollbar-color
   .dark-theme
-    background: #666
+    background: $scrollbar-color-dark
 
 ::ng-deep ::-webkit-scrollbar-thumb
-  background: #aaa
+  background: $scrollbar-thumb-color
   .dark-theme
-    background: #ddd
+    background: $scrollbar-thumb-color-dark
