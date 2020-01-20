@@ -137,5 +137,4 @@ export class GroupService {
     };
     return this.http.post(environment.graphQLUrl, body);
   }
-
 }

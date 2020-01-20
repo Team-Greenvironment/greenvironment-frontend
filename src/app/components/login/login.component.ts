@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
       });
     }, (error: IErrorResponse) => {
       if (error.error) {
+        console.error(error);
         this.loginError(error);
       }
     });

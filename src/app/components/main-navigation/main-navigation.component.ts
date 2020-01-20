@@ -5,10 +5,10 @@ import {RequestService} from '../../services/request/request.service';
 import {SettingsService} from '../../services/settings/settings.service';
 import {environment} from 'src/environments/environment';
 import {Levellist} from 'src/app/models/levellist';
-import {Http} from '@angular/http';
 import {Router} from '@angular/router';
 import {User} from 'src/app/models/user';
 import {OverlayContainer} from '@angular/cdk/overlay';
+import {LoginService} from '../../services/login/login.service';
 
 @Component({
   selector: 'app-main-navigation',
@@ -21,9 +21,10 @@ export class MainNavigationComponent implements OnInit {
     public overlayContainer: OverlayContainer,
     private data: DatasharingService,
     private settingsService: SettingsService,
-    private requestservice: RequestService,
+    private requestService: RequestService,
     private breakpointObserver: BreakpointObserver,
-    private http: Http, private router: Router,
+    private loginService: LoginService,
+    private router: Router,
   ) {
     this.overlay = overlayContainer.getContainerElement();
   }
@@ -123,50 +124,46 @@ export class MainNavigationComponent implements OnInit {
     localStorage.setItem('theme', theme);
   }
 
+  /**
+   * Logs out
+   */
   logout() {
-    const url = environment.graphQLUrl;
-
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    const body = {
-      query: `mutation {
-        logout
-      }`
-    };
-    this.http.post(url, body).subscribe(response => {
+    this.loginService.logout().subscribe(() => {
+      this.loggedIn = false;
+      const user = new User();
+      user.loggedIn = false;
+      this.data.changeUserInfo(user);
+      this.router.navigate(['login']);
     });
-    this.loggedIn = false;
-    const user = new User();
-    user.loggedIn = false;
-    this.data.changeUserInfo(user);
-    this.router.navigate(['login']);
   }
 
+  /**
+   * Accepts a request
+   * @param id
+   */
   acceptRequest(id: number) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.requestservice.buildJsonAcceptRequest(id))
-      .subscribe(response => {
-        for (let i = 0; i < this.user.receivedRequests.length; i++) {
-          if (this.user.receivedRequests[i].senderUserID === id) {
-            this.user.receivedRequests.splice(i, 1);
-            return;
-          }
+    this.requestService.acceptRequest(id).subscribe(response => {
+      for (let i = 0; i < this.user.receivedRequests.length; i++) {
+        if (this.user.receivedRequests[i].senderUserID === id) {
+          this.user.receivedRequests.splice(i, 1);
+          return;
         }
-      });
+      }
+    });
   }
 
+  /**
+   * Denys a request
+   * @param id
+   */
   denyRequest(id: number) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, this.requestservice.buildJsonDenyRequest(id))
-      .subscribe(response => {
-        for (let i = 0; i < this.user.receivedRequests.length; i++) {
-          if (this.user.receivedRequests[i].senderUserID === id) {
-            this.user.receivedRequests.splice(i, 1);
-            return;
-          }
+    this.requestService.denyRequest(id).subscribe(() => {
+      for (let i = 0; i < this.user.receivedRequests.length; i++) {
+        if (this.user.receivedRequests[i].senderUserID === id) {
+          this.user.receivedRequests.splice(i, 1);
+          return;
         }
-      });
+      }
+    });
   }
 }

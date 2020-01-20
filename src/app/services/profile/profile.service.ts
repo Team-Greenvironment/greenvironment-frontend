@@ -51,8 +51,8 @@ const graphqlGetProfileQuery = `query($userId: ID) {
 })
 export class ProfileService extends BaseService {
 
-  constructor(private http: HttpClient) {
-    super();
+  constructor(http: HttpClient) {
+    super(http);
   }
 
   public proflile: Subject<any> = new Subject();
@@ -77,8 +77,7 @@ export class ProfileService extends BaseService {
   public getUserData(userId: string) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
-    this.http.post(environment.graphQLUrl, ProfileService.buildGetProfileBody(userId))
-      .pipe(this.retryRated())
+    this.postGraphql(ProfileService.buildGetProfileBody(userId))
       .subscribe(result => {
       this.proflile.next(this.getProfileData(result));
       return this.proflile;

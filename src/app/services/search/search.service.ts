@@ -41,8 +41,8 @@ const graphqlQuery = `query($query: String!, $first: Int, $offset: Int) {
   providedIn: 'root'
 })
 export class SearchService extends BaseService {
-  constructor(private http: HttpClient, private data: DatasharingService, private router: Router) {
-    super();
+  constructor(http: HttpClient, private data: DatasharingService, private router: Router) {
+    super(http);
   }
 
   /**
@@ -101,7 +101,7 @@ export class SearchService extends BaseService {
    */
   public search(query: string): Observable<ISearchRequestResult> {
     const body = SearchService.buildRequestBody(query);
-    return this.http.post<ISearchRequestResult>(environment.graphQLUrl, body, {headers: this.headers})
+    return this.postGraphql<ISearchRequestResult>(body)
       .pipe(this.retryRated());
   }
 }

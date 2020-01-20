@@ -99,8 +99,8 @@ export enum Sort {
 })
 export class FeedService extends BaseService {
 
-  constructor(private http: HttpClient) {
-    super();
+  constructor(http: HttpClient) {
+    super(http);
   }
 
   public postsAvailable = new BehaviorSubject<boolean>(true);
@@ -159,7 +159,7 @@ export class FeedService extends BaseService {
    * @param body
    */
   private createPostRequest(body: { variables: any; query: string }) {
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+    return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
         if (this.activePostList === Sort.NEW) {
           const updatedPosts = this.posts.getValue();
@@ -180,7 +180,7 @@ export class FeedService extends BaseService {
       }
     };
 
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers}).pipe(this.retryRated());
+    return this.postGraphql(body);
   }
 
   /**
@@ -194,7 +194,7 @@ export class FeedService extends BaseService {
       }
     };
 
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers}).pipe(this.retryRated());
+    return this.postGraphql(body);
   }
 
   /**
