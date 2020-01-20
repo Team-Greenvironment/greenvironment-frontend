@@ -9,6 +9,7 @@ import {HttpClient} from '@angular/common/http';
 import {SelfService} from '../../services/selfservice/self.service';
 import {MatDialog} from '@angular/material';
 import {DialogFileUploadComponent} from './fileUpload/fileUpload.component';
+import {Lightbox} from 'ngx-lightbox';
 
 @Component({
   selector: 'app-profile',
@@ -32,7 +33,7 @@ export class ProfileComponent implements OnInit {
     private requestService: RequestService,
     private data: DatasharingService,
     private profileService: ProfileService,
-    private selfService: SelfService,
+    private lightbox: Lightbox,
     public dialog: MatDialog) {
     router.events.forEach((event) => {
       // check if the user is on the profile page (of userY) and routes to the page of userY (e.g. his own page)
@@ -84,5 +85,16 @@ export class ProfileComponent implements OnInit {
         this.userProfile.profilePicture = profilePictureUrl;
       }
     });
+  }
+
+  /**
+   * Opens a lightbox with the users profile picture
+   */
+  openPfpLightbox() {
+    this.lightbox.open([{
+      src: this.userProfile.profilePicture,
+      caption: `${this.userProfile.username}'s profile picture`,
+      thumb: this.userProfile.profilePicture,
+    }], 0, {disableScrolling: true});
   }
 }

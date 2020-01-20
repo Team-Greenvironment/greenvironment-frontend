@@ -63,6 +63,7 @@ import {MatNativeDateModule, MatProgressBarModule} from '@angular/material/';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import {LightboxModule} from 'ngx-lightbox';
 
 
 const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
@@ -147,6 +148,7 @@ const appRoutes: Routes = [
     MatDatepickerModule,
     MatSnackBarModule,
     MatProgressBarModule,
+    LightboxModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   entryComponents: [
