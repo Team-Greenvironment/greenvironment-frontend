@@ -7,6 +7,7 @@ import {Activity} from 'src/app/models/activity';
 import {BehaviorSubject} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {BaseService} from '../base.service';
+import {formatDate} from '@angular/common';
 
 const createPostGqlQuery = `mutation($content: String!) {
   createPost(content: $content) {
@@ -126,6 +127,15 @@ export class FeedService extends BaseService {
   }
 
   /**
+   * Returns if the input date is today
+   * @param date
+   */
+  private static dateIsToday(date: Date) {
+    date = new Date(date);
+    return new Date().setHours(0, 0, 0, 0) === date.setHours(0, 0, 0, 0);
+  }
+
+  /**
    * Creates a new post
    * @param pContent
    */
@@ -240,8 +250,13 @@ export class FeedService extends BaseService {
       .pipe(this.retryRated())
       .subscribe(response => {
         const posts = this.constructAllPosts(response);
-        const updatedPostList = this.posts.getValue().concat(posts);
-        this.posts.next(updatedPostList);
+        const previousPosts = this.posts.getValue();
+        for (const post of previousPosts.reverse()) {
+          if (!posts.find(p => p.id === post.id)) {
+            posts.unshift(post);
+          }
+        }
+        this.posts.next(posts);
         if (posts.length < this.offsetStep) {
           this.postsAvailable.next(false);
         }
@@ -257,8 +272,13 @@ export class FeedService extends BaseService {
       profilePicture = 'assets/images/default-profilepic.svg';
     }
     const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
-    const temp = new Date(Number(post.createdAt));
-    const date = temp.toLocaleString('en-GB');
+    const postDate = new Date(Number(post.createdAt));
+    let date: string;
+    if (FeedService.dateIsToday(postDate)) {
+      date = formatDate(postDate, 'HH:mm', 'en-GB');
+    } else {
+      date = formatDate(postDate, 'dd.MM.yy HH:mm', 'en-GB');
+    }
     let activity: Activity;
     if (post.activity) {
       activity = new Activity(
@@ -293,8 +313,13 @@ export class FeedService extends BaseService {
         profilePicture = 'assets/images/default-profilepic.svg';
       }
       const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
-      const temp = new Date(Number(post.createdAt));
-      const date = temp.toLocaleString('en-GB');
+      const postDate = new Date(Number(post.createdAt));
+      let date: string;
+      if (FeedService.dateIsToday(postDate)) {
+        date = formatDate(postDate, 'HH:mm', 'en-GB');
+      } else {
+        date = formatDate(postDate, 'dd.MM.yy HH:mm', 'en-GB');
+      }
       let activity: Activity;
       if (post.activity) {
         activity = new Activity(
