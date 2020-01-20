@@ -12,6 +12,7 @@
     <input matInput #time type="time" placeholder="choose a time">
   </mat-form-field>
 </div>
+<mat-error *ngIf="errorOccurred">{{getErrorMessage()}}</mat-error>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
   <button mat-button cdkFocusInitial (click)="createEvent(name.value, date.value, time.value)">Create Event</button>

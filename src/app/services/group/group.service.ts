@@ -29,8 +29,8 @@ export class GroupService extends BaseService {
 
   public group: BehaviorSubject<Group> = new BehaviorSubject(new Group());
 
-  constructor(private http: HttpClient) {
-    super();
+  constructor(http: HttpClient) {
+    super(http);
   }
 
   /**
@@ -70,8 +70,7 @@ export class GroupService extends BaseService {
       }
     };
 
-    this.http.post(environment.graphQLUrl, body, {headers: this.headers})
-    .pipe(this.retryRated())
+    return this.postGraphql(body, null, 0)
     .pipe(tap(response => {
       const event = new Event();
       event.assignFromResponse(response.data.createEvent);
@@ -82,8 +81,6 @@ export class GroupService extends BaseService {
   }
 
   public joinEvent(eventId: string) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
     const body = {
       query: `mutation($eventId: ID!) {
       joinEvent(eventId: $eventId) {
@@ -93,7 +90,7 @@ export class GroupService extends BaseService {
         eventId: eventId
       }
     };
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+    return this.postGraphql(body)
       .pipe(this.retryRated());
   }
 
@@ -109,15 +106,13 @@ export class GroupService extends BaseService {
         eventId: eventId
       }
     };
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
-      .pipe(this.retryRated());
+    return this.postGraphql(body);
   }
 
   public changeProfilePicture(file: any, id: number) {
     const formData: any = new FormData();
     formData.append('groupPicture', file);
     formData.append('groupId', id);
-    return this.http.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData)
-      .pipe(this.retryRated());
+    return this.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData);
   }
 }
