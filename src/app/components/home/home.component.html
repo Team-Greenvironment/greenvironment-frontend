@@ -1,5 +1,5 @@
 <!--on big screen-->
-<div id="content" *ngIf="media.isActive('md') || media.isActive('lg')">
+<div id="content" *ngIf="!(media.isActive('sm') || media.isActive('xs'))">
   <div id="chat">
     <home-chatmanager [hidden]="!loggedIn"></home-chatmanager>
   </div>
