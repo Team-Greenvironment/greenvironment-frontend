@@ -32,6 +32,9 @@ $mat-card-header-size: 40px !default
       text-decoration: underline
       cursor: pointer
 
+  .postlistUsername
+    cursor: pointer
+
   .postVoteButtons
     display: inline-block
 
@@ -60,8 +63,7 @@ $mat-card-header-size: 40px !default
   .mat-button
     min-width: 32px !important
     padding: 0
-    margin: 0
-    margin-left: 8px
+    margin: 0 0 0 8px
 
   .profile-picture
     border-radius: 50%
@@ -87,7 +89,6 @@ $mat-card-header-size: 40px !default
   @media (max-width: 959px)
     .activity-info > .span
       margin-left: 1em
-      width: calc(100% - 1em)
       display: block
       text-align: left
     .postVoteButtons
@@ -101,7 +102,7 @@ $mat-card-header-size: 40px !default
           scale: 1.1
 
     .mat-card-actions
-      display: flex
+      display: -webkit-box
       justify-content: end
       align-items: center
 

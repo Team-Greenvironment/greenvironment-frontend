@@ -27,7 +27,7 @@
   <mat-card-actions>
     <div *ngIf="post.activity" class="activity-info" fxHide.gt-sm="true">
       <span class="span" [matTooltip]="post.activity.description" matTooltipShowDelay="200">
-        {{post.activity.points}} points earned through <b>{{post.activity.name}}</b>
+        +{{post.activity.points}} points with <b>{{post.activity.name}}</b>
       </span>
     </div>
     <div class="postVoteButtons">
@@ -44,7 +44,7 @@
     </div>
     <div *ngIf="post.activity" class="activity-info" fxHide.lt-md="true">
       <span class="span" [matTooltip]="post.activity.description" matTooltipShowDelay="200">
-        {{post.activity.points}} points earned through <b>{{post.activity.name}}</b>
+        {{post.activity.points}} points earned with <b>{{post.activity.name}}</b>
       </span>
     </div>
   </mat-card-actions>
