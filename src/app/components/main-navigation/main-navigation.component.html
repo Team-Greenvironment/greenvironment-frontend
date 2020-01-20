@@ -83,7 +83,7 @@
         <span class="mat-button" *ngIf="!loggedIn" fxShow="true" fxHide.lt-md="true" routerLink="/login"><span>Hello, Sign in</span></span>
         <button mat-icon-button [matMenuTriggerFor]="requestMenu" [disabled]="!loggedIn" id="menu-button">
           <mat-icon [matBadge]="user.receivedRequests.length" [matBadgeHidden]="!(user.receivedRequests.length > 0)"
-                    matBadgeColor="accent">notifications
+                    matBadgeColor="warn">notifications
           </mat-icon>
         </button>
 
@@ -93,7 +93,7 @@
       </div>
 
       <mat-menu #requestMenu="matMenu">
-        <span mat-menu-item disableRipple="true" disabled="true">friend requests:</span>
+        <span class="request-menu" mat-menu-item disableRipple="false" disabled="true">friend requests:</span>
         <button mat-menu-item *ngFor="let request of user.receivedRequests"
                 [class.selected]="request === selectedRequest" (click)="$event.stopPropagation();" disableRipple="true">
           <button mat-icon-button (click)=acceptRequest(request.senderUserID) (click)="$event.stopPropagation();">
