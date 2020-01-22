@@ -62,7 +62,7 @@ export class User {
       this.groups.push(group_.assignFromResponse(group));
       } doesnt work because of circular injection*/
       this.groups = userDataResponse.groups
-        .map(group => new GroupInfo(group.id, group.name, group.picture));
+        .map(group => new GroupInfo(group.id, group.name, group.picture, group.deletable));
     }
     if (userDataResponse.chats) {
       this.chatIDs = userDataResponse.chats.map(chat => chat.id);

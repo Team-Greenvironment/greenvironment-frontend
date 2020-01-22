@@ -13,6 +13,7 @@ export class Group {
   events: Event[] = [];
   joined: boolean;
   allowedToJoinGroup = false;
+  deletable: boolean;
 
   public assignFromResponse(groupDataResponse: IGroup) {
     if (!groupDataResponse) {
@@ -23,6 +24,7 @@ export class Group {
     this.picture = this.buildPictureUrl(groupDataResponse.picture);
     let user = new User();
     this.creator = user.assignFromResponse(groupDataResponse.creator);
+    this.deletable = groupDataResponse.deletable;
     if (groupDataResponse.members) {
       for (const member of groupDataResponse.members) {
         user = new User();
