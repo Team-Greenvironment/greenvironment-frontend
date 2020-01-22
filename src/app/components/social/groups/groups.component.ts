@@ -75,5 +75,9 @@ export class GroupsComponent implements OnInit {
   deleteGroup(group: GroupInfo) {
     this.groupService.deleteGroup(group.id).subscribe();
   }
+
+  leaveGroup(group: GroupInfo) {
+    this.groupService.leaveGroup(group.id).subscribe();
+  }
 }
 

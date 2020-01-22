@@ -186,4 +186,9 @@ export class GroupComponent implements OnInit {
       this.router.navigateByUrl('');
     });
   }
+
+  leaveGroup() {
+    this.groupService.leaveGroup(this.groupProfile.id).subscribe();
+  }
+
 }

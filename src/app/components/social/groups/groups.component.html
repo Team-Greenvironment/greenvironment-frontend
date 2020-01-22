@@ -13,12 +13,17 @@
     [class.selected]="group === selectedGroup">
     <mat-card-header>
       <div id="button-box">
-        <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button" *ngIf="group.deletable">
+        <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button">
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="deleteGroup(group)">
-            <span>delete group</span>
+          <div *ngIf="group.deletable">
+            <button mat-menu-item (click)="deleteGroup(group)">
+              <span>delete group</span>
+            </button>
+          </div>
+          <button mat-menu-item (click)="leaveGroup(group)">
+            <span>leave group</span>
           </button>
         </mat-menu>
       </div>

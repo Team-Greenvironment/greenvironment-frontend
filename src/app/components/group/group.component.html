@@ -13,12 +13,18 @@
 
         <span id="username">{{groupProfile.name}}</span>
         <div class="button-box">
-          <button mat-icon-button
+          <button mat-icon-button *ngIf="!groupProfile.joined"
                   class="request-button"
                   matTooltip="join group" matTooltipShowDelay="500"
                   (click)="joinGroup(groupProfile)"
                   [disabled]="!groupProfile.allowedToJoinGroup">
             <mat-icon>group_add</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="groupProfile.joined"
+                  class="request-button"
+                  matTooltip="leave group" matTooltipShowDelay="500"
+                  (click)="leaveGroup(groupProfile)">
+            <mat-icon>directions_run</mat-icon>
           </button>
           <button mat-icon-button
                   class="request-button"
@@ -65,12 +71,18 @@
               (click)="showUserProfile(groupProfile.creator)">created by {{groupProfile.creator.username}}
           @{{groupProfile.creator.handle}}</span>
         <div class="button-box">
-          <button mat-icon-button
+          <button mat-icon-button *ngIf="!groupProfile.joined"
                   class="request-button"
                   matTooltip="join group" matTooltipShowDelay="500"
                   (click)="joinGroup(groupProfile)"
                   [disabled]="!groupProfile.allowedToJoinGroup">
             <mat-icon>group_add</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="groupProfile.joined"
+                  class="request-button"
+                  matTooltip="leave group" matTooltipShowDelay="500"
+                  (click)="leaveGroup(groupProfile)">
+            <mat-icon>directions_run</mat-icon>
           </button>
           <button mat-icon-button
                   class="request-button"
