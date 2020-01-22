@@ -79,6 +79,14 @@
                   [disabled]="!isAdmin">
             <mat-icon>event</mat-icon>
           </button>
+          <div style="display: contents;" *ngIf="groupProfile.deletable">
+            <button mat-icon-button
+                    class="request-button"
+                    matTooltip="delete this group" matTooltipShowDelay="0"
+                    (click)="deleteGroup()">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </div>
       </mat-toolbar-row>
       <mat-toolbar-row>
@@ -115,14 +123,6 @@
                           (click)="leaveEvent(event)"
                           [disabled]="!event.joined">
                     <mat-icon>event_busy</mat-icon>
-                    <div style="display: contents;" *ngIf="groupProfile.deletable">
-                      <button mat-icon-button
-                              class="request-button"
-                              matTooltip="delete this group" matTooltipShowDelay="0"
-                              (click)="deleteGroup()">
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                    </div>
                   </button>
                 </div>
               </mat-card-header>
