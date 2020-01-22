@@ -123,14 +123,12 @@
                 <mat-card-title>{{event.name}}</mat-card-title>
                 <mat-card-subtitle>{{event.date}}</mat-card-subtitle>
                 <div class="button-box">
-                  <button mat-icon-button class="request-button"
+                  <button *ngIf="!event.joined" mat-icon-button class="request-button"
                           matTooltip="join event" matTooltipShowDelay="500"
-                          (click)="joinEvent(event)"
-                          [disabled]="event.joined">
-                    <mat-icon *ngIf="event.joined" color="primary">event_available</mat-icon>
-                    <mat-icon *ngIf="!event.joined">event_available</mat-icon>
+                          (click)="joinEvent(event)">
+                    <mat-icon>event_available</mat-icon>
                   </button>
-                  <button mat-icon-button class="request-button"
+                  <button *ngIf="event.joined" mat-icon-button class="request-button"
                           matTooltip="leave event" matTooltipShowDelay="500"
                           (click)="leaveEvent(event)"
                           [disabled]="!event.joined">
