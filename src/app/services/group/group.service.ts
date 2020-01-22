@@ -131,4 +131,18 @@ export class GroupService extends BaseService {
       this.data.deleteGroup(groupId);
     }));
   }
+
+  public leaveGroup(groupId: number) {
+    const body = {
+      query: `mutation($groupId: ID!) {
+      leaveGroup(groupId: $groupId){ id }
+    }`, variables: {
+        groupId
+      }
+    };
+    return this.postGraphql(body)
+    .pipe(tap(response => {
+      this.data.deleteGroup(groupId);
+    }));
+  }
 }
