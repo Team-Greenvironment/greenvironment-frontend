@@ -19,4 +19,6 @@ export interface IGroup {
   events: any;
 
   joined: boolean;
+
+  deletable: boolean;
 }

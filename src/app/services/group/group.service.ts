@@ -8,6 +8,7 @@ import {Group} from 'src/app/models/group';
 import {tap} from 'rxjs/operators';
 import {BaseService} from '../base.service';
 import {IFileUploadResult} from '../../models/interfaces/IFileUploadResult';
+import {DatasharingService} from 'src/app/services/datasharing.service';
 
 const getGroupGraphqlQuery = `query($groupId: ID!) {
   getGroup(groupId:$groupId){
@@ -15,6 +16,7 @@ const getGroupGraphqlQuery = `query($groupId: ID!) {
       name
       joined
       picture
+      deletable
       creator{id name handle}
       admins{id name handle}
       members{id name handle profilePicture}
@@ -29,7 +31,7 @@ export class GroupService extends BaseService {
 
   public group: BehaviorSubject<Group> = new BehaviorSubject(new Group());
 
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, private data: DatasharingService) {
     super(http);
   }
 
@@ -114,5 +116,20 @@ export class GroupService extends BaseService {
     formData.append('groupPicture', file);
     formData.append('groupId', id);
     return this.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData);
+  }
+
+  public deleteGroup(groupId: number) {
+    const body = {
+      query: `mutation($groupId: ID!) {
+      deleteGroup(groupId: $groupId) {
+      }
+    }`, variables: {
+        groupId
+      }
+    };
+    return this.postGraphql(body)
+    .pipe(tap(response => {
+      this.data.deleteGroup(groupId);
+    }));
   }
 }

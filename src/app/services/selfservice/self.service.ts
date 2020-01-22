@@ -27,7 +27,8 @@ const getSelfGraphqlQuery = `{
     groups {
       id,
       name,
-      picture
+      picture,
+      deletable
     },
     chats{
       id

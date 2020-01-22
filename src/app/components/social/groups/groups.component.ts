@@ -4,6 +4,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {SocialService} from 'src/app/services/social/social.service';
 import {User} from 'src/app/models/user';
 import {DatasharingService} from 'src/app/services/datasharing.service';
+import {GroupService} from 'src/app/services/group/group.service';
 import {Router} from '@angular/router';
 import {IErrorResponse} from '../../../models/interfaces/IErrorResponse';
 
@@ -50,7 +51,9 @@ export class DialogCreateGroupComponent {
 export class GroupsComponent implements OnInit {
   user: User;
 
-  constructor(public dialog: MatDialog, private data: DatasharingService, private router: Router) {
+  constructor(public dialog: MatDialog, private data: DatasharingService,
+    private router: Router,
+    private groupService: GroupService) {
   }
 
   ngOnInit() {
@@ -67,6 +70,10 @@ export class GroupsComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogCreateGroupComponent, {
       width: '250px'
     });
+  }
+
+  deleteGroup(group: GroupInfo) {
+    this.groupService.deleteGroup(group.id).subscribe();
   }
 }
 

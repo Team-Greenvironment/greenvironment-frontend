@@ -32,6 +32,7 @@ const graphqlQuery = `query($query: String!, $first: Int, $offset: Int) {
       id
       name
       picture
+      deletable
       creator{id name handle}
       members{id name handle}
     }
@@ -91,7 +92,7 @@ export class SearchService extends BaseService {
   public getGroupsForResponse(response: ISearchRequestResult): Array<GroupInfo> {
     const groups = new Array<GroupInfo>();
     for (const group of response.data.search.groups) {
-      groups.push(new GroupInfo(group.id, group.name, group.picture));
+      groups.push(new GroupInfo(group.id, group.name, group.picture, group.deletable));
     }
     return groups;
   }

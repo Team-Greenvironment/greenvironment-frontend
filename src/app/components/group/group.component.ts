@@ -151,7 +151,7 @@ export class GroupComponent implements OnInit {
 
   public joinGroup(group: Group) {
     group.allowedToJoinGroup = false;
-    this.requestService.joinGroup(group)
+    this.requestService.joinGroup(group.id)
       .subscribe(() => {
         this.datasharingService.addGroupToUser(group);
       });
@@ -178,5 +178,12 @@ export class GroupComponent implements OnInit {
   public sendFriendRequest(user: User) {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);
+  }
+
+  private deleteGroup() {
+    this.groupService.deleteGroup(this.groupProfile.id)
+    .subscribe(response => {
+      this.router.navigateByUrl('');
+    });
   }
 }
