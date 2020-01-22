@@ -121,8 +121,7 @@ export class GroupService extends BaseService {
   public deleteGroup(groupId: number) {
     const body = {
       query: `mutation($groupId: ID!) {
-      deleteGroup(groupId: $groupId) {
-      }
+      deleteGroup(groupId: $groupId)
     }`, variables: {
         groupId
       }
