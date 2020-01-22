@@ -188,7 +188,9 @@ export class GroupComponent implements OnInit {
   }
 
   leaveGroup() {
-    this.groupService.leaveGroup(this.groupProfile.id).subscribe();
+    this.groupService.leaveGroup(this.groupProfile.id).subscribe(response => {
+      this.groupProfile.joined = false;
+    });
   }
 
 }
