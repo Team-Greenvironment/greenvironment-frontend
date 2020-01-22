@@ -78,7 +78,10 @@ export class SearchComponent implements OnInit {
 
   public joinGroup(group: GroupInfo) {
     group.allowedToJoinGroup = false;
-    this.requestService.joinGroup(group);
+    this.requestService.joinGroup(group)
+      .subscribe(() => {
+        this.data.addGroupToUser(group);
+      });
   }
 }
 
