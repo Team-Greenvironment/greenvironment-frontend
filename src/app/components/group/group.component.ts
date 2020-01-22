@@ -154,6 +154,7 @@ export class GroupComponent implements OnInit {
     this.requestService.joinGroup(group.id)
       .subscribe(() => {
         this.datasharingService.addGroupToUser(group);
+        this.groupProfile.joined = true;
       });
   }
 
@@ -190,6 +191,8 @@ export class GroupComponent implements OnInit {
   leaveGroup() {
     this.groupService.leaveGroup(this.groupProfile.id).subscribe(response => {
       this.groupProfile.joined = false;
+      // tslint:disable-next-line:max-line-length
+      this.groupProfile.allowedToJoinGroup = this.requestService.isAllowedToJoinGroup(this.groupProfile.id, this.self);
     });
   }
 
