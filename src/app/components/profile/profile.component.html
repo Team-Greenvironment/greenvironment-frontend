@@ -53,11 +53,17 @@
         </div>
         <span id="username">{{userProfile.username}}</span>
         <span id="handle">@{{userProfile.handle}}</span>
-        <button mat-icon-button
+        <button mat-icon-button *ngIf="userProfile.allowedToSendRequest"
+          matTooltip="send friend request" matTooltipShowDelay="200"
                 class="request-button"
-                (click)="sendFriendRequest(userProfile)"
-                [disabled]="!userProfile.allowedToSendRequest">
+                (click)="sendFriendRequest(userProfile)">
           <mat-icon>person_add</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="isFriendOfSelf"
+          matTooltip="remove friend" matTooltipShowDelay="200"
+                class="request-button"
+                (click)="removeFriend(userProfile)">
+          <mat-icon>person_add_disabled</mat-icon>
         </button>
       </mat-toolbar-row>
       <mat-toolbar-row>
