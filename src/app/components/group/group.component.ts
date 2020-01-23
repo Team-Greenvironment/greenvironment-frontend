@@ -9,6 +9,7 @@ import {Group} from 'src/app/models/group';
 import {Event} from 'src/app/models/event';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DialogGroupFileUploadComponent} from './fileUpload/fileUpload.component';
+import {Lightbox} from 'ngx-lightbox';
 
 // DIALOG COMPONENT to create events
 @Component({
@@ -85,6 +86,7 @@ export class GroupComponent implements OnInit {
     private requestService: RequestService,
     private data: DatasharingService,
     private groupService: GroupService,
+    private lightbox: Lightbox,
     private datasharingService: DatasharingService) {
     router.events.forEach((event) => {
       // check if url changes
@@ -151,9 +153,10 @@ export class GroupComponent implements OnInit {
 
   public joinGroup(group: Group) {
     group.allowedToJoinGroup = false;
-    this.requestService.joinGroup(group)
+    this.requestService.joinGroup(group.id)
       .subscribe(() => {
         this.datasharingService.addGroupToUser(group);
+        this.groupProfile.joined = true;
       });
   }
 
@@ -179,4 +182,27 @@ export class GroupComponent implements OnInit {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);
   }
+
+  private deleteGroup() {
+    this.groupService.deleteGroup(this.groupProfile.id)
+    .subscribe(response => {
+      this.router.navigateByUrl('');
+    });
+  }
+
+  leaveGroup() {
+    this.groupService.leaveGroup(this.groupProfile.id).subscribe(response => {
+      this.groupProfile.joined = false;
+      // tslint:disable-next-line:max-line-length
+      this.groupProfile.allowedToJoinGroup = this.requestService.isAllowedToJoinGroup(this.groupProfile.id, this.self);
+    });
+  }
+
+  openPfpLightbox() {
+    this.lightbox.open([{
+      src: this.groupProfile.picture,
+      thumb: this.groupProfile.picture,
+    }], 0, {disableScrolling: true});
+  }
+
 }

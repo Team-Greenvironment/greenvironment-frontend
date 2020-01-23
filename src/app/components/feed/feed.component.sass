@@ -16,6 +16,10 @@
   width: 100%
   padding: 0.5em
 
+
+::ng-deep .mat-option
+  touch-action: auto !important
+
 #info
   ::ng-deep .mat-card-header-text
     margin: 0px
@@ -27,6 +31,26 @@
   width: 100%
   padding-left: 0.5em
   padding-right: 0.5em
+  .mat-icon
+    transform: scale(1.5)
+#inputPreview
+  max-width: 75%
+  max-height: 100%
+  width: auto
+  border-radius: 4px
+  mask-mode: luminance
+  outline: none
+  user-select: none
+::ng-deep video
+  width: 100%
+  max-height: 40vh
+  outline: none
+  user-select: none
+#inputPreviewWrapper
+  margin: auto
+  text-align: center
+  max-height: 512px
+  margin-bottom: 1em
 
 #action-chooser
   width: 100%

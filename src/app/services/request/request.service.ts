@@ -51,7 +51,7 @@ export class RequestService extends BaseService {
   private static buildJoinGroupBody(id: number): any {
     return {
       query: `mutation($id: ID!) {
-        joinGroup(id: $id) {
+        joinGroup(groupId: $id) {
           id
         }
       }`
@@ -126,8 +126,8 @@ export class RequestService extends BaseService {
    * Joins a group
    * @param group
    */
-  public joinGroup(group: GroupInfo) {
-    return this.postGraphql(RequestService.buildJoinGroupBody(group.id));
+  public joinGroup(groupId: number) {
+    return this.postGraphql(RequestService.buildJoinGroupBody(groupId));
   }
 
   /**

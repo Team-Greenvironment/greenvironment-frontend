@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {environment} from 'src/environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {BaseService} from '../base.service';
+import { tap } from 'rxjs/internal/operators/tap';
+import {DatasharingService} from 'src/app/services/datasharing.service';
 
 const graphqlCreateGroupQuery = `mutation($name: String!) {
   createGroup(name: $name) {
@@ -14,11 +16,12 @@ const graphqlCreateGroupQuery = `mutation($name: String!) {
 })
 export class SocialService extends BaseService {
 
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient,
+    private data: DatasharingService) {
     super(http);
   }
 
-  /**
+   /**
    * Builds the body for a group creation request
    * @param name
    */
@@ -37,5 +40,19 @@ export class SocialService extends BaseService {
   createGroup(name: string) {
     const body = SocialService.buildGroupCreateBody(name);
     return this.postGraphql(body, null,  0);
+  }
+
+  public removeFriend(id: number) {
+    const body = {
+      query: `mutation($id: ID!) {
+      removeFriend(friendId: $id)
+    }`, variables: {
+        id
+      }
+    };
+    return this.postGraphql(body)
+    .pipe(tap(response => {
+      this.data.removeFriendFromUser(id);
+    }));
   }
 }

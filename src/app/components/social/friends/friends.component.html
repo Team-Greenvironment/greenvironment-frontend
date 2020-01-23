@@ -4,15 +4,24 @@
 
 <div id="friendlist">
   <mat-card class="friend-card" *ngFor="let friend of user.friends"
-            [class.selected]="friend === selectedFriend" (click)="showFriendProfile(friend)"
-            tabindex="0"
-            matRipple>
+            [class.selected]="friend === selectedFriend"
+            tabindex="0">
     <mat-card-header>
-      <div mat-card-avatar>
+      <div id="button-box">
+        <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="removeFriend(friend)">
+            <span>remove friend</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div mat-card-avatar (click)="showGroupProfile(group)">
         <img class="profile-picture" [src]="friend.profilePicture"/>
       </div>
-      <mat-card-title>{{friend.name}}</mat-card-title>
-      <mat-card-subtitle>{{friend.rankname}}</mat-card-subtitle>
+      <mat-card-title (click)="showFriendProfile(friend)">{{friend.name}}</mat-card-title>
+      <mat-card-subtitle (click)="showFriendProfile(friend)">{{friend.rankname}}</mat-card-subtitle>
     </mat-card-header>
   </mat-card>
 </div>

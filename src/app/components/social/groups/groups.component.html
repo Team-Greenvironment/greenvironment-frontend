@@ -10,13 +10,27 @@
 
 <div id="grouplist">
   <mat-card class="group-card" *ngFor="let group of user.groups"
-    matRipple
-    [class.selected]="group === selectedGroup" (click)="showGroupProfile(group)">
+    [class.selected]="group === selectedGroup">
     <mat-card-header>
-      <div mat-card-avatar>
+      <div id="button-box">
+        <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <div *ngIf="group.deletable">
+            <button mat-menu-item (click)="deleteGroup(group)">
+              <span>delete group</span>
+            </button>
+          </div>
+          <button mat-menu-item (click)="leaveGroup(group)">
+            <span>leave group</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div mat-card-avatar (click)="showGroupProfile(group)">
         <img class="group-picture" [src]="group.picture"/>
       </div>
-      <mat-card-title>{{group.name}}</mat-card-title>
+      <mat-card-title (click)="showGroupProfile(group)">{{group.name}}</mat-card-title>
     </mat-card-header>
   </mat-card>
 </div>

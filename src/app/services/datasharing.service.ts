@@ -21,6 +21,17 @@ export class DatasharingService {
     this.currentUser.next(user);
   }
 
+  deleteGroup(id: number) {
+    const user: User = this.currentUser.getValue();
+    for (let i = 0; i < user.groups.length; i++) {
+      if (user.groups[i].id === id) {
+        user.groups.splice(i, 1);
+        return;
+      }
+    }
+    this.currentUser.next(user);
+  }
+
   addGroupToUser(group: GroupInfo) {
     const user = this.currentUser.getValue();
     user.groups.push(group);
@@ -33,7 +44,18 @@ export class DatasharingService {
     user.friends.push(friend);
     user.friendCount++;
     this.currentUser.next(user);
-}
+  }
+
+  removeFriendFromUser(id: number) {
+    const user: User = this.currentUser.getValue();
+    for (let i = 0; i < user.friends.length; i++) {
+      if (user.friends[i].id === id) {
+        user.friends.splice(i, 1);
+        return;
+      }
+    }
+    this.currentUser.next(user);
+  }
 
   setDarkMode(active: boolean) {
     const user: User = this.currentUser.getValue();

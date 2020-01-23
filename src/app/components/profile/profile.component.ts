@@ -6,6 +6,7 @@ import {RequestService} from 'src/app/services/request/request.service';
 import {DatasharingService} from '../../services/datasharing.service';
 import {ProfileService} from 'src/app/services/profile/profile.service';
 import {HttpClient} from '@angular/common/http';
+import {SocialService} from 'src/app/services/social/social.service';
 import {SelfService} from '../../services/selfservice/self.service';
 import {MatDialog} from '@angular/material';
 import {DialogFileUploadComponent} from './fileUpload/fileUpload.component';
@@ -24,7 +25,7 @@ export class ProfileComponent implements OnInit {
   id: string;
   rankname: string;
   profileNotFound = false;
-
+  isFriendOfSelf = false;
   loading = false;
 
   constructor(
@@ -33,6 +34,7 @@ export class ProfileComponent implements OnInit {
     private requestService: RequestService,
     private data: DatasharingService,
     private profileService: ProfileService,
+    private socialService: SocialService,
     private lightbox: Lightbox,
     public dialog: MatDialog) {
     router.events.forEach((event) => {
@@ -52,6 +54,7 @@ export class ProfileComponent implements OnInit {
     this.id = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
     this.data.currentUser.subscribe(user => {
       this.self = user;
+      this.checkIfUserIsFriend();
     });
     this.profileService.getUserData(this.id);
     this.profileService.proflile.subscribe(response => {
@@ -68,9 +71,27 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  checkIfUserIsFriend() {
+    this.isFriendOfSelf = false;
+    for (const friend of this.self.friends) {
+      if (friend.id.toString() === this.id) {
+        this.isFriendOfSelf = true;
+        break;
+      }
+    }
+  }
+
   public sendFriendRequest(user: User) {
     user.allowedToSendRequest = false;
     this.requestService.sendFriendRequest(user);
+  }
+
+  removeFriend(user: User) {
+    this.socialService.removeFriend(user.userID).subscribe(response => {
+      this.checkIfUserIsFriend();
+      // tslint:disable-next-line:max-line-length
+      this.userProfile.allowedToSendRequest = this.requestService.isAllowedToSendRequest(this.userProfile.userID, this.self);
+    });
   }
 
   /**
