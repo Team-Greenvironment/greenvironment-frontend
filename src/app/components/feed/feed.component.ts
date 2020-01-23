@@ -74,6 +74,9 @@ export class FeedComponent implements OnInit {
         postElement.value = '';
         this.textInputValue = '';
         this.checked = false;
+        this.file = null;
+        this.localFileUrl = null;
+        this.fileType = null;
         if (this.view !== 'new') {
           this.showNew();
         }
@@ -86,6 +89,9 @@ export class FeedComponent implements OnInit {
         postElement.value = '';
         this.textInputValue = '';
         this.checked = false;
+        this.file = null;
+        this.localFileUrl = null;
+        this.fileType = null;
         if (this.view !== 'new') {
           this.showNew();
         }

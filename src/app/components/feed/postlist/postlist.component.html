@@ -22,6 +22,12 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
+    <div class="postMedia">
+      <img *ngIf="post.mediaType === 'IMAGE'" [src]="post.mediaUrl"  alt="post image"/>
+      <video *ngIf="post.mediaType === 'VIDEO'" controls>
+        <source [src]="post.mediaUrl" type="video/webm">
+      </video>
+    </div>
     <p [innerHTML]="post.htmlContent"></p>
   </mat-card-content>
   <mat-card-actions>

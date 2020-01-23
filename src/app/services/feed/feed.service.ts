@@ -19,6 +19,7 @@ const createPostGqlQuery = `mutation($content: String!) {
     downvotes,
     userVote,
     deletable,
+    media {url, type},
     activity{
       id
       name
@@ -42,6 +43,7 @@ const createPostActivityGqlQuery = `mutation($content: String!, $id: ID) {
     downvotes,
     userVote,
     deletable,
+    media {url, type},
     activity{
       id
       name
@@ -77,6 +79,7 @@ const getPostGqlQuery = `query($first: Int, $offset: Int, $sort: SortType){
     downvotes,
     userVote,
     deletable,
+    media {url, type},
     activity{
       id
       name
@@ -179,11 +182,17 @@ export class FeedService extends BaseService {
           const updatedPosts = this.posts.getValue();
           const post = this.constructPost(response);
           updatedPosts.unshift(post);
-          this.posts.next(updatedPosts);
           if (file) {
             this.uploadPostImage(post.id, file).subscribe((result) => {
               post.mediaUrl = result.fileName;
+              post.mediaType = result.fileName.endsWith('.webm') ? 'VIDEO' : 'IMAGE';
+              this.posts.next(updatedPosts);
+            }, error => {
+              console.error(error);
+              this.deletePost(post.id);
             });
+          } else {
+            this.posts.next(updatedPosts);
           }
         }
       }));
@@ -322,7 +331,8 @@ export class FeedService extends BaseService {
       post.deletable,
       date,
       author,
-      activity);
+      activity,
+      post.media);
   }
 
   public constructAllPosts(response: any): Post[] {
@@ -362,7 +372,8 @@ export class FeedService extends BaseService {
         post.deletable,
         date,
         author,
-        activity));
+        activity,
+        post.media));
     }
     return posts;
   }

@@ -11,7 +11,6 @@
           <img *ngIf="fileType == 'image'" id="inputPreview" [src]="localFileUrl"/>
           <video *ngIf="fileType == 'video'"  [src]="localFileUrl" controls="" class="html5-video-player">
             Your browser does not support playing HTML5 video.
-            You can <a href="https://files.catbox.moe/m6gsbb.mp4" download="">download the file</a> instead.
           </video>
         </div>
         <mat-form-field id="input">
