@@ -207,7 +207,7 @@ export class FeedService extends BaseService {
     const formData = new FormData();
     formData.append('postMedia', file);
     formData.append('postId', postId.toString());
-    return this.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData);
+    return this.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData, null, 0);
   }
 
   /**
