@@ -35,7 +35,8 @@ $mat-card-header-size: 100px !default
 
   .mat-toolbar-row
     max-height: 40px
-
+  .ng-star-inserted
+    z-index: 99
   .info-box
     font-size: 14px
     margin-left: calc(100px + 0.5em)
@@ -73,13 +74,14 @@ $mat-card-header-size: 100px !default
 // in IE, but we're using it as a progressive enhancement.
 
 .profile-picture
+  cursor: pointer
   height: $mat-card-header-size
   width: $mat-card-header-size
   border-radius: 50%
   flex-shrink: 0
   background-size: cover
   transition-duration: 0.5s
-  z-index: 10
+  z-index: 99
   object-fit: cover
 
 .card

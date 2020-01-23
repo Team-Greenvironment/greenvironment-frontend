@@ -7,7 +7,7 @@
           <img class="profile-picture" [src]="groupProfile.picture"/>
           <mat-icon id="icon">camera_alt</mat-icon>
         </div>
-        <div *ngIf="!isAdmin">
+        <div *ngIf="!isAdmin" (click)="openPfpLightbox()">
           <img class="profile-picture" [src]="groupProfile.picture"/>
         </div>
 
@@ -63,7 +63,7 @@
           <img class="profile-picture" [src]="groupProfile.picture"/>
           <mat-icon id="icon">camera_alt</mat-icon>
         </div>
-        <div *ngIf="!isAdmin">
+        <div *ngIf="!isAdmin" (click)="openPfpLightbox()">
           <img class="profile-picture" [src]="groupProfile.picture"/>
         </div>
         <span id="username">{{groupProfile.name}}</span>
@@ -108,7 +108,7 @@
       </mat-toolbar-row>
     </mat-toolbar>
     <div id="accordion">
-      <mat-accordion>
+      <mat-accordion multi="true">
         <mat-expansion-panel *ngIf="groupProfile.events.length > 0" expanded>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -139,7 +139,7 @@
             </mat-card>
           </div>
         </mat-expansion-panel>
-        <mat-expansion-panel [expanded]="groupProfile.events.length < 1">
+        <mat-expansion-panel expanded>
           <mat-expansion-panel-header>
             <mat-panel-title>
               Members

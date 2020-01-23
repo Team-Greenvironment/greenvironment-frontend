@@ -6,6 +6,7 @@ import {DatasharingService} from '../../services/datasharing.service';
 import {ActivityService} from 'src/app/services/activity/activity.service';
 import {User} from 'src/app/models/user';
 import {IErrorResponse} from '../../models/interfaces/IErrorResponse';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Component({
   selector: 'home-feed',
@@ -15,6 +16,12 @@ import {IErrorResponse} from '../../models/interfaces/IErrorResponse';
 export class FeedComponent implements OnInit {
   loadingNew = true;
   loadingMostLiked = true;
+  // file upload variables
+  public uploading = false;
+  public profilePictureUrl: BehaviorSubject<string | null>;
+  private file;
+  private fileType;
+  public localFileUrl;
 
   checked = false; // if the "I protected the environment."-box is checked
   view = 'new';
@@ -27,7 +34,7 @@ export class FeedComponent implements OnInit {
 
   loggedIn = false;
   user: User;
-  errorOccurred: boolean;
+  errorOccurred = false;
 
   private errorMessage: string;
 
@@ -87,6 +94,22 @@ export class FeedComponent implements OnInit {
         this.errorMessage = error.error.errors[0].message;
       });
     }
+  }
+
+  onFileInputChange(event) {
+    this.errorOccurred = false;
+    this.errorMessage = '';
+    this.file = event.target.files[0];
+    if (this.file.type.includes('video')) {
+      this.fileType = 'video';
+    } else if (this.file.type.includes('image')) {
+      this.fileType = 'image';
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.localFileUrl = e.target.result;
+    };
+    reader.readAsDataURL(this.file);
   }
 
   /**
