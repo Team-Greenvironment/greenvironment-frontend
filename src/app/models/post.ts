@@ -13,6 +13,7 @@ export class Post {
   author: Author;
   activity: Activity;
   mediaUrl: string;
+  mediaType: 'VIDEO' | 'IMAGE';
 
   constructor(
     id: number,
@@ -25,7 +26,7 @@ export class Post {
     date: string,
     author: Author,
     activity: Activity,
-    mediaUrl?: string,
+    media?: {url: string, type: 'VIDEO' | 'IMAGE'},
   ) {
     this.id = id;
     this.content = content;
@@ -37,6 +38,9 @@ export class Post {
     this.date = date;
     this.author = author;
     this.activity = activity;
-    this.mediaUrl = mediaUrl;
+    if (media) {
+      this.mediaUrl = media.url;
+      this.mediaType = media.type;
+    }
   }
 }
