@@ -185,7 +185,7 @@ export class FeedService extends BaseService {
           if (file) {
             this.uploadPostImage(post.id, file).subscribe((result) => {
               post.mediaUrl = result.fileName;
-              post.mediaType = result.fileName.endsWith('.webm') ? 'VIDEO' : 'IMAGE';
+              post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
               this.posts.next(updatedPosts);
             }, error => {
               console.error(error);
