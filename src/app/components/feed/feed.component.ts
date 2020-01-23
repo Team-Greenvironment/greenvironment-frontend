@@ -20,7 +20,7 @@ export class FeedComponent implements OnInit {
   public uploading = false;
   public profilePictureUrl: BehaviorSubject<string | null>;
   private file;
-  private fileType;
+  fileType;
   public localFileUrl;
 
   checked = false; // if the "I protected the environment."-box is checked
