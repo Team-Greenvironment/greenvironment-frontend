@@ -12,6 +12,7 @@ export class Post {
   deletable: boolean;
   author: Author;
   activity: Activity;
+  mediaUrl: string;
 
   constructor(
     id: number,
@@ -23,7 +24,8 @@ export class Post {
     deletable: boolean,
     date: string,
     author: Author,
-    activity: Activity
+    activity: Activity,
+    mediaUrl?: string,
   ) {
     this.id = id;
     this.content = content;
@@ -35,5 +37,6 @@ export class Post {
     this.date = date;
     this.author = author;
     this.activity = activity;
+    this.mediaUrl = mediaUrl;
   }
 }
