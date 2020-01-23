@@ -6,12 +6,23 @@
   <div [hidden]="!loggedIn">
     <mat-card>
       <mat-card-content>
+        <div id="inputPreviewWrapper">
+          <h2 *ngIf="localFileUrl">Preview:</h2>
+          <img *ngIf="fileType == 'image'" id="inputPreview" [src]="localFileUrl"/>
+          <video *ngIf="fileType == 'video'"  [src]="localFileUrl" controls="" class="html5-video-player">
+            Your browser does not support playing HTML5 video.
+            You can <a href="https://files.catbox.moe/m6gsbb.mp4" download="">download the file</a> instead.
+          </video>
+        </div>
         <mat-form-field id="input">
           <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue"
                     mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
-          <button mat-button matSuffix mat-icon-button>
-            <mat-icon>add</mat-icon>
+          <button mat-button matSuffix mat-icon-button (click)="name.click()"
+            matTooltip="upload a picture or video (up to 10MB)"
+            matTooltipShowDelay="200">
+            <mat-icon>attach_file</mat-icon>
           </button>
+          <input style="display: none" id="input-file" type="file" accept="video/*,image/*" (change)="onFileInputChange($event)" #name>
         </mat-form-field>
         <p id="check">
           <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked">I protected the environment.
