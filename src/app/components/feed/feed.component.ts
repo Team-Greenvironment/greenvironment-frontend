@@ -70,10 +70,13 @@ export class FeedComponent implements OnInit {
    */
   createPost(postElement, activityId: string) {
     if (postElement && activityId && this.checked) {
-      this.feedService.createPostActivity(postElement.value, activityId).subscribe(() => {
+      this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
         postElement.value = '';
         this.textInputValue = '';
         this.checked = false;
+        this.file = null;
+        this.localFileUrl = null;
+        this.fileType = null;
         if (this.view !== 'new') {
           this.showNew();
         }
@@ -82,10 +85,13 @@ export class FeedComponent implements OnInit {
         this.errorMessage = error.error.errors[0].message;
       });
     } else if (postElement) {
-      this.feedService.createPost(postElement.value).subscribe(() => {
+      this.feedService.createPost(postElement.value, this.file).subscribe(() => {
         postElement.value = '';
         this.textInputValue = '';
         this.checked = false;
+        this.file = null;
+        this.localFileUrl = null;
+        this.fileType = null;
         if (this.view !== 'new') {
           this.showNew();
         }

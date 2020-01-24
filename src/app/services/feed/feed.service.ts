@@ -4,10 +4,11 @@ import {Post} from 'src/app/models/post';
 import {Author} from 'src/app/models/author';
 import {environment} from 'src/environments/environment';
 import {Activity} from 'src/app/models/activity';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {BaseService} from '../base.service';
 import {formatDate} from '@angular/common';
+import {IFileUploadResult} from '../../models/interfaces/IFileUploadResult';
 
 const createPostGqlQuery = `mutation($content: String!) {
   createPost(content: $content) {
@@ -18,6 +19,7 @@ const createPostGqlQuery = `mutation($content: String!) {
     downvotes,
     userVote,
     deletable,
+    media {url, type},
     activity{
       id
       name
@@ -41,6 +43,7 @@ const createPostActivityGqlQuery = `mutation($content: String!, $id: ID) {
     downvotes,
     userVote,
     deletable,
+    media {url, type},
     activity{
       id
       name
@@ -76,6 +79,7 @@ const getPostGqlQuery = `query($first: Int, $offset: Int, $sort: SortType){
     downvotes,
     userVote,
     deletable,
+    media {url, type},
     activity{
       id
       name
@@ -138,45 +142,72 @@ export class FeedService extends BaseService {
   /**
    * Creates a new post
    * @param pContent
+   * @param file
    */
-  public createPost(pContent: String) {
+  public createPost(pContent: String, file?: File) {
     const body = {
       query: createPostGqlQuery,
       variables: {
         content: pContent
       }
     };
-    return this.createPostRequest(body);
+    return this.createPostRequest(body, file);
   }
 
   /**
    * Creates a post with an activity
    * @param pContent
    * @param activityId
+   * @param file
    */
-  public createPostActivity(pContent: String, activityId: String) {
+  public createPostActivity(pContent: String, activityId: String, file?: File) {
     const body = {
       query: createPostActivityGqlQuery, variables: {
         content: pContent,
         id: activityId
       }
     };
-    return this.createPostRequest(body);
+    return this.createPostRequest(body, file);
   }
 
   /**
    * Creates a new post with a given request.
    * @param body
+   * @param file - a file that is being uploaded with the post
    */
-  private createPostRequest(body: { variables: any; query: string }) {
+  private createPostRequest(body: { variables: any; query: string }, file?: File) {
     return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
         if (this.activePostList === Sort.NEW) {
           const updatedPosts = this.posts.getValue();
-          updatedPosts.unshift(this.constructPost(response));
-          this.posts.next(updatedPosts);
+          const post = this.constructPost(response);
+          updatedPosts.unshift(post);
+          if (file) {
+            this.uploadPostImage(post.id, file).subscribe((result) => {
+              post.mediaUrl = result.fileName;
+              post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
+              this.posts.next(updatedPosts);
+            }, error => {
+              console.error(error);
+              this.deletePost(post.id);
+            });
+          } else {
+            this.posts.next(updatedPosts);
+          }
         }
       }));
+  }
+
+  /**
+   * Uploads a file for a post
+   * @param postId
+   * @param file
+   */
+  private uploadPostImage(postId: number, file: File): Observable<IFileUploadResult> {
+    const formData = new FormData();
+    formData.append('postMedia', file);
+    formData.append('postId', postId.toString());
+    return this.post<IFileUploadResult>(environment.greenvironmentUrl + '/upload', formData, null, 0);
   }
 
   /**
@@ -300,7 +331,8 @@ export class FeedService extends BaseService {
       post.deletable,
       date,
       author,
-      activity);
+      activity,
+      post.media);
   }
 
   public constructAllPosts(response: any): Post[] {
@@ -340,7 +372,8 @@ export class FeedService extends BaseService {
         post.deletable,
         date,
         author,
-        activity));
+        activity,
+        post.media));
     }
     return posts;
   }
