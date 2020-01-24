@@ -209,7 +209,7 @@ export class FeedService extends BaseService {
         const updatedPosts = this.posts.getValue();
         if (this.activePostList === Sort.NEW) {
           const post = this.constructPost(response);
-            updatedPosts.unshift(post);
+          updatedPosts.unshift(post);
           this.posts.next(updatedPosts);
         }
       }));

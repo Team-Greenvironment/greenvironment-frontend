@@ -49,6 +49,11 @@ export class PostlistComponent implements OnInit {
     });
   }
 
+  onLoad(post: Post) {
+    console.log('loaded' + post.content);
+    post.mediaLoading = false;
+  }
+
   public showUserProfile(post: any) {
     this.router.navigate(['profile/' + post.author.id]);
   }
