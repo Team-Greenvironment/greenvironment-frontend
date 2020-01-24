@@ -14,22 +14,23 @@
           </video>
         </div>
         <mat-form-field id="input">
-          <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue"
+          <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue" [disabled]="posting"
                     mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
           <button mat-button matSuffix mat-icon-button (click)="name.click()"
             matTooltip="upload a picture or video (up to 10MB)"
-            matTooltipShowDelay="200">
+            matTooltipShowDelay="200"
+            [disabled]="posting">
             <mat-icon>attach_file</mat-icon>
           </button>
           <input style="display: none" id="input-file" type="file" accept="video/*,image/*" (change)="onFileInputChange($event)" #name>
         </mat-form-field>
         <p id="check">
-          <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked">I protected the environment.
+          <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked" [disabled]="posting">I protected the environment.
           </mat-checkbox>
         </p>
         <mat-form-field id="action-chooser" *ngIf="checked">
           <mat-label>What did you do?</mat-label>
-          <mat-select [(ngModel)]="activityId" name="action">
+          <mat-select [(ngModel)]="activityId" name="action" [disabled]="posting">
             <mat-option>nothing ;)</mat-option>
             <mat-option *ngFor="let action of actionlist.Actions" [value]="action.id" [matTooltip]="action.description"
                         matTooltipShowDelay="200">
@@ -38,7 +39,8 @@
           </mat-select>
         </mat-form-field>
         <mat-error *ngIf="errorOccurred && textInputValue">{{getErrorMessage()}}</mat-error>
-        <button mat-raised-button *ngIf="textInputValue" color="primary" id="post-button"
+        <mat-progress-bar id="progress-bar" *ngIf="posting" mode="indeterminate"></mat-progress-bar>
+        <button mat-raised-button *ngIf="textInputValue" color="primary" id="post-button" [disabled]="posting"
                 (click)=createPost(content,activityId)>
           POST
         </button>

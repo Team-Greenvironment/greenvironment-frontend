@@ -22,6 +22,7 @@ export class FeedComponent implements OnInit {
   private file;
   fileType;
   public localFileUrl;
+  posting = false;
 
   checked = false; // if the "I protected the environment."-box is checked
   view = 'new';
@@ -70,7 +71,9 @@ export class FeedComponent implements OnInit {
    */
   createPost(postElement, activityId: string) {
     if (postElement && activityId && this.checked) {
+      this.posting = true;
       this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
+        this.posting = false;
         postElement.value = '';
         this.textInputValue = '';
         this.checked = false;
@@ -81,11 +84,14 @@ export class FeedComponent implements OnInit {
           this.showNew();
         }
       }, (error: IErrorResponse) => {
+        this.posting = false;
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
       });
     } else if (postElement) {
+      this.posting = true;
       this.feedService.createPost(postElement.value, this.file).subscribe(() => {
+        this.posting = false;
         postElement.value = '';
         this.textInputValue = '';
         this.checked = false;
@@ -96,6 +102,7 @@ export class FeedComponent implements OnInit {
           this.showNew();
         }
       }, (error: IErrorResponse) => {
+        this.posting = false;
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
       });
@@ -119,7 +126,7 @@ export class FeedComponent implements OnInit {
   }
 
   /**
-   * Fetches the next posts when scrolled
+   * Fetches the next posts when scrolled down
    */
   onScroll() {
     this.feedService.getNextPosts();
