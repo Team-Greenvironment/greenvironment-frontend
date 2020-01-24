@@ -13,21 +13,27 @@
             Your browser does not support playing HTML5 video.
           </video>
         </div>
-        <mat-form-field id="input">
+        <mat-form-field class="input">
           <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue" [disabled]="posting"
-                    mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
-          <button mat-button matSuffix mat-icon-button (click)="name.click()"
+            mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
+        </mat-form-field>
+        <input style="display: none" id="input-file" type="file" accept="video/*,image/*" (change)="onFileInputChange($event)" #name>
+        <div class="input">
+        <div class="left">
+          <p id="check">
+            <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked" [disabled]="posting">I protected the environment.
+            </mat-checkbox>
+          </p>
+        </div>
+        <div class="right">
+          <button mat-button mat-icon-button (click)="name.click()"
             matTooltip="upload a picture or video (up to 10MB)"
             matTooltipShowDelay="200"
             [disabled]="posting">
             <mat-icon>attach_file</mat-icon>
           </button>
-          <input style="display: none" id="input-file" type="file" accept="video/*,image/*" (change)="onFileInputChange($event)" #name>
-        </mat-form-field>
-        <p id="check">
-          <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked" [disabled]="posting">I protected the environment.
-          </mat-checkbox>
-        </p>
+        </div>
+        </div>
         <mat-form-field id="action-chooser" *ngIf="checked">
           <mat-label>What did you do?</mat-label>
           <mat-select [(ngModel)]="activityId" name="action" [disabled]="posting">
