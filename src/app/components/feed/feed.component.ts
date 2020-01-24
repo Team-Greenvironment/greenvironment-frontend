@@ -78,14 +78,7 @@ export class FeedComponent implements OnInit {
       this.posting = true;
       this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
         postElement.value = '';
-        this.textInputValue = '';
-        this.checked = false;
-        this.file = null;
-        this.localFileUrl = null;
-        this.fileType = null;
-        if (this.view !== 'new') {
-          this.showNew();
-        }
+        this.resetPostInput();
       }, (error: IErrorResponse) => {
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
@@ -94,14 +87,7 @@ export class FeedComponent implements OnInit {
       this.posting = true;
       this.feedService.createPost(postElement.value, this.file).subscribe((result) => {
         postElement.value = '';
-        this.textInputValue = '';
-        this.checked = false;
-        this.file = null;
-        this.localFileUrl = null;
-        this.fileType = null;
-        if (this.view !== 'new') {
-          this.showNew();
-        }
+        this.resetPostInput();
       }, (error: IErrorResponse) => {
         console.log(error);
         this.errorOccurred = true;
@@ -115,6 +101,15 @@ export class FeedComponent implements OnInit {
     this.localFileUrl = null;
     this.fileType = null;
     this.fileInput.nativeElement.value = '';
+  }
+
+  resetPostInput() {
+    this.textInputValue = '';
+    this.checked = false;
+    this.discardFile();
+    if (this.view !== 'new') {
+      this.showNew();
+    }
   }
 
   onFileInputChange(event) {
