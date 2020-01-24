@@ -13,6 +13,7 @@ export class Post {
   deletable: boolean;
   author: Author;
   activity: Activity;
+  mediaLoading: boolean;
   mediaUrl: string;
   mediaType: 'VIDEO' | 'IMAGE';
 
@@ -42,6 +43,7 @@ export class Post {
     if (media) {
       this.mediaUrl = environment.greenvironmentUrl + media.url;
       this.mediaType = media.type;
+      this.mediaLoading = true;
     }
   }
 }

@@ -63,6 +63,9 @@ export class FeedComponent implements OnInit {
     this.feedService.postsAvailable.subscribe(available => {
       this.loadingMostLiked = this.loadingNew = available;
     });
+    this.feedService.posting.subscribe(posting => {
+      this.posting = posting;
+    });
   }
 
   /**
@@ -74,39 +77,19 @@ export class FeedComponent implements OnInit {
     if (postElement && activityId && this.checked) {
       this.posting = true;
       this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
-        this.posting = false;
         postElement.value = '';
-        this.textInputValue = '';
-        this.checked = false;
-        this.file = null;
-        this.localFileUrl = null;
-        this.fileType = null;
-        if (this.view !== 'new') {
-          this.showNew();
-        }
+        this.resetPostInput();
       }, (error: IErrorResponse) => {
-        this.posting = false;
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
       });
     } else if (postElement) {
       this.posting = true;
       this.feedService.createPost(postElement.value, this.file).subscribe((result) => {
-        console.log('response in component');
-        this.posting = false;
         postElement.value = '';
-        this.textInputValue = '';
-        this.checked = false;
-        this.file = null;
-        this.localFileUrl = null;
-        this.fileType = null;
-        if (this.view !== 'new') {
-          this.showNew();
-        }
+        this.resetPostInput();
       }, (error: IErrorResponse) => {
-        console.log('an error occured in component');
         console.log(error);
-        this.posting = false;
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
       });
@@ -118,6 +101,15 @@ export class FeedComponent implements OnInit {
     this.localFileUrl = null;
     this.fileType = null;
     this.fileInput.nativeElement.value = '';
+  }
+
+  resetPostInput() {
+    this.textInputValue = '';
+    this.checked = false;
+    this.discardFile();
+    if (this.view !== 'new') {
+      this.showNew();
+    }
   }
 
   onFileInputChange(event) {
