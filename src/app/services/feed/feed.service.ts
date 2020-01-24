@@ -192,21 +192,22 @@ export class FeedService extends BaseService {
       return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
         const updatedPosts = this.posts.getValue();
-        if (this.activePostList === Sort.NEW) {
-          const post = this.constructPost(response);
-          this.uploadPostImage(post.id, file).subscribe((result) => {
+        const post = this.constructPost(response);
+        this.uploadPostImage(post.id, file).subscribe((result) => {
+          if (this.activePostList === Sort.NEW) {
             post.mediaUrl = result.fileName;
             post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
             updatedPosts.unshift(post);
             this.posts.next(updatedPosts);
             this.posting.next(false);
+          }
           }, error => {
             console.error(error);
             this.posting.next(false);
             this.deletePost(post.id);
           });
         }
-      }));
+      ));
     } else if (!file) {
       return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
