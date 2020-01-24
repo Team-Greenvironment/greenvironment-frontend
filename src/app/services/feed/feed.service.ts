@@ -10,8 +10,8 @@ import {BaseService} from '../base.service';
 import {formatDate} from '@angular/common';
 import {IFileUploadResult} from '../../models/interfaces/IFileUploadResult';
 
-const createPostGqlQuery = `mutation($content: String!) {
-  createPost(content: $content) {
+const createPostGqlQuery = `mutation($content: String!, $type: PostType) {
+  createPost(content: $content, type: $type) {
     id,
     content,
     htmlContent,
@@ -34,8 +34,8 @@ const createPostGqlQuery = `mutation($content: String!) {
     createdAt}
 }`;
 
-const createPostActivityGqlQuery = `mutation($content: String!, $id: ID) {
-  createPost(content: $content activityId: $id) {
+const createPostActivityGqlQuery = `mutation($content: String!, $id: ID, $type: PostType) {
+  createPost(content: $content activityId: $id, type: $type) {
     id,
     content,
     htmlContent,
@@ -70,7 +70,7 @@ const downvotePostGqlQuery = `mutation($postId: ID!) {
   }
 }`;
 
-const getPostGqlQuery = `query($first: Int, $offset: Int, $sort: SortType){
+const getPostsGqlQuery = `query($first: Int, $offset: Int, $sort: SortType){
   getPosts (first: $first, offset: $offset, sort: $sort) {
     id,
     content,
@@ -122,7 +122,7 @@ export class FeedService extends BaseService {
    */
   private static buildGetPostBody(sort: string, offset: number, first: number = 10) {
     return {
-      query: getPostGqlQuery, variables: {
+      query: getPostsGqlQuery, variables: {
         first,
         offset,
         sort
@@ -145,10 +145,15 @@ export class FeedService extends BaseService {
    * @param file
    */
   public createPost(pContent: String, file?: File) {
+    let type: string;
+    if (file) { type = 'MEDIA'; } else {
+      type = 'TEXT';
+    }
     const body = {
       query: createPostGqlQuery,
       variables: {
-        content: pContent
+        content: pContent,
+        type
       }
     };
     return this.createPostRequest(body, file);
@@ -161,10 +166,15 @@ export class FeedService extends BaseService {
    * @param file
    */
   public createPostActivity(pContent: String, activityId: String, file?: File) {
+    let type: string;
+    if (file) { type = 'MEDIA'; } else {
+      type = 'TEXT';
+    }
     const body = {
       query: createPostActivityGqlQuery, variables: {
         content: pContent,
-        id: activityId
+        id: activityId,
+        type
       }
     };
     return this.createPostRequest(body, file);
@@ -176,26 +186,34 @@ export class FeedService extends BaseService {
    * @param file - a file that is being uploaded with the post
    */
   private createPostRequest(body: { variables: any; query: string }, file?: File) {
-    return this.postGraphql(body, null, 0)
+    if (file) {
+      return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
+        const updatedPosts = this.posts.getValue();
         if (this.activePostList === Sort.NEW) {
-          const updatedPosts = this.posts.getValue();
           const post = this.constructPost(response);
-          updatedPosts.unshift(post);
-          if (file) {
-            this.uploadPostImage(post.id, file).subscribe((result) => {
-              post.mediaUrl = result.fileName;
-              post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
-              this.posts.next(updatedPosts);
-            }, error => {
-              console.error(error);
-              this.deletePost(post.id);
-            });
-          } else {
+          this.uploadPostImage(post.id, file).subscribe((result) => {
+            post.mediaUrl = result.fileName;
+            post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
+            updatedPosts.unshift(post);
             this.posts.next(updatedPosts);
-          }
+          }, error => {
+            console.error(error);
+            this.deletePost(post.id);
+          });
         }
       }));
+    } else if (!file) {
+      return this.postGraphql(body, null, 0)
+      .pipe(tap(response => {
+        const updatedPosts = this.posts.getValue();
+        if (this.activePostList === Sort.NEW) {
+          const post = this.constructPost(response);
+            updatedPosts.unshift(post);
+          this.posts.next(updatedPosts);
+        }
+      }));
+    }
   }
 
   /**

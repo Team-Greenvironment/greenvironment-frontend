@@ -91,7 +91,8 @@ export class FeedComponent implements OnInit {
       });
     } else if (postElement) {
       this.posting = true;
-      this.feedService.createPost(postElement.value, this.file).subscribe(() => {
+      this.feedService.createPost(postElement.value, this.file).subscribe((result) => {
+        console.log('response in component');
         this.posting = false;
         postElement.value = '';
         this.textInputValue = '';
@@ -103,6 +104,8 @@ export class FeedComponent implements OnInit {
           this.showNew();
         }
       }, (error: IErrorResponse) => {
+        console.log('an error occured in component');
+        console.log(error);
         this.posting = false;
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
