@@ -192,21 +192,22 @@ export class FeedService extends BaseService {
       return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
         const updatedPosts = this.posts.getValue();
-        if (this.activePostList === Sort.NEW) {
-          const post = this.constructPost(response);
-          this.uploadPostImage(post.id, file).subscribe((result) => {
+        const post = this.constructPost(response);
+        this.uploadPostImage(post.id, file).subscribe((result) => {
+          if (this.activePostList === Sort.NEW) {
             post.mediaUrl = result.fileName;
             post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
             updatedPosts.unshift(post);
             this.posts.next(updatedPosts);
             this.posting.next(false);
+          }
           }, error => {
             console.error(error);
             this.posting.next(false);
             this.deletePost(post.id);
           });
         }
-      }));
+      ));
     } else if (!file) {
       return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
@@ -289,7 +290,7 @@ export class FeedService extends BaseService {
       {headers: this.headers})
       .pipe(this.retryRated())
       .subscribe(response => {
-        this.posts.next(this.constructAllPosts(response));
+        this.posts.next(this.constructAllPosts(response.data.getPosts));
         this.activePostList = sort;
       });
   }
@@ -303,7 +304,7 @@ export class FeedService extends BaseService {
     this.http.post(environment.graphQLUrl, body, {headers: this.headers})
       .pipe(this.retryRated())
       .subscribe(response => {
-        const posts = this.constructAllPosts(response);
+        const posts = this.constructAllPosts(response.data.getPosts);
         const previousPosts = this.posts.getValue();
         for (const post of previousPosts.reverse()) {
           if (!posts.find(p => p.id === post.id)) {
@@ -360,7 +361,7 @@ export class FeedService extends BaseService {
 
   public constructAllPosts(response: any): Post[] {
     const posts = new Array<Post>();
-    for (const post of response.data.getPosts) {
+    for (const post of response) {
       let profilePicture: string;
       if (post.author.profilePicture) {
         profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
