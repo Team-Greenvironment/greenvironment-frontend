@@ -65,6 +65,7 @@ export class FeedComponent implements OnInit {
     });
     this.feedService.posting.subscribe(posting => {
       this.posting = posting;
+      this.resetPostInput();
     });
   }
 
@@ -78,18 +79,18 @@ export class FeedComponent implements OnInit {
       this.posting = true;
       this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
         postElement.value = '';
-        this.resetPostInput();
       }, (error: IErrorResponse) => {
         this.errorOccurred = true;
+        this.posting = false;
         this.errorMessage = error.error.errors[0].message;
       });
     } else if (postElement) {
       this.posting = true;
       this.feedService.createPost(postElement.value, this.file).subscribe((result) => {
         postElement.value = '';
-        this.resetPostInput();
       }, (error: IErrorResponse) => {
         console.log(error);
+        this.posting = false;
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
       });
