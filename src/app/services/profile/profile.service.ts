@@ -7,6 +7,7 @@ import {User} from 'src/app/models/user';
 import {Subject} from 'rxjs';
 import {Activity} from 'src/app/models/activity';
 import {BaseService} from '../base.service';
+import {FeedService} from 'src/app/services/feed/feed.service';
 
 const graphqlGetProfileQuery = `query($userId: ID) {
   getUser(userId:$userId){
@@ -30,6 +31,7 @@ const graphqlGetProfileQuery = `query($userId: ID) {
       downvotes,
       userVote,
       deletable,
+      media {url, type},
       activity{
         id
         name
@@ -39,7 +41,7 @@ const graphqlGetProfileQuery = `query($userId: ID) {
       author{
         name,
         handle,
-        profilePicture
+        profilePicture,
         id},
       createdAt
     }
@@ -51,7 +53,7 @@ const graphqlGetProfileQuery = `query($userId: ID) {
 })
 export class ProfileService extends BaseService {
 
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, private feedService: FeedService) {
     super(http);
   }
 
@@ -96,38 +98,7 @@ export class ProfileService extends BaseService {
       const temp = new Date(Number(response.data.getUser.joinedAt));
       const date = temp.toLocaleString('en-GB');
       profile.joinedAt = date;
-      for (const post of response.data.getUser.posts) {
-        const id: number = post.id;
-        const content: string = post.content;
-        const htmlContent: string = post.htmlContent;
-        const upvotes: number = post.upvotes;
-        const downvotes: number = post.downvotes;
-        const userVote: string = post.userVote;
-        const deletable: boolean = post.deletable;
-        let profilePicture: string;
-        if (post.author.profilePicture) {
-          profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
-        } else {
-          profilePicture = 'assets/images/default-profilepic.svg';
-        }
-        const author = new Author(post.author.id, post.author.name, post.author.handle, profilePicture);
-        const ptemp = new Date(Number(post.createdAt));
-        const pdate = ptemp.toLocaleString('en-GB');
-        let activity: Activity;
-        if (post.activity) {
-          activity = new Activity(
-            post.activity.id,
-            post.activity.name,
-            post.activity.description,
-            post.activity.points);
-        } else {
-          activity = null;
-        }
-
-        // tslint:disable-next-line: max-line-length
-        posts.push(new Post(id, content, htmlContent, upvotes, downvotes, userVote, deletable, pdate, author, activity));
-      }
-      profile.posts = posts;
+      profile.posts = this.feedService.constructAllPosts(response.data.getUser.posts);
       return profile;
     }
     return null;

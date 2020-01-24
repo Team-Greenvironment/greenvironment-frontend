@@ -289,7 +289,7 @@ export class FeedService extends BaseService {
       {headers: this.headers})
       .pipe(this.retryRated())
       .subscribe(response => {
-        this.posts.next(this.constructAllPosts(response));
+        this.posts.next(this.constructAllPosts(response.data.getPosts));
         this.activePostList = sort;
       });
   }
@@ -303,7 +303,7 @@ export class FeedService extends BaseService {
     this.http.post(environment.graphQLUrl, body, {headers: this.headers})
       .pipe(this.retryRated())
       .subscribe(response => {
-        const posts = this.constructAllPosts(response);
+        const posts = this.constructAllPosts(response.data.getPosts);
         const previousPosts = this.posts.getValue();
         for (const post of previousPosts.reverse()) {
           if (!posts.find(p => p.id === post.id)) {
@@ -360,7 +360,7 @@ export class FeedService extends BaseService {
 
   public constructAllPosts(response: any): Post[] {
     const posts = new Array<Post>();
-    for (const post of response.data.getPosts) {
+    for (const post of response) {
       let profilePicture: string;
       if (post.author.profilePicture) {
         profilePicture = environment.greenvironmentUrl + post.author.profilePicture;
