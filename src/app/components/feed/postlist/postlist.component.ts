@@ -50,7 +50,6 @@ export class PostlistComponent implements OnInit {
   }
 
   onLoad(post: Post) {
-    console.log('loaded' + post.content);
     post.mediaLoading = false;
   }
 
