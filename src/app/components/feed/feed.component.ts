@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Post} from 'src/app/models/post';
 import {FeedService, Sort} from 'src/app/services/feed/feed.service';
 import {Activitylist} from 'src/app/models/activity';
@@ -17,6 +17,7 @@ export class FeedComponent implements OnInit {
   loadingNew = true;
   loadingMostLiked = true;
   // file upload variables
+  @ViewChild('name', {static: false}) fileInput;
   public uploading = false;
   public profilePictureUrl: BehaviorSubject<string | null>;
   private file;
@@ -107,6 +108,13 @@ export class FeedComponent implements OnInit {
         this.errorMessage = error.error.errors[0].message;
       });
     }
+  }
+
+  discardFile() {
+    this.file = null;
+    this.localFileUrl = null;
+    this.fileType = null;
+    this.fileInput.nativeElement.value = '';
   }
 
   onFileInputChange(event) {

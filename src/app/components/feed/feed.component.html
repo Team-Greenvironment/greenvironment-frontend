@@ -6,12 +6,20 @@
   <div [hidden]="!loggedIn">
     <mat-card>
       <mat-card-content>
-        <div id="inputPreviewWrapper">
-          <h2 *ngIf="localFileUrl">Preview:</h2>
-          <img *ngIf="fileType == 'image'" id="inputPreview" [src]="localFileUrl"/>
-          <video *ngIf="fileType == 'video'"  [src]="localFileUrl" controls="" class="html5-video-player">
-            Your browser does not support playing HTML5 video.
-          </video>
+        <div id="inputPreviewWrapper" *ngIf="localFileUrl">
+          <h2>Preview:</h2>
+          <div id="media-box">
+            <button class="discard-button" mat-button mat-icon-button (click)="discardFile()"
+              matTooltip="discard file"
+              matTooltipShowDelay="200"
+              [disabled]="posting">
+              <mat-icon>close</mat-icon>
+            </button>
+            <img *ngIf="fileType == 'image'" id="inputPreview" [src]="localFileUrl"/>
+            <video *ngIf="fileType == 'video'"  [src]="localFileUrl" id="inputPreview" controls="" class="html5-video-player">
+              Your browser does not support playing HTML5 video.
+            </video>
+          </div>
         </div>
         <mat-form-field class="input">
           <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue" [disabled]="posting"
