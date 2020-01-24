@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {Post} from 'src/app/models/post';
 import {FeedService, Sort} from 'src/app/services/feed/feed.service';
 import {Activitylist} from 'src/app/models/activity';
@@ -17,11 +17,13 @@ export class FeedComponent implements OnInit {
   loadingNew = true;
   loadingMostLiked = true;
   // file upload variables
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
   public uploading = false;
   public profilePictureUrl: BehaviorSubject<string | null>;
   private file;
   fileType;
   public localFileUrl;
+  posting = false;
 
   checked = false; // if the "I protected the environment."-box is checked
   view = 'new';
@@ -61,6 +63,13 @@ export class FeedComponent implements OnInit {
     this.feedService.postsAvailable.subscribe(available => {
       this.loadingMostLiked = this.loadingNew = available;
     });
+    this.feedService.posting.subscribe(posting => {
+      const temp = this.posting;
+      this.posting = posting;
+      if (temp !== this.posting && !this.posting) {
+        this.resetPostInput();
+      }
+    });
   }
 
   /**
@@ -70,35 +79,38 @@ export class FeedComponent implements OnInit {
    */
   createPost(postElement, activityId: string) {
     if (postElement && activityId && this.checked) {
+      this.posting = true;
       this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
-        postElement.value = '';
-        this.textInputValue = '';
-        this.checked = false;
-        this.file = null;
-        this.localFileUrl = null;
-        this.fileType = null;
-        if (this.view !== 'new') {
-          this.showNew();
-        }
       }, (error: IErrorResponse) => {
         this.errorOccurred = true;
+        this.posting = false;
         this.errorMessage = error.error.errors[0].message;
       });
     } else if (postElement) {
-      this.feedService.createPost(postElement.value, this.file).subscribe(() => {
-        postElement.value = '';
-        this.textInputValue = '';
-        this.checked = false;
-        this.file = null;
-        this.localFileUrl = null;
-        this.fileType = null;
-        if (this.view !== 'new') {
-          this.showNew();
-        }
+      this.posting = true;
+      this.feedService.createPost(postElement.value, this.file).subscribe((result) => {
       }, (error: IErrorResponse) => {
+        console.log(error);
+        this.posting = false;
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
       });
+    }
+  }
+
+  discardFile() {
+    this.file = null;
+    this.localFileUrl = null;
+    this.fileType = null;
+    this.fileInput.nativeElement.value = '';
+  }
+
+  resetPostInput() {
+    this.textInputValue = '';
+    this.checked = false;
+    this.discardFile();
+    if (this.view !== 'new') {
+      this.showNew();
     }
   }
 
@@ -119,7 +131,7 @@ export class FeedComponent implements OnInit {
   }
 
   /**
-   * Fetches the next posts when scrolled
+   * Fetches the next posts when scrolled down
    */
   onScroll() {
     this.feedService.getNextPosts();

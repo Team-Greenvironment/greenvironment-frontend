@@ -22,8 +22,11 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
+    <mat-spinner *ngIf="post.mediaLoading && post.mediaType === 'IMAGE'" style="margin:0 auto; margin-top: 2em;" diameter="50"></mat-spinner>
     <div class="postMedia">
-      <img *ngIf="post.mediaType === 'IMAGE'" [src]="post.mediaUrl"  alt="post image"/>
+      <div [hidden]="post.mediaLoading">
+        <img *ngIf="post.mediaType === 'IMAGE'" [src]="post.mediaUrl" (load)="onLoad(this.post)" alt="post image"/>
+      </div>
       <video *ngIf="post.mediaType === 'VIDEO'" controls>
         <source [src]="post.mediaUrl" type="video/webm">
       </video>

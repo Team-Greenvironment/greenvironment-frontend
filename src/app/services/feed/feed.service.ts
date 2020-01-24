@@ -10,8 +10,8 @@ import {BaseService} from '../base.service';
 import {formatDate} from '@angular/common';
 import {IFileUploadResult} from '../../models/interfaces/IFileUploadResult';
 
-const createPostGqlQuery = `mutation($content: String!) {
-  createPost(content: $content) {
+const createPostGqlQuery = `mutation($content: String!, $type: PostType) {
+  createPost(content: $content, type: $type) {
     id,
     content,
     htmlContent,
@@ -34,8 +34,8 @@ const createPostGqlQuery = `mutation($content: String!) {
     createdAt}
 }`;
 
-const createPostActivityGqlQuery = `mutation($content: String!, $id: ID) {
-  createPost(content: $content activityId: $id) {
+const createPostActivityGqlQuery = `mutation($content: String!, $id: ID, $type: PostType) {
+  createPost(content: $content activityId: $id, type: $type) {
     id,
     content,
     htmlContent,
@@ -70,7 +70,7 @@ const downvotePostGqlQuery = `mutation($postId: ID!) {
   }
 }`;
 
-const getPostGqlQuery = `query($first: Int, $offset: Int, $sort: SortType){
+const getPostsGqlQuery = `query($first: Int, $offset: Int, $sort: SortType){
   getPosts (first: $first, offset: $offset, sort: $sort) {
     id,
     content,
@@ -109,6 +109,7 @@ export class FeedService extends BaseService {
   }
 
   public postsAvailable = new BehaviorSubject<boolean>(true);
+  public posting = new BehaviorSubject<boolean>(false);
   public posts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
   private activePostList: Sort = Sort.NEW;
   private offset = 0;
@@ -122,7 +123,7 @@ export class FeedService extends BaseService {
    */
   private static buildGetPostBody(sort: string, offset: number, first: number = 10) {
     return {
-      query: getPostGqlQuery, variables: {
+      query: getPostsGqlQuery, variables: {
         first,
         offset,
         sort
@@ -145,10 +146,15 @@ export class FeedService extends BaseService {
    * @param file
    */
   public createPost(pContent: String, file?: File) {
+    let type: string;
+    if (file) { type = 'MEDIA'; } else {
+      type = 'TEXT';
+    }
     const body = {
       query: createPostGqlQuery,
       variables: {
-        content: pContent
+        content: pContent,
+        type
       }
     };
     return this.createPostRequest(body, file);
@@ -161,10 +167,15 @@ export class FeedService extends BaseService {
    * @param file
    */
   public createPostActivity(pContent: String, activityId: String, file?: File) {
+    let type: string;
+    if (file) { type = 'MEDIA'; } else {
+      type = 'TEXT';
+    }
     const body = {
       query: createPostActivityGqlQuery, variables: {
         content: pContent,
-        id: activityId
+        id: activityId,
+        type
       }
     };
     return this.createPostRequest(body, file);
@@ -176,26 +187,39 @@ export class FeedService extends BaseService {
    * @param file - a file that is being uploaded with the post
    */
   private createPostRequest(body: { variables: any; query: string }, file?: File) {
-    return this.postGraphql(body, null, 0)
+    this.posting.next(true);
+    if (file) {
+      return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
+        const updatedPosts = this.posts.getValue();
+        const post = this.constructPost(response);
+        this.uploadPostImage(post.id, file).subscribe((result) => {
+          if (this.activePostList === Sort.NEW) {
+            post.mediaUrl = result.fileName;
+            post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
+            updatedPosts.unshift(post);
+            this.posts.next(updatedPosts);
+            this.posting.next(false);
+          }
+          }, error => {
+            console.error(error);
+            this.posting.next(false);
+            this.deletePost(post.id);
+          });
+        }
+      ));
+    } else if (!file) {
+      return this.postGraphql(body, null, 0)
+      .pipe(tap(response => {
+        this.posting.next(false);
+        const updatedPosts = this.posts.getValue();
         if (this.activePostList === Sort.NEW) {
-          const updatedPosts = this.posts.getValue();
           const post = this.constructPost(response);
           updatedPosts.unshift(post);
-          if (file) {
-            this.uploadPostImage(post.id, file).subscribe((result) => {
-              post.mediaUrl = result.fileName;
-              post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
-              this.posts.next(updatedPosts);
-            }, error => {
-              console.error(error);
-              this.deletePost(post.id);
-            });
-          } else {
-            this.posts.next(updatedPosts);
-          }
+          this.posts.next(updatedPosts);
         }
       }));
+    }
   }
 
   /**
@@ -266,7 +290,7 @@ export class FeedService extends BaseService {
       {headers: this.headers})
       .pipe(this.retryRated())
       .subscribe(response => {
-        this.posts.next(this.constructAllPosts(response));
+        this.posts.next(this.constructAllPosts(response.data.getPosts));
         this.activePostList = sort;
       });
   }
@@ -280,7 +304,7 @@ export class FeedService extends BaseService {
     this.http.post(environment.graphQLUrl, body, {headers: this.headers})
       .pipe(this.retryRated())
       .subscribe(response => {
-        const posts = this.constructAllPosts(response);
+        const posts = this.constructAllPosts(response.data.getPosts);
         const previousPosts = this.posts.getValue();
         for (const post of previousPosts.reverse()) {
           if (!posts.find(p => p.id === post.id)) {
@@ -337,7 +361,7 @@ export class FeedService extends BaseService {
 
   public constructAllPosts(response: any): Post[] {
     const posts = new Array<Post>();
-    for (const post of response.data.getPosts) {
+    for (const post of response) {
       let profilePicture: string;
       if (post.author.profilePicture) {
         profilePicture = environment.greenvironmentUrl + post.author.profilePicture;

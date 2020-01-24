@@ -6,30 +6,45 @@
   <div [hidden]="!loggedIn">
     <mat-card>
       <mat-card-content>
-        <div id="inputPreviewWrapper">
-          <h2 *ngIf="localFileUrl">Preview:</h2>
-          <img *ngIf="fileType == 'image'" id="inputPreview" [src]="localFileUrl"/>
-          <video *ngIf="fileType == 'video'"  [src]="localFileUrl" controls="" class="html5-video-player">
-            Your browser does not support playing HTML5 video.
-          </video>
+        <div id="inputPreviewWrapper" *ngIf="localFileUrl">
+          <h2>Preview:</h2>
+          <div id="media-box">
+            <button class="discard-button" mat-button mat-icon-button (click)="discardFile()"
+              matTooltip="discard file"
+              matTooltipShowDelay="200"
+              [disabled]="posting">
+              <mat-icon>close</mat-icon>
+            </button>
+            <img *ngIf="fileType == 'image'" id="inputPreview" [src]="localFileUrl"/>
+            <video *ngIf="fileType == 'video'"  [src]="localFileUrl" id="inputPreview" controls="" class="html5-video-player">
+              Your browser does not support playing HTML5 video.
+            </video>
+          </div>
         </div>
-        <mat-form-field id="input">
-          <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue"
-                    mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
-          <button mat-button matSuffix mat-icon-button (click)="name.click()"
+        <mat-form-field class="input">
+          <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue" [disabled]="posting"
+            mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
+        </mat-form-field>
+        <input style="display: none" id="fileInput" type="file" accept="video/*,image/*" (change)="onFileInputChange($event)" #fileInput>
+        <div class="input">
+        <div class="left">
+          <p id="check">
+            <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked" [disabled]="posting">I protected the environment.
+            </mat-checkbox>
+          </p>
+        </div>
+        <div class="right">
+          <button mat-button mat-icon-button (click)="fileInput.click()"
             matTooltip="upload a picture or video (up to 10MB)"
-            matTooltipShowDelay="200">
+            matTooltipShowDelay="200"
+            [disabled]="posting">
             <mat-icon>attach_file</mat-icon>
           </button>
-          <input style="display: none" id="input-file" type="file" accept="video/*,image/*" (change)="onFileInputChange($event)" #name>
-        </mat-form-field>
-        <p id="check">
-          <mat-checkbox color="primary" [(ngModel)]="checked" checked="checked">I protected the environment.
-          </mat-checkbox>
-        </p>
+        </div>
+        </div>
         <mat-form-field id="action-chooser" *ngIf="checked">
           <mat-label>What did you do?</mat-label>
-          <mat-select [(ngModel)]="activityId" name="action">
+          <mat-select [(ngModel)]="activityId" name="action" [disabled]="posting">
             <mat-option>nothing ;)</mat-option>
             <mat-option *ngFor="let action of actionlist.Actions" [value]="action.id" [matTooltip]="action.description"
                         matTooltipShowDelay="200">
@@ -38,7 +53,8 @@
           </mat-select>
         </mat-form-field>
         <mat-error *ngIf="errorOccurred && textInputValue">{{getErrorMessage()}}</mat-error>
-        <button mat-raised-button *ngIf="textInputValue" color="primary" id="post-button"
+        <mat-progress-bar id="progress-bar" *ngIf="posting" mode="indeterminate"></mat-progress-bar>
+        <button mat-raised-button *ngIf="textInputValue" color="primary" id="post-button" [disabled]="posting"
                 (click)=createPost(content,activityId)>
           POST
         </button>
