@@ -1,5 +1,6 @@
 import {Author} from './author';
 import {Activity} from './activity';
+import { environment } from 'src/environments/environment';
 
 export class Post {
   id: number;
@@ -39,7 +40,7 @@ export class Post {
     this.author = author;
     this.activity = activity;
     if (media) {
-      this.mediaUrl = media.url;
+      this.mediaUrl = environment.greenvironmentUrl + media.url;
       this.mediaType = media.type;
     }
   }
