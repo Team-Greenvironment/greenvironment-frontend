@@ -25,7 +25,7 @@
           <textarea matInput #content type="text" (input)="onTextInputChange()" [(ngModel)]="textInputValue" [disabled]="posting"
             mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
         </mat-form-field>
-        <input style="display: none" id="input-file" type="file" accept="video/*,image/*" (change)="onFileInputChange($event)" #name>
+        <input style="display: none" id="fileInput" type="file" accept="video/*,image/*" (change)="onFileInputChange($event)" #fileInput>
         <div class="input">
         <div class="left">
           <p id="check">
@@ -34,7 +34,7 @@
           </p>
         </div>
         <div class="right">
-          <button mat-button mat-icon-button (click)="name.click()"
+          <button mat-button mat-icon-button (click)="fileInput.click()"
             matTooltip="upload a picture or video (up to 10MB)"
             matTooltipShowDelay="200"
             [disabled]="posting">

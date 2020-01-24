@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {Post} from 'src/app/models/post';
 import {FeedService, Sort} from 'src/app/services/feed/feed.service';
 import {Activitylist} from 'src/app/models/activity';
@@ -17,7 +17,7 @@ export class FeedComponent implements OnInit {
   loadingNew = true;
   loadingMostLiked = true;
   // file upload variables
-  @ViewChild('name', {static: false}) fileInput;
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
   public uploading = false;
   public profilePictureUrl: BehaviorSubject<string | null>;
   private file;
@@ -64,8 +64,11 @@ export class FeedComponent implements OnInit {
       this.loadingMostLiked = this.loadingNew = available;
     });
     this.feedService.posting.subscribe(posting => {
+      const temp = this.posting;
       this.posting = posting;
-      this.resetPostInput();
+      if (temp !== this.posting && !this.posting) {
+        this.resetPostInput();
+      }
     });
   }
 
@@ -78,7 +81,6 @@ export class FeedComponent implements OnInit {
     if (postElement && activityId && this.checked) {
       this.posting = true;
       this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
-        postElement.value = '';
       }, (error: IErrorResponse) => {
         this.errorOccurred = true;
         this.posting = false;
@@ -87,7 +89,6 @@ export class FeedComponent implements OnInit {
     } else if (postElement) {
       this.posting = true;
       this.feedService.createPost(postElement.value, this.file).subscribe((result) => {
-        postElement.value = '';
       }, (error: IErrorResponse) => {
         console.log(error);
         this.posting = false;
