@@ -81,7 +81,6 @@ export class FeedComponent implements OnInit {
     if (postElement && activityId && this.checked) {
       this.posting = true;
       this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
-        postElement.value = '';
       }, (error: IErrorResponse) => {
         this.errorOccurred = true;
         this.posting = false;
@@ -90,7 +89,6 @@ export class FeedComponent implements OnInit {
     } else if (postElement) {
       this.posting = true;
       this.feedService.createPost(postElement.value, this.file).subscribe((result) => {
-        postElement.value = '';
       }, (error: IErrorResponse) => {
         console.log(error);
         this.posting = false;
