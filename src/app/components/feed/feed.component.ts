@@ -63,6 +63,9 @@ export class FeedComponent implements OnInit {
     this.feedService.postsAvailable.subscribe(available => {
       this.loadingMostLiked = this.loadingNew = available;
     });
+    this.feedService.posting.subscribe(posting => {
+      this.posting = posting;
+    });
   }
 
   /**
@@ -74,7 +77,6 @@ export class FeedComponent implements OnInit {
     if (postElement && activityId && this.checked) {
       this.posting = true;
       this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
-        this.posting = false;
         postElement.value = '';
         this.textInputValue = '';
         this.checked = false;
@@ -85,14 +87,12 @@ export class FeedComponent implements OnInit {
           this.showNew();
         }
       }, (error: IErrorResponse) => {
-        this.posting = false;
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
       });
     } else if (postElement) {
       this.posting = true;
       this.feedService.createPost(postElement.value, this.file).subscribe((result) => {
-        this.posting = false;
         postElement.value = '';
         this.textInputValue = '';
         this.checked = false;
@@ -104,7 +104,6 @@ export class FeedComponent implements OnInit {
         }
       }, (error: IErrorResponse) => {
         console.log(error);
-        this.posting = false;
         this.errorOccurred = true;
         this.errorMessage = error.error.errors[0].message;
       });

@@ -109,6 +109,7 @@ export class FeedService extends BaseService {
   }
 
   public postsAvailable = new BehaviorSubject<boolean>(true);
+  public posting = new BehaviorSubject<boolean>(false);
   public posts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
   private activePostList: Sort = Sort.NEW;
   private offset = 0;
@@ -186,6 +187,7 @@ export class FeedService extends BaseService {
    * @param file - a file that is being uploaded with the post
    */
   private createPostRequest(body: { variables: any; query: string }, file?: File) {
+    this.posting.next(true);
     if (file) {
       return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
@@ -197,8 +199,10 @@ export class FeedService extends BaseService {
             post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
             updatedPosts.unshift(post);
             this.posts.next(updatedPosts);
+            this.posting.next(false);
           }, error => {
             console.error(error);
+            this.posting.next(false);
             this.deletePost(post.id);
           });
         }
@@ -206,6 +210,7 @@ export class FeedService extends BaseService {
     } else if (!file) {
       return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
+        this.posting.next(false);
         const updatedPosts = this.posts.getValue();
         if (this.activePostList === Sort.NEW) {
           const post = this.constructPost(response);
