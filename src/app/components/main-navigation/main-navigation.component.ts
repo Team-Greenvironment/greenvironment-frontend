@@ -66,7 +66,7 @@ export class MainNavigationComponent implements OnInit {
       this.loggedIn = user.loggedIn;
       this.userId = user.userID;
       this.username = user.username;
-      this.level = this.levellist.getLevelName(user.level);
+      this.level = user.levelName;
       this.points = user.points;
       this.profileUrl = '/profile/' + this.userId;
       if (this.user.darkmode === true && this.lighttheme) {

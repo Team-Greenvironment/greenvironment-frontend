@@ -12,7 +12,8 @@ export class User {
   handle: string;
   email: string;
   points: number;
-  level: number;
+  level = 0;
+  levelName = 'Rookie';
   profilePicture: string;
   joinedAt: string;
   friendCount: number;
@@ -36,7 +37,10 @@ export class User {
     this.handle = userDataResponse.handle;
     this.email = userDataResponse.email;
     this.points = userDataResponse.points;
-    this.level = userDataResponse.level;
+    if (userDataResponse.level) {
+      this.level = userDataResponse.level.levelNumber;
+      this.levelName = userDataResponse.level.name;
+    }
     this.profilePicture = this.buildProfilePictureUrl(userDataResponse.profilePicture);
     this.joinedAt = userDataResponse.joinedAt;
     this.friendCount = userDataResponse.friendCount;
