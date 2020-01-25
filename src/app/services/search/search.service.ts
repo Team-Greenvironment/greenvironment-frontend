@@ -23,7 +23,10 @@ const graphqlQuery = `query($query: String!, $first: Int, $offset: Int) {
       id,
       handle,
       points,
-      level,
+      level {
+        name
+        levelNumber
+      },
       friends {
       id
       }
@@ -77,7 +80,10 @@ export class SearchService extends BaseService {
       user.userID = foundUser.id;
       user.handle = foundUser.handle;
       user.points = foundUser.points;
-      user.level = foundUser.level;
+      if (foundUser.level) {
+        user.level = foundUser.level.levelNumber;
+        user.levelName = foundUser.level.name;
+      }
       // @ts-ignore
       user.friends = foundUser.friends;
       users.push(user);

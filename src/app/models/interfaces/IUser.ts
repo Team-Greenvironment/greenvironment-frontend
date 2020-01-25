@@ -16,7 +16,7 @@ export interface IUser {
 
   settings?: string;
 
-  level: number;
+  level: {name: string, levelNumber: number};
 
   points: number;
 
