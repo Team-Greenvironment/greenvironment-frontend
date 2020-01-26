@@ -18,7 +18,7 @@ const getGroupGraphqlQuery = `query($groupId: ID!) {
       picture
       deletable
       creator{id name handle}
-      admins{id name handle}
+      admins{id name handle profilePicture}
       members{id name handle profilePicture}
       events{id name dueDate joined}
   }
@@ -78,6 +78,55 @@ export class GroupService extends BaseService {
       event.assignFromResponse(response.data.createEvent);
       const group = this.group.getValue();
       group.events.push(event);
+      this.group.next(group);
+    }));
+  }
+
+  
+  public addGroupAdmin(userId: string, groupId: string) {
+    const body = {
+      query: `mutation($groupId: ID!, $userId: ID!) {
+          addGroupAdmin(groupId: $groupId, userId: $userId) {
+            admins{id name handle profilePicture}
+          }
+      }`, variables: {
+        userId,
+        groupId
+      }
+    };
+
+    return this.postGraphql(body, null, 0)
+    .pipe(tap(response => {
+      const admins: User[] = [];
+      for (const admin of response.data.addGroupAdmin) {
+        admins.push(admin.assignFromResponse(admin));
+      }
+      const group = this.group.getValue();
+      group.admins = admins;
+      this.group.next(group);
+    }));
+  }
+
+  public removeGroupAdmin(userId: string, groupId: string) {
+    const body = {
+      query: `mutation($groupId: ID!, $userId: ID!) {
+          removeGroupAdmin(groupId: $groupId, userId: $userId) {
+            admins{id name handle profilePicture}
+          }
+      }`, variables: {
+        userId,
+        groupId
+      }
+    };
+
+    return this.postGraphql(body, null, 0)
+    .pipe(tap(response => {
+      const admins: User[] = [];
+      for (const admin of response.data.addGroupAdmin) {
+        admins.push(admin.assignFromResponse(admin));
+      }
+      const group = this.group.getValue();
+      group.admins = admins;
       this.group.next(group);
     }));
   }
