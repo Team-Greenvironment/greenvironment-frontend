@@ -1,7 +1,7 @@
-import {User} from 'src/app/models/user';
-import {Event} from 'src/app/models/event';
-import {IGroup} from './interfaces/IGroup';
-import {environment} from 'src/environments/environment';
+import { User } from 'src/app/models/user';
+import { Event } from 'src/app/models/event';
+import { IGroup } from './interfaces/IGroup';
+import { environment } from 'src/environments/environment';
 
 export class Group {
   id: number;
@@ -35,6 +35,13 @@ export class Group {
       for (const admin of groupDataResponse.admins) {
         user = new User();
         this.admins.push(user.assignFromResponse(admin));
+      }
+      for (const admin of this.admins) {
+        for (const member of this.members) {
+          if (member.userID === admin.userID) {
+            member.isGroupAdmin = true;
+          }
+        }
       }
     }
     if (groupDataResponse.events) {
