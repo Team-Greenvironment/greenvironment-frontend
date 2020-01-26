@@ -4,7 +4,6 @@ import {DatasharingService} from '../../services/datasharing.service';
 import {RequestService} from '../../services/request/request.service';
 import {SettingsService} from '../../services/settings/settings.service';
 import {environment} from 'src/environments/environment';
-import {Levellist} from 'src/app/models/levellist';
 import {Router} from '@angular/router';
 import {User} from 'src/app/models/user';
 import {OverlayContainer} from '@angular/cdk/overlay';
@@ -33,7 +32,6 @@ export class MainNavigationComponent implements OnInit {
   userId: number;
   username: string;
   user: User;
-  levellist: Levellist = new Levellist();
   level: string;
   points: number;
   profileUrl = '/profile/1';
