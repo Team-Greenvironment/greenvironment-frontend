@@ -149,6 +149,36 @@
             <user-list [userList]="groupProfile.members"></user-list>
           </div>
         </mat-expansion-panel>
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Admins
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div id="list">
+            <mat-card class="card" *ngFor="let admin of groupProfile.admins"
+                      [class.selected]="admin === selectedAdmin"
+                      tabindex="0">
+              <mat-card-header>
+                <div id="button-box">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="removeFriend(friend)">
+                      <span>remove friend</span>
+                    </button>
+                  </mat-menu>
+                </div>
+                <div mat-card-avatar (click)="showFriendProfile(admin)">
+                  <img class="profile-picture-small" [src]="admin.profilePicture"/>
+                </div>
+                <mat-card-title (click)="showFriendProfile(admin)">{{admin.username}}</mat-card-title>
+                <mat-card-subtitle (click)="showFriendProfile(admin)">{{admin.handle}}</mat-card-subtitle>
+              </mat-card-header>
+            </mat-card>
+          </div>
+        </mat-expansion-panel>
       </mat-accordion>
     </div>
   </div>

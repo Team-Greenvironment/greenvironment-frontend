@@ -24,7 +24,7 @@
         <mat-form-field class="input">
           <textarea matInput #content type="text" maxlength="2048" (input)="onTextInputChange()" [(ngModel)]="textInputValue" [disabled]="posting"
             mat-autosize="true" matAutosizeMaxRows="3" placeholder="post something"></textarea>
-            <mat-hint align="end">{{content.value.length}} / 2048</mat-hint>
+          <mat-hint align="end">{{content.value.length}} / 2048</mat-hint>
         </mat-form-field>
         <input style="display: none" id="fileInput" type="file" accept="video/*,image/*" (change)="onFileInputChange($event)" #fileInput>
         <div class="input">
