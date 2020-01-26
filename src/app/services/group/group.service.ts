@@ -64,6 +64,7 @@ export class GroupService extends BaseService {
           name
           dueDate
           joined
+          deletable
         }
       }`, variables: {
         name: name,

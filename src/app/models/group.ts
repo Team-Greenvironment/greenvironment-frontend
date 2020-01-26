@@ -47,7 +47,7 @@ export class Group {
   }
 
   public updateAdmins(admins: IUser[]) {
-    // this.admins = [];
+    this.admins = [];
     for (const admin of admins) {
       const user = new User();
       this.admins.push(user.assignFromResponse(admin));
