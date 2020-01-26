@@ -87,22 +87,17 @@ export class GroupService extends BaseService {
     const body = {
       query: `mutation($groupId: ID!, $userId: ID!) {
           addGroupAdmin(groupId: $groupId, userId: $userId) {
-            admins{id name handle profilePicture}
+            admins{id name handle}
           }
       }`, variables: {
         userId,
         groupId
       }
     };
-
     return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
-        const admins: User[] = [];
-        for (const admin of response.data.addGroupAdmin) {
-          admins.push(admin.assignFromResponse(admin));
-        }
         const group = this.group.getValue();
-        group.admins = admins;
+        group.updateAdmins(response.data.addGroupAdmin);
         this.group.next(group);
       }));
   }
@@ -111,22 +106,17 @@ export class GroupService extends BaseService {
     const body = {
       query: `mutation($groupId: ID!, $userId: ID!) {
           removeGroupAdmin(groupId: $groupId, userId: $userId) {
-            admins{id name handle profilePicture}
+            admins{id name handle}
           }
       }`, variables: {
         userId,
         groupId
       }
     };
-
     return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
-        const admins: User[] = [];
-        for (const admin of response.data.addGroupAdmin) {
-          admins.push(admin.assignFromResponse(admin));
-        }
         const group = this.group.getValue();
-        group.admins = admins;
+        group.updateAdmins(response.data.removeGroupAdmin);
         this.group.next(group);
       }));
   }
@@ -162,9 +152,7 @@ export class GroupService extends BaseService {
   public deleteEvent(eventId: string) {
     const body = {
       query: `mutation($eventId: ID!) {
-      deleteEvent(eventId: $eventId) {
-        joined
-      }
+      deleteEvent(eventId: $eventId)
     }`, variables: {
         eventId
       }

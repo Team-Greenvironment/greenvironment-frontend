@@ -76,6 +76,7 @@ export class GroupComponent implements OnInit {
   self: User;
   id: string;
   isAdmin = false;
+  isCreator = false;
   groupNotFound = false;
 
   loading = false;
@@ -119,6 +120,11 @@ export class GroupComponent implements OnInit {
           if (admin.userID === this.self.userID) {
             this.isAdmin = true;
           }
+        }
+        if (this.groupProfile.creator.userID === this.self.userID) {
+          this.isCreator = true;
+        } else {
+          this.isCreator = false;
         }
         for (const member of this.groupProfile.members) {
           member.allowedToSendRequest = this.requestService.isAllowedToSendRequest(member.userID, this.self);
