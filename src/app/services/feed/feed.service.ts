@@ -194,17 +194,23 @@ export class FeedService extends BaseService {
         const updatedPosts = this.posts.getValue();
         const post = this.constructPost(response);
         this.uploadPostImage(post.id, file).subscribe((result) => {
-          if (this.activePostList === Sort.NEW) {
-            post.mediaUrl = result.fileName;
-            post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
-            updatedPosts.unshift(post);
-            this.posts.next(updatedPosts);
+          if (result.success) {
+            if (this.activePostList === Sort.NEW) {
+              post.mediaUrl = result.fileName;
+              post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
+              updatedPosts.unshift(post);
+              this.posts.next(updatedPosts);
+              this.posting.next(false);
+            }
+          } else {
+            console.error(result.error);
             this.posting.next(false);
+            this.deletePost(post.id).subscribe();
           }
           }, error => {
             console.error(error);
             this.posting.next(false);
-            this.deletePost(post.id);
+            this.deletePost(post.id).subscribe();
           });
         }
       ));
