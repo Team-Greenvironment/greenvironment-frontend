@@ -1,5 +1,3 @@
-import {Levellist} from 'src/app/models/levellist';
-
 export class FriendInfo {
   id: number;
   name: string;

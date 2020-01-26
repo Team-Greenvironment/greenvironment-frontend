@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Activitylist} from 'src/app/models/activity';
-import {Levellist} from 'src/app/models/levellist';
+import {LevelList} from 'src/app/models/levellist';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {ActivityService} from 'src/app/services/activity/activity.service';
@@ -12,12 +12,12 @@ import {ActivityService} from 'src/app/services/activity/activity.service';
 })
 export class AboutComponent implements OnInit {
   actionlist: Activitylist = new Activitylist();
-  levellist: Levellist = new Levellist();
+  levellist: LevelList = new LevelList();
 
   displayedColumns = ['points', 'name', 'description'];
   dataSource = new MatTableDataSource(this.actionlist.Actions);
   displayedLevelColumns = ['level', 'name'];
-  levelSource = this.levellist.levels;
+  levelSource = new MatTableDataSource(this.levellist.levels);
 
   constructor(private activityService: ActivityService) {
   }
@@ -30,6 +30,12 @@ export class AboutComponent implements OnInit {
       this.actionlist = response;
       this.dataSource = new MatTableDataSource(this.actionlist.Actions);
       this.dataSource.sort = this.sort;
+    });
+    this.activityService.getLevels();
+    this.activityService.levelList.subscribe(response => {
+      this.levellist = response;
+      this.levelSource = new MatTableDataSource(this.levellist.levels);
+      this.levelSource.sort = this.sort;
     });
   }
 
