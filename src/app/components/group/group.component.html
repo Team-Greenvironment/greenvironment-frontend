@@ -136,7 +136,7 @@
                 <mat-card-subtitle class="pointer" (click)="showUserProfile(user)">{{user.handle}}</mat-card-subtitle>
                 <mat-card-subtitle *ngIf="user.isGroupAdmin" class="pointer" (click)="showUserProfile(user)">[admin]
                 </mat-card-subtitle>
-                <div id="icon-box" *ngIf="isAdmin">
+                <div id="icon-box" *ngIf="isCreator">
                   <button mat-icon-button [matMenuTriggerFor]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
