@@ -1,9 +1,9 @@
-import {FriendRequest} from 'src/app/models/friendRequest';
-import {FriendInfo} from 'src/app/models/friendinfo';
-import {GroupInfo} from 'src/app/models/groupinfo';
-import {Post} from 'src/app/models/post';
-import {IUser} from './interfaces/IUser';
-import {environment} from 'src/environments/environment';
+import { FriendRequest } from 'src/app/models/friendRequest';
+import { FriendInfo } from 'src/app/models/friendinfo';
+import { GroupInfo } from 'src/app/models/groupinfo';
+import { Post } from 'src/app/models/post';
+import { IUser } from './interfaces/IUser';
+import { environment } from 'src/environments/environment';
 
 export class User {
   loggedIn = false;
@@ -18,6 +18,7 @@ export class User {
   joinedAt: string;
   friendCount: number;
   groupCount: number;
+  isGroupAdmin: boolean;
 
   darkmode = false;
 

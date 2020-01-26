@@ -4,40 +4,30 @@
     <mat-toolbar id="toolbar" fxShow="true" fxHide.gt-sm="true">
       <mat-toolbar-row>
         <div class="hover-box" matTooltip="upload new picture" *ngIf="isAdmin" (click)="openFileUploadDialog()">
-          <img class="profile-picture" [src]="groupProfile.picture"/>
+          <img class="profile-picture" [src]="groupProfile.picture" />
           <mat-icon id="icon">camera_alt</mat-icon>
         </div>
         <div *ngIf="!isAdmin" (click)="openPfpLightbox()">
-          <img class="profile-picture" [src]="groupProfile.picture"/>
+          <img class="profile-picture" [src]="groupProfile.picture" />
         </div>
 
         <span id="username">{{groupProfile.name}}</span>
         <div class="button-box">
-          <button mat-icon-button *ngIf="!groupProfile.joined"
-                  class="request-button"
-                  matTooltip="join group" matTooltipShowDelay="500"
-                  (click)="joinGroup(groupProfile)"
-                  [disabled]="!groupProfile.allowedToJoinGroup">
+          <button mat-icon-button *ngIf="!groupProfile.joined" class="request-button" matTooltip="join group"
+            matTooltipShowDelay="500" (click)="joinGroup(groupProfile)" [disabled]="!groupProfile.allowedToJoinGroup">
             <mat-icon>group_add</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="groupProfile.joined"
-                  class="request-button"
-                  matTooltip="leave group" matTooltipShowDelay="500"
-                  (click)="leaveGroup(groupProfile)">
+          <button mat-icon-button *ngIf="groupProfile.joined" class="request-button" matTooltip="leave group"
+            matTooltipShowDelay="500" (click)="leaveGroup(groupProfile)">
             <mat-icon>directions_run</mat-icon>
           </button>
-          <button mat-icon-button
-                  class="request-button"
-                  matTooltip="create event" matTooltipShowDelay="500"
-                  (click)="openDialog()"
-                  [disabled]="!isAdmin">
+          <button mat-icon-button class="request-button" matTooltip="create event" matTooltipShowDelay="500"
+            (click)="openDialog()" [disabled]="!isAdmin">
             <mat-icon>event</mat-icon>
           </button>
           <div style="display: contents;" *ngIf="groupProfile.deletable">
-            <button mat-icon-button
-                    class="request-button"
-                    matTooltip="delete this group" matTooltipShowDelay="0"
-                    (click)="deleteGroup()">
+            <button mat-icon-button class="request-button" matTooltip="delete this group" matTooltipShowDelay="0"
+              (click)="deleteGroup()">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
@@ -45,8 +35,8 @@
       </mat-toolbar-row>
       <mat-toolbar-row>
         <div class="info-box">
-          <span id="handle" class="pointer"
-                (click)="showUserProfile(groupProfile.creator)">created by {{groupProfile.creator.username}}
+          <span id="handle" class="pointer" (click)="showUserProfile(groupProfile.creator)">created by
+            {{groupProfile.creator.username}}
             @{{groupProfile.creator.handle}}</span>
         </div>
       </mat-toolbar-row>
@@ -60,42 +50,32 @@
     <mat-toolbar id="toolbar" fxShow="true" fxHide.lt-md="true">
       <mat-toolbar-row>
         <div class="hover-box" matTooltip="upload new picture" *ngIf="isAdmin" (click)="openFileUploadDialog()">
-          <img class="profile-picture" [src]="groupProfile.picture"/>
+          <img class="profile-picture" [src]="groupProfile.picture" />
           <mat-icon id="icon">camera_alt</mat-icon>
         </div>
         <div *ngIf="!isAdmin" (click)="openPfpLightbox()">
-          <img class="profile-picture" [src]="groupProfile.picture"/>
+          <img class="profile-picture" [src]="groupProfile.picture" />
         </div>
         <span id="username">{{groupProfile.name}}</span>
-        <span id="handle" class="pointer"
-              (click)="showUserProfile(groupProfile.creator)">created by {{groupProfile.creator.username}}
+        <span id="handle" class="pointer" (click)="showUserProfile(groupProfile.creator)">created by
+          {{groupProfile.creator.username}}
           @{{groupProfile.creator.handle}}</span>
         <div class="button-box">
-          <button mat-icon-button *ngIf="!groupProfile.joined"
-                  class="request-button"
-                  matTooltip="join group" matTooltipShowDelay="500"
-                  (click)="joinGroup(groupProfile)"
-                  [disabled]="!groupProfile.allowedToJoinGroup">
+          <button mat-icon-button *ngIf="!groupProfile.joined" class="request-button" matTooltip="join group"
+            matTooltipShowDelay="500" (click)="joinGroup(groupProfile)" [disabled]="!groupProfile.allowedToJoinGroup">
             <mat-icon>group_add</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="groupProfile.joined"
-                  class="request-button"
-                  matTooltip="leave group" matTooltipShowDelay="500"
-                  (click)="leaveGroup(groupProfile)">
+          <button mat-icon-button *ngIf="groupProfile.joined" class="request-button" matTooltip="leave group"
+            matTooltipShowDelay="500" (click)="leaveGroup(groupProfile)">
             <mat-icon>directions_run</mat-icon>
           </button>
-          <button mat-icon-button
-                  class="request-button"
-                  matTooltip="create event" matTooltipShowDelay="500"
-                  (click)="openDialog()"
-                  [disabled]="!isAdmin">
+          <button mat-icon-button class="request-button" matTooltip="create event" matTooltipShowDelay="500"
+            (click)="openDialog()" [disabled]="!isAdmin">
             <mat-icon>event</mat-icon>
           </button>
           <div style="display: contents;" *ngIf="groupProfile.deletable">
-            <button mat-icon-button
-                    class="request-button"
-                    matTooltip="delete this group" matTooltipShowDelay="0"
-                    (click)="deleteGroup()">
+            <button mat-icon-button class="request-button" matTooltip="delete this group" matTooltipShowDelay="0"
+              (click)="deleteGroup()">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
@@ -116,23 +96,23 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="list">
-            <mat-card class="card" *ngFor="let event of groupProfile.events"
-                      [class.selected]="event === selectedEvent"
-                      tabindex="0">
+            <mat-card class="card" *ngFor="let event of groupProfile.events" [class.selected]="event === selectedEvent"
+              tabindex="0">
               <mat-card-header>
                 <mat-card-title>{{event.name}}</mat-card-title>
                 <mat-card-subtitle>{{event.date}}</mat-card-subtitle>
                 <div class="button-box">
-                  <button *ngIf="!event.joined" mat-icon-button class="request-button"
-                          matTooltip="join event" matTooltipShowDelay="500"
-                          (click)="joinEvent(event)">
+                  <button *ngIf="!event.joined" mat-icon-button class="request-button" matTooltip="join event"
+                    matTooltipShowDelay="500" (click)="joinEvent(event)">
                     <mat-icon>event_available</mat-icon>
                   </button>
-                  <button *ngIf="event.joined" mat-icon-button class="request-button"
-                          matTooltip="leave event" matTooltipShowDelay="500"
-                          (click)="leaveEvent(event)"
-                          [disabled]="!event.joined">
+                  <button *ngIf="event.joined" mat-icon-button class="request-button" matTooltip="leave event"
+                    matTooltipShowDelay="500" (click)="leaveEvent(event)" [disabled]="!event.joined">
                     <mat-icon>event_busy</mat-icon>
+                  </button>
+                  <button *ngIf="event.deletable" mat-icon-button class="request-button" matTooltip="delete event"
+                    matTooltipShowDelay="0" (click)="deleteEvent(event)">
+                    <mat-icon>delete</mat-icon>
                   </button>
                 </div>
               </mat-card-header>
@@ -145,8 +125,32 @@
               Members
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <div class="list">
-            <user-list [userList]="groupProfile.members"></user-list>
+          <div id="list">
+            <mat-card class="member-card" *ngFor="let user of groupProfile.members"
+              [class.selected]="user === selectedUser" tabindex="0">
+              <mat-card-header>
+                <div mat-card-avatar (click)="showUserProfile(user)">
+                  <img class="card-picture" [src]="user.profilePicture" />
+                </div>
+                <mat-card-title class="pointer" (click)="showUserProfile(user)">{{user.username}}</mat-card-title>
+                <mat-card-subtitle class="pointer" (click)="showUserProfile(user)">{{user.handle}}</mat-card-subtitle>
+                <mat-card-subtitle *ngIf="user.isGroupAdmin" class="pointer" (click)="showUserProfile(user)">[admin]
+                </mat-card-subtitle>
+                <div id="icon-box" *ngIf="isAdmin">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button *ngIf="!user.isGroupAdmin" mat-menu-item (click)="addGroupAdmin(user)">
+                      <span>give admin rights</span>
+                    </button>
+                    <button *ngIf="user.isGroupAdmin" mat-menu-item (click)="removeGroupAdmin(user)">
+                      <span>revoke admin rights</span>
+                    </button>
+                  </mat-menu>
+                </div>
+              </mat-card-header>
+            </mat-card>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
@@ -157,4 +161,3 @@
   </div>
   <mat-spinner *ngIf="loading" style="margin:0 auto; margin-top: 10em;" diameter="100"></mat-spinner>
 </div>
-

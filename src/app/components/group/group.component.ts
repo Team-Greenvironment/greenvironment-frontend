@@ -1,15 +1,15 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Data, NavigationEnd, Router} from '@angular/router';
-import {User} from 'src/app/models/user';
-import {MatSort} from '@angular/material/sort';
-import {RequestService} from 'src/app/services/request/request.service';
-import {DatasharingService} from '../../services/datasharing.service';
-import {GroupService} from 'src/app/services/group/group.service';
-import {Group} from 'src/app/models/group';
-import {Event} from 'src/app/models/event';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {DialogGroupFileUploadComponent} from './fileUpload/fileUpload.component';
-import {Lightbox} from 'ngx-lightbox';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Data, NavigationEnd, Router } from '@angular/router';
+import { User } from 'src/app/models/user';
+import { MatSort } from '@angular/material/sort';
+import { RequestService } from 'src/app/services/request/request.service';
+import { DatasharingService } from '../../services/datasharing.service';
+import { GroupService } from 'src/app/services/group/group.service';
+import { Group } from 'src/app/models/group';
+import { Event } from 'src/app/models/event';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DialogGroupFileUploadComponent } from './fileUpload/fileUpload.component';
+import { Lightbox } from 'ngx-lightbox';
 
 // DIALOG COMPONENT to create events
 @Component({
@@ -100,7 +100,7 @@ export class GroupComponent implements OnInit {
     });
   }
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   ngOnInit() {
     this.loading = true;
@@ -174,6 +174,10 @@ export class GroupComponent implements OnInit {
     });
   }
 
+  public deleteEvent(event: Event) {
+    this.groupService.deleteEvent(event.id).subscribe();
+  }
+
   public showUserProfile(user: User) {
     this.router.navigate(['profile/' + user.userID]);
   }
@@ -185,9 +189,9 @@ export class GroupComponent implements OnInit {
 
   private deleteGroup() {
     this.groupService.deleteGroup(this.groupProfile.id)
-    .subscribe(response => {
-      this.router.navigateByUrl('');
-    });
+      .subscribe(response => {
+        this.router.navigateByUrl('');
+      });
   }
 
   leaveGroup() {
@@ -198,11 +202,19 @@ export class GroupComponent implements OnInit {
     });
   }
 
+  addGroupAdmin(user: User) {
+    this.groupService.addGroupAdmin(user.userID.toString(), this.id).subscribe();
+  }
+
+  removeGroupAdmin(user: User) {
+    this.groupService.removeGroupAdmin(user.userID.toString(), this.id).subscribe();
+  }
+
   openPfpLightbox() {
     this.lightbox.open([{
       src: this.groupProfile.picture,
       thumb: this.groupProfile.picture,
-    }], 0, {disableScrolling: true});
+    }], 0, { disableScrolling: true });
   }
 
 }
