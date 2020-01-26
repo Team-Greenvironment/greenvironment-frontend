@@ -16,7 +16,10 @@ const graphqlGetProfileQuery = `query($userId: ID) {
     name
     profilePicture
     points
-    level
+    level {
+      name
+      levelNumber
+    }
     friendCount
     groupCount
     joinedAt
