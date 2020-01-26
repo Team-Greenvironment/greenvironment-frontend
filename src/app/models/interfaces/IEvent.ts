@@ -7,4 +7,6 @@ export interface IEvent {
   dueDate: string;
 
   joined: boolean;
+
+  deletable: boolean;
 }

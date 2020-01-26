@@ -20,7 +20,7 @@ const getGroupGraphqlQuery = `query($groupId: ID!) {
       creator{id name handle}
       admins{id name handle}
       members{id name handle profilePicture}
-      events{id name dueDate joined}
+      events{id name dueDate joined deletable}
   }
 }`;
 
@@ -146,8 +146,6 @@ export class GroupService extends BaseService {
   }
 
   public leaveEvent(eventId: string) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
     const body = {
       query: `mutation($eventId: ID!) {
       leaveEvent(eventId: $eventId) {
@@ -157,7 +155,31 @@ export class GroupService extends BaseService {
         eventId: eventId
       }
     };
-    return this.postGraphql(body);
+    return this.postGraphql(body)
+      .pipe(this.retryRated());
+  }
+
+  public deleteEvent(eventId: string) {
+    const body = {
+      query: `mutation($eventId: ID!) {
+      deleteEvent(eventId: $eventId) {
+        joined
+      }
+    }`, variables: {
+        eventId
+      }
+    };
+    return this.postGraphql(body)
+      .pipe(this.retryRated())
+      .pipe(tap(response => {
+        const group = this.group.getValue();
+        for (let i = 0; i < group.events.length; i++) {
+          if (group.events[i].id === eventId) {
+            group.events.splice(i, 1);
+          }
+        }
+        this.group.next(group);
+      }));
   }
 
   public changeProfilePicture(file: any, id: number) {

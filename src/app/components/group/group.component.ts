@@ -174,6 +174,10 @@ export class GroupComponent implements OnInit {
     });
   }
 
+  public deleteEvent(event: Event) {
+    this.groupService.deleteEvent(event.id).subscribe();
+  }
+
   public showUserProfile(user: User) {
     this.router.navigate(['profile/' + user.userID]);
   }
