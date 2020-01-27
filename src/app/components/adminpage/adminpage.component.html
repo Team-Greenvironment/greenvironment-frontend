@@ -1,0 +1,46 @@
+<div id="adminpage">
+  <h1>Administration</h1>
+  <div class="grid">
+    <div class="column">
+      <div class="column-header">
+        <h2>Levels</h2>
+      </div>
+    </div>
+    <div class="column">
+      <div class="column-header">
+        <h2>Activities</h2>
+      </div>
+      <div>
+        <mat-form-field class="input">
+          <input matInput type="text" placeholder="Activity name">
+        </mat-form-field>
+        <mat-table [dataSource]="activitySource" matSort>
+          <ng-container matColumnDef="points">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> points</th>
+            <td mat-cell *matCellDef="let action"> {{action.points}} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> action</th>
+            <td mat-cell *matCellDef="let action"> {{action.name}} </td>
+          </ng-container>
+
+          <!-- description Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> description</th>
+            <td mat-cell *matCellDef="let action"> {{action.description}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedActivityColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedActivityColumns;"></tr>
+        </mat-table>
+      </div>
+    </div>
+    <div class="column">
+      <div class="column-header">
+        <h2>Blacklist</h2>
+      </div>
+    </div>
+  </div>
+</div>
