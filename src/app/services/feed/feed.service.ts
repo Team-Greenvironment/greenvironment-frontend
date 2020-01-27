@@ -9,6 +9,7 @@ import {tap} from 'rxjs/operators';
 import {BaseService} from '../base.service';
 import {formatDate} from '@angular/common';
 import {IFileUploadResult} from '../../models/interfaces/IFileUploadResult';
+import { IErrorResponse } from 'src/app/models/interfaces/IErrorResponse';
 
 const createPostGqlQuery = `mutation($content: String!, $type: PostType) {
   createPost(content: $content, type: $type) {
@@ -98,6 +99,11 @@ export enum Sort {
   NEW = 'NEW',
   TOP = 'TOP',
 }
+export class PostingState {
+  posting = false;
+  errorOccured = false;
+  errorMessage = 'An error occured.';
+}
 
 @Injectable({
   providedIn: 'root'
@@ -109,7 +115,7 @@ export class FeedService extends BaseService {
   }
 
   public postsAvailable = new BehaviorSubject<boolean>(true);
-  public posting = new BehaviorSubject<boolean>(false);
+  public postingState = new BehaviorSubject<PostingState>(new PostingState());
   public posts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
   private activePostList: Sort = Sort.NEW;
   private offset = 0;
@@ -187,7 +193,7 @@ export class FeedService extends BaseService {
    * @param file - a file that is being uploaded with the post
    */
   private createPostRequest(body: { variables: any; query: string }, file?: File) {
-    this.posting.next(true);
+    this.setPostingState(true);
     if (file) {
       return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
@@ -200,32 +206,58 @@ export class FeedService extends BaseService {
               post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
               updatedPosts.unshift(post);
               this.posts.next(updatedPosts);
-              this.posting.next(false);
+              this.setPostingState(false);
             }
           } else {
             console.error(result.error);
-            this.posting.next(false);
+            this.setPostingError(result.error);
             this.deletePost(post.id).subscribe();
           }
           }, error => {
             console.error(error);
-            this.posting.next(false);
+            this.setPostingError(error);
             this.deletePost(post.id).subscribe();
           });
+        }, (error: IErrorResponse) => {
+          this.setPostingError(error.error.errors[0].message);
         }
       ));
     } else if (!file) {
       return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
-        this.posting.next(false);
+        this.setPostingState(false);
         const updatedPosts = this.posts.getValue();
         if (this.activePostList === Sort.NEW) {
           const post = this.constructPost(response);
           updatedPosts.unshift(post);
           this.posts.next(updatedPosts);
         }
+      }, (error: IErrorResponse) => {
+        console.log(error);
+        this.setPostingError(error.error.errors[0].message);
       }));
     }
+  }
+
+  setPostingState(b: boolean) {
+    if (b) {
+      this.postingState.getValue().posting = true;
+      this.postingState.getValue().errorOccured = false;
+      this.postingState.getValue().errorMessage = '';
+      this.postingState.next(this.postingState.getValue());
+    } else {
+      this.postingState.getValue().posting = false;
+      this.postingState.getValue().errorOccured = false;
+      this.postingState.getValue().errorMessage = '';
+      this.postingState.next(this.postingState.getValue());
+    }
+  }
+
+  setPostingError(error: string) {
+    this.postingState.getValue().posting = false;
+    this.postingState.getValue().errorOccured = true;
+    this.postingState.getValue().errorMessage = error;
+    this.postingState.next(this.postingState.getValue());
   }
 
   /**
