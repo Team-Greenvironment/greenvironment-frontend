@@ -53,7 +53,7 @@ export class ActivityService extends BaseService {
   }
 
   public getLevels() {
-    if (this.activitylist.getValue().Actions.length < 1) {
+    if (this.levelList.getValue().levels.length < 1) {
       this.http.post(environment.graphQLUrl, ActivityService.buildGetLevelsBody(), {headers: this.headers})
       .pipe(this.retryRated())
       .subscribe(result => {
