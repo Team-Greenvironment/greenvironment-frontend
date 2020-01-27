@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {Post} from 'src/app/models/post';
-import {FeedService, Sort} from 'src/app/services/feed/feed.service';
+import {FeedService, Sort, PostingState} from 'src/app/services/feed/feed.service';
 import {Activitylist} from 'src/app/models/activity';
 import {DatasharingService} from '../../services/datasharing.service';
 import {ActivityService} from 'src/app/services/activity/activity.service';
@@ -63,10 +63,14 @@ export class FeedComponent implements OnInit {
     this.feedService.postsAvailable.subscribe(available => {
       this.loadingMostLiked = this.loadingNew = available;
     });
-    this.feedService.posting.subscribe(posting => {
+    this.feedService.postingState.subscribe(postingState => {
       const temp = this.posting;
-      this.posting = posting;
-      if (temp !== this.posting && !this.posting) {
+
+      this.posting = postingState.posting;
+      this.errorOccurred = postingState.errorOccured;
+      this.errorMessage = postingState.errorMessage;
+
+      if (!this.posting  && this.posting !== temp && !postingState.errorOccured) {
         this.resetPostInput();
       }
     });
@@ -79,22 +83,9 @@ export class FeedComponent implements OnInit {
    */
   createPost(postElement, activityId: string) {
     if (postElement && activityId && this.checked) {
-      this.posting = true;
-      this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe(() => {
-      }, (error: IErrorResponse) => {
-        this.errorOccurred = true;
-        this.posting = false;
-        this.errorMessage = error.error.errors[0].message;
-      });
+      this.feedService.createPostActivity(postElement.value, activityId, this.file).subscribe();
     } else if (postElement) {
-      this.posting = true;
-      this.feedService.createPost(postElement.value, this.file).subscribe((result) => {
-      }, (error: IErrorResponse) => {
-        console.log(error);
-        this.posting = false;
-        this.errorOccurred = true;
-        this.errorMessage = error.error.errors[0].message;
-      });
+      this.feedService.createPost(postElement.value, this.file).subscribe();
     }
   }
 
