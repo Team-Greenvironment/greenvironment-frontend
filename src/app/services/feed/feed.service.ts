@@ -1,14 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Post} from 'src/app/models/post';
-import {Author} from 'src/app/models/author';
-import {environment} from 'src/environments/environment';
-import {Activity} from 'src/app/models/activity';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {BaseService} from '../base.service';
-import {formatDate} from '@angular/common';
-import {IFileUploadResult} from '../../models/interfaces/IFileUploadResult';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Post } from 'src/app/models/post';
+import { Author } from 'src/app/models/author';
+import { environment } from 'src/environments/environment';
+import { Activity } from 'src/app/models/activity';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { BaseService } from '../base.service';
+import { formatDate } from '@angular/common';
+import { IFileUploadResult } from '../../models/interfaces/IFileUploadResult';
+import { IErrorResponse } from 'src/app/models/interfaces/IErrorResponse';
 
 const createPostGqlQuery = `mutation($content: String!, $type: PostType) {
   createPost(content: $content, type: $type) {
@@ -70,6 +71,12 @@ const downvotePostGqlQuery = `mutation($postId: ID!) {
   }
 }`;
 
+const reportPostGqlQuery = `mutation($reasonId: ID!, $postId: ID!) {
+  reportPost(postId: $postId, reasonId: $reasonId) {
+    id
+  }
+}`;
+
 const getPostsGqlQuery = `query($first: Int, $offset: Int, $sort: SortType){
   getPosts (first: $first, offset: $offset, sort: $sort) {
     id,
@@ -98,6 +105,11 @@ export enum Sort {
   NEW = 'NEW',
   TOP = 'TOP',
 }
+export class PostingState {
+  posting = false;
+  errorOccured = false;
+  errorMessage = 'An error occured.';
+}
 
 @Injectable({
   providedIn: 'root'
@@ -109,7 +121,7 @@ export class FeedService extends BaseService {
   }
 
   public postsAvailable = new BehaviorSubject<boolean>(true);
-  public posting = new BehaviorSubject<boolean>(false);
+  public postingState = new BehaviorSubject<PostingState>(new PostingState());
   public posts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
   private activePostList: Sort = Sort.NEW;
   private offset = 0;
@@ -187,39 +199,71 @@ export class FeedService extends BaseService {
    * @param file - a file that is being uploaded with the post
    */
   private createPostRequest(body: { variables: any; query: string }, file?: File) {
-    this.posting.next(true);
+    this.setPostingState(true);
     if (file) {
       return this.postGraphql(body, null, 0)
-      .pipe(tap(response => {
-        const updatedPosts = this.posts.getValue();
-        const post = this.constructPost(response);
-        this.uploadPostImage(post.id, file).subscribe((result) => {
-          if (this.activePostList === Sort.NEW) {
-            post.mediaUrl = result.fileName;
-            post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
-            updatedPosts.unshift(post);
-            this.posts.next(updatedPosts);
-            this.posting.next(false);
-          }
+        .pipe(tap(response => {
+          const updatedPosts = this.posts.getValue();
+          const post = this.constructPost(response);
+          this.uploadPostImage(post.id, file).subscribe((result) => {
+            if (result.success) {
+              if (this.activePostList === Sort.NEW) {
+                post.mediaUrl = result.fileName;
+                post.mediaType = result.fileName.endsWith('.png') ? 'IMAGE' : 'VIDEO';
+                updatedPosts.unshift(post);
+                this.posts.next(updatedPosts);
+                this.setPostingState(false);
+              }
+            } else {
+              console.error(result.error);
+              this.setPostingError(result.error);
+              this.deletePost(post.id).subscribe();
+            }
           }, error => {
             console.error(error);
-            this.posting.next(false);
-            this.deletePost(post.id);
+            this.setPostingError(error);
+            this.deletePost(post.id).subscribe();
           });
+        }, (error: IErrorResponse) => {
+          this.setPostingError(error.error.errors[0].message);
         }
-      ));
+        ));
     } else if (!file) {
       return this.postGraphql(body, null, 0)
-      .pipe(tap(response => {
-        this.posting.next(false);
-        const updatedPosts = this.posts.getValue();
-        if (this.activePostList === Sort.NEW) {
-          const post = this.constructPost(response);
-          updatedPosts.unshift(post);
-          this.posts.next(updatedPosts);
-        }
-      }));
+        .pipe(tap(response => {
+          this.setPostingState(false);
+          const updatedPosts = this.posts.getValue();
+          if (this.activePostList === Sort.NEW) {
+            const post = this.constructPost(response);
+            updatedPosts.unshift(post);
+            this.posts.next(updatedPosts);
+          }
+        }, (error: IErrorResponse) => {
+          console.log(error);
+          this.setPostingError(error.error.errors[0].message);
+        }));
     }
+  }
+
+  setPostingState(b: boolean) {
+    if (b) {
+      this.postingState.getValue().posting = true;
+      this.postingState.getValue().errorOccured = false;
+      this.postingState.getValue().errorMessage = '';
+      this.postingState.next(this.postingState.getValue());
+    } else {
+      this.postingState.getValue().posting = false;
+      this.postingState.getValue().errorOccured = false;
+      this.postingState.getValue().errorMessage = '';
+      this.postingState.next(this.postingState.getValue());
+    }
+  }
+
+  setPostingError(error: string) {
+    this.postingState.getValue().posting = false;
+    this.postingState.getValue().errorOccured = true;
+    this.postingState.getValue().errorMessage = error;
+    this.postingState.next(this.postingState.getValue());
   }
 
   /**
@@ -263,6 +307,22 @@ export class FeedService extends BaseService {
   }
 
   /**
+   * reports a post
+   * @param postId
+   * @param reasonId
+   */
+  public reportPost(reasonId: number, postId: number): any {
+    const body = {
+      query: reportPostGqlQuery, variables: {
+        postId,
+        reasonId
+      }
+    };
+
+    return this.postGraphql(body);
+  }
+
+  /**
    * Deletes a post
    * @param pPostID
    */
@@ -274,7 +334,7 @@ export class FeedService extends BaseService {
         postId: pPostID
       }
     };
-    return this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+    return this.http.post(environment.graphQLUrl, body, { headers: this.headers })
       .pipe(this.retryRated());
   }
 
@@ -287,7 +347,7 @@ export class FeedService extends BaseService {
     this.postsAvailable.next(true);
     this.posts.next([]);
     return this.http.post(environment.graphQLUrl, FeedService.buildGetPostBody(sort, 0),
-      {headers: this.headers})
+      { headers: this.headers })
       .pipe(this.retryRated())
       .subscribe(response => {
         this.posts.next(this.constructAllPosts(response.data.getPosts));
@@ -301,7 +361,7 @@ export class FeedService extends BaseService {
   public getNextPosts() {
     this.offset += this.offsetStep;
     const body = FeedService.buildGetPostBody(this.activePostList, this.offset);
-    this.http.post(environment.graphQLUrl, body, {headers: this.headers})
+    this.http.post(environment.graphQLUrl, body, { headers: this.headers })
       .pipe(this.retryRated())
       .subscribe(response => {
         const posts = this.constructAllPosts(response.data.getPosts);

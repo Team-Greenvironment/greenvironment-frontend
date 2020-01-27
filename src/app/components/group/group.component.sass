@@ -107,12 +107,62 @@ $mat-card-header-size: 100px !default
     margin-top: 0.5em
     margin-bottom: 0.5em
 
-  .profile-picture
-    background-image: url(https://material.angular.io/assets/img/examples/shiba1.jpg)
-    background-size: cover
-
   .profile-picture:hover
     cursor: pointer
+
+$mat-card-header-size-small: 54px !default
+.profile-picture-small
+  height: $mat-card-header-size-small
+  width: $mat-card-header-size-small
+  border-radius: 50%
+  flex-shrink: 0
+  background-size: cover
+  transition-duration: 0.5s
+  z-index: 10
+  object-fit: cover
+
+.member-card
+  box-sizing: border-box
+  width: 100%
+  margin-top: 0.5em
+  outline: none
+  user-select: none
+
+  ::ng-deep .mat-card-header-text
+    width: 1000%
+    margin: auto 0 auto 24px
+
+  .mat-card-subtitle
+    margin: 0
+    word-break: break-all
+
+  .mat-card-title
+    margin: 0
+    word-break: break-all
+
+  .request-button
+    margin-top: 0.5em
+    margin-bottom: 0.5em
+
+  .pointer:hover
+    cursor: pointer
+
+  .icon-box
+    text-align: right
+    width: 100%
+
+  $pic-size: 40px !default
+  .card-picture
+    cursor: pointer
+    height: $pic-size
+    width: $pic-size
+    border-radius: 50%
+    flex-shrink: 0
+    background-size: cover
+    transition-duration: 0.5s
+    z-index: 10
+    object-fit: cover
+
 
 .pointer
   cursor: pointer

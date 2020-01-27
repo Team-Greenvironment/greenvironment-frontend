@@ -28,6 +28,14 @@
           </button>
         </mat-form-field>
       </div>
+      <p class="check-box">
+        <mat-checkbox color="primary" [(ngModel)]="ageCheck" >I am older than 16 years.
+        </mat-checkbox>
+      </p>
+      <p class="check-box">
+        <mat-checkbox color="primary" [(ngModel)]="imprintCheck">I've read the <a routerLink="/imprint">privacy policy</a>.
+        </mat-checkbox>
+      </p>
       <button mat-raised-button color="primary"
               (click)="onClickSubmit(username.value,email.value,password.value, repeatpassword.value)">Register
       </button>

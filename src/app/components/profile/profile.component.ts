@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {User} from 'src/app/models/user';
-import {Levellist} from 'src/app/models/levellist';
+import {LevelList} from 'src/app/models/levellist';
 import {RequestService} from 'src/app/services/request/request.service';
 import {DatasharingService} from '../../services/datasharing.service';
 import {ProfileService} from 'src/app/services/profile/profile.service';
@@ -18,7 +18,7 @@ import {Lightbox} from 'ngx-lightbox';
   styleUrls: ['./profile.component.sass']
 })
 export class ProfileComponent implements OnInit {
-  levellist: Levellist = new Levellist();
+  levellist: LevelList = new LevelList();
   ownProfile = false;
   userProfile: User = new User();
   self: User;

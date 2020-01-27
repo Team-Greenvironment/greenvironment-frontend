@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {environment} from 'src/environments/environment';
-import {User} from 'src/app/models/user';
-import {Event} from 'src/app/models/event';
-import {BehaviorSubject} from 'rxjs';
-import {Group} from 'src/app/models/group';
-import {tap} from 'rxjs/operators';
-import {BaseService} from '../base.service';
-import {IFileUploadResult} from '../../models/interfaces/IFileUploadResult';
-import {DatasharingService} from 'src/app/services/datasharing.service';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { User } from 'src/app/models/user';
+import { Event } from 'src/app/models/event';
+import { BehaviorSubject } from 'rxjs';
+import { Group } from 'src/app/models/group';
+import { tap } from 'rxjs/operators';
+import { BaseService } from '../base.service';
+import { IFileUploadResult } from '../../models/interfaces/IFileUploadResult';
+import { DatasharingService } from 'src/app/services/datasharing.service';
 
 const getGroupGraphqlQuery = `query($groupId: ID!) {
   getGroup(groupId:$groupId){
@@ -20,7 +20,7 @@ const getGroupGraphqlQuery = `query($groupId: ID!) {
       creator{id name handle}
       admins{id name handle}
       members{id name handle profilePicture}
-      events{id name dueDate joined}
+      events{id name dueDate joined deletable}
   }
 }`;
 
@@ -40,14 +40,14 @@ export class GroupService extends BaseService {
    */
   private static buildGetGroupBody(id: string): any {
     return {
-      query: getGroupGraphqlQuery, variables: {groupId: id}
+      query: getGroupGraphqlQuery, variables: { groupId: id }
     };
   }
 
   public getGroupData(groupId: string) {
     const url = environment.graphQLUrl;
 
-    return this.http.post(url, GroupService.buildGetGroupBody(groupId), {headers: this.headers})
+    return this.http.post(url, GroupService.buildGetGroupBody(groupId), { headers: this.headers })
       .pipe(this.retryRated())
       .pipe(tap(response => {
         const group_ = new Group();
@@ -64,6 +64,7 @@ export class GroupService extends BaseService {
           name
           dueDate
           joined
+          deletable
         }
       }`, variables: {
         name: name,
@@ -73,13 +74,58 @@ export class GroupService extends BaseService {
     };
 
     return this.postGraphql(body, null, 0)
-    .pipe(tap(response => {
-      const event = new Event();
-      event.assignFromResponse(response.data.createEvent);
-      const group = this.group.getValue();
-      group.events.push(event);
-      this.group.next(group);
-    }));
+      .pipe(tap(response => {
+        const event = new Event();
+        event.assignFromResponse(response.data.createEvent);
+        const group = this.group.getValue();
+        group.events.push(event);
+        this.group.next(group);
+      }));
+  }
+
+
+  public addGroupAdmin(userId: string, groupId: string) {
+    const body = {
+      query: `mutation($groupId: ID!, $userId: ID!) {
+          addGroupAdmin(groupId: $groupId, userId: $userId) {
+            admins{id name handle}
+          }
+      }`, variables: {
+        userId,
+        groupId
+      }
+    };
+    const group = this.group.getValue();
+    group.admins = [];
+    this.group.next(group);
+    return this.postGraphql(body, null, 0)
+      .pipe(tap(response => {
+        const group = this.group.getValue();
+        group.updateAdmins(response.data.addGroupAdmin.admins);
+        this.group.next(group);
+      }));
+  }
+
+  public removeGroupAdmin(userId: string, groupId: string) {
+    const body = {
+      query: `mutation($groupId: ID!, $userId: ID!) {
+          removeGroupAdmin(groupId: $groupId, userId: $userId) {
+            admins{id name handle}
+          }
+      }`, variables: {
+        userId,
+        groupId
+      }
+    };
+        const group = this.group.getValue();
+        group.admins = [];
+        this.group.next(group);
+    return this.postGraphql(body, null, 0)
+      .pipe(tap(response => {
+        const group = this.group.getValue();
+        group.updateAdmins(response.data.removeGroupAdmin.admins);
+        this.group.next(group);
+      }));
   }
 
   public joinEvent(eventId: string) {
@@ -97,8 +143,6 @@ export class GroupService extends BaseService {
   }
 
   public leaveEvent(eventId: string) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
     const body = {
       query: `mutation($eventId: ID!) {
       leaveEvent(eventId: $eventId) {
@@ -108,7 +152,29 @@ export class GroupService extends BaseService {
         eventId: eventId
       }
     };
-    return this.postGraphql(body);
+    return this.postGraphql(body)
+      .pipe(this.retryRated());
+  }
+
+  public deleteEvent(eventId: string) {
+    const body = {
+      query: `mutation($eventId: ID!) {
+      deleteEvent(eventId: $eventId)
+    }`, variables: {
+        eventId
+      }
+    };
+    return this.postGraphql(body)
+      .pipe(this.retryRated())
+      .pipe(tap(response => {
+        const group = this.group.getValue();
+        for (let i = 0; i < group.events.length; i++) {
+          if (group.events[i].id === eventId) {
+            group.events.splice(i, 1);
+          }
+        }
+        this.group.next(group);
+      }));
   }
 
   public changeProfilePicture(file: any, id: number) {
@@ -127,9 +193,9 @@ export class GroupService extends BaseService {
       }
     };
     return this.postGraphql(body)
-    .pipe(tap(response => {
-      this.data.deleteGroup(groupId);
-    }));
+      .pipe(tap(response => {
+        this.data.deleteGroup(groupId);
+      }));
   }
 
   public leaveGroup(groupId: number) {
@@ -141,8 +207,8 @@ export class GroupService extends BaseService {
       }
     };
     return this.postGraphql(body)
-    .pipe(tap(response => {
-      this.data.deleteGroup(groupId);
-    }));
+      .pipe(tap(response => {
+        this.data.deleteGroup(groupId);
+      }));
   }
 }
