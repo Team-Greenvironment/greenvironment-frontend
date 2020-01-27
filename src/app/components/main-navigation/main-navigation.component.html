@@ -125,7 +125,13 @@
         <div [hidden]="loggedIn">
           <button mat-menu-item routerLink="/login">
             <mat-icon>exit_to_app</mat-icon>
-            <span>login</span>
+            <span>Login</span>
+          </button>
+        </div>
+        <div [hidden]="!user.isAdmin">
+          <button mat-menu-item routerLink="/admin">
+            <mat-icon>settings</mat-icon>
+            <span>Administration</span>
           </button>
         </div>
       </mat-menu>

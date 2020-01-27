@@ -18,6 +18,7 @@ export class User {
   joinedAt: string;
   friendCount: number;
   groupCount: number;
+  isAdmin: boolean = false;
   isGroupAdmin: boolean;
 
   darkmode = false;
@@ -79,6 +80,9 @@ export class User {
     if (userDataResponse.receivedRequests) {
       this.receivedRequests = userDataResponse.receivedRequests
         .map(request => new FriendRequest(request.id, request.sender.id, request.sender.handle, request.sender.name));
+    }
+    if (userDataResponse.isAdmin) {
+      this.isAdmin = true;
     }
     return this;
   }

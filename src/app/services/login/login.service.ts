@@ -47,6 +47,7 @@ const graphqlQuery = `mutation($email: String!, $pwHash: String!) {
       id
     },
     settings
+    isAdmin
   }
 }`;
 
