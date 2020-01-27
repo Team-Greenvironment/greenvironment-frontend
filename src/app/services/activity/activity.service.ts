@@ -1,10 +1,11 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
-import {Activity, Activitylist} from 'src/app/models/activity';
-import {Level, LevelList} from 'src/app/models/levellist';
-import {environment} from 'src/environments/environment';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {BaseService} from '../base.service';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Activity, Activitylist } from 'src/app/models/activity';
+import { Level, LevelList } from 'src/app/models/levellist';
+import { ReportReason } from 'src/app/models/reportReason';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BaseService } from '../base.service';
 
 
 @Injectable({
@@ -14,6 +15,7 @@ export class ActivityService extends BaseService {
 
   public activitylist = new BehaviorSubject<Activitylist>(new Activitylist());
   public levelList = new BehaviorSubject<LevelList>(new LevelList());
+  public reportReasonList = new BehaviorSubject<ReportReason[]>(new Array());
 
   constructor(http: HttpClient) {
     super(http);
@@ -37,29 +39,49 @@ export class ActivityService extends BaseService {
     return body;
   }
 
+  private static buildGetReportReasonsBody(): any {
+    const body = {
+      query: `query{getReportReasons {
+        id name description
+      }}`, variables: {}
+    };
+    return body;
+  }
+
   changeUserInfo(pActivitylist: Activitylist) {
     this.activitylist.next(pActivitylist);
   }
 
   public getActivities() {
     if (this.activitylist.getValue().Actions.length < 1) {
-      this.http.post(environment.graphQLUrl, ActivityService.buildGetActivityBody(), {headers: this.headers})
-      .pipe(this.retryRated())
-      .subscribe(result => {
-        // push onto subject
-        this.activitylist.next(this.renderActivity(result));
-      });
+      this.http.post(environment.graphQLUrl, ActivityService.buildGetActivityBody(), { headers: this.headers })
+        .pipe(this.retryRated())
+        .subscribe(result => {
+          // push onto subject
+          this.activitylist.next(this.renderActivity(result));
+        });
     }
   }
 
   public getLevels() {
     if (this.levelList.getValue().levels.length < 1) {
-      this.http.post(environment.graphQLUrl, ActivityService.buildGetLevelsBody(), {headers: this.headers})
-      .pipe(this.retryRated())
-      .subscribe(result => {
-        // push onto subject
-        this.levelList.next(this.renderLevels(result));
-      });
+      this.http.post(environment.graphQLUrl, ActivityService.buildGetLevelsBody(), { headers: this.headers })
+        .pipe(this.retryRated())
+        .subscribe(result => {
+          // push onto subject
+          this.levelList.next(this.renderLevels(result));
+        });
+    }
+  }
+
+  public getReportReasons() {
+    if (this.reportReasonList.getValue().length < 1) {
+      this.http.post(environment.graphQLUrl, ActivityService.buildGetReportReasonsBody(), { headers: this.headers })
+        .pipe(this.retryRated())
+        .subscribe(result => {
+          // push onto subject
+          this.reportReasonList.next(this.renderReportReasons(result));
+        });
     }
   }
 
@@ -85,6 +107,17 @@ export class ActivityService extends BaseService {
         level.points));
     }
     return levelList;
+  }
+
+  public renderReportReasons(response: any): ReportReason[] {
+    const reportReasons: ReportReason[] = new Array();
+    for (const reason of response.data.getReportReasons) {
+      reportReasons.push(new ReportReason(
+        reason.id,
+        reason.name,
+        reason.description));
+    }
+    return reportReasons;
   }
 }
 

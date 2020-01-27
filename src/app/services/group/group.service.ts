@@ -95,6 +95,9 @@ export class GroupService extends BaseService {
         groupId
       }
     };
+    const group = this.group.getValue();
+    group.admins = [];
+    this.group.next(group);
     return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
         const group = this.group.getValue();

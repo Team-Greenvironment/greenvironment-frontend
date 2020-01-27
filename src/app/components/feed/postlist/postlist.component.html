@@ -1,15 +1,22 @@
 <mat-card class="post" *ngFor="let post of childPostList" [class.selected]="post === selectedPost" tabindex="0">
   <mat-card-header>
     <div mat-card-avatar (click)="showUserProfile(this.post)">
-      <img class="profile-picture" [src]="post.author.profilePicture"/>
+      <img class="profile-picture" [src]="post.author.profilePicture" />
     </div>
     <div id="button-box">
-      <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button" *ngIf="post.deletable">
+      <button mat-icon-button [matMenuTriggerFor]="menu" id="menu-button" *ngIf="loggedIn">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="deletePost(post)">
+        <button *ngIf="post.deletable" mat-menu-item (click)="deletePost(post)">
           <span>delete post</span>
+        </button>
+        <button mat-menu-item [matMenuTriggerFor]="reportMenu">report</button>
+      </mat-menu>
+      <mat-menu #reportMenu="matMenu">
+        <button *ngFor="let reason of reportReasons" mat-menu-item [matTooltip]="reason.description"
+          matTooltipShowDelay="200" (click)="reportPost(reason, post)">
+          {{reason.name}}
         </button>
       </mat-menu>
     </div>
@@ -22,10 +29,11 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <mat-spinner *ngIf="post.mediaLoading && post.mediaType === 'IMAGE'" style="margin:0 auto; margin-top: 2em;" diameter="50"></mat-spinner>
+    <mat-spinner *ngIf="post.mediaLoading && post.mediaType === 'IMAGE'" style="margin:0 auto; margin-top: 2em;"
+      diameter="50"></mat-spinner>
     <div class="postMedia">
       <div [hidden]="post.mediaLoading">
-        <img *ngIf="post.mediaType === 'IMAGE'" [src]="post.mediaUrl" (load)="onLoad(this.post)" alt="post image"/>
+        <img *ngIf="post.mediaType === 'IMAGE'" [src]="post.mediaUrl" (load)="onLoad(this.post)" alt="post image" />
       </div>
       <video *ngIf="post.mediaType === 'VIDEO'" controls>
         <source [src]="post.mediaUrl" type="video/webm">
@@ -41,13 +49,17 @@
     </div>
     <div class="postVoteButtons">
       <button mat-button (click)="voteUp(post)" matTooltip="vote up" matTooltipShowDelay="500">
-        <mat-icon class="voteButton voted" aria-hidden="false" color="primary" *ngIf="post.userVote == 'UPVOTE'">thumb_up</mat-icon>
-        <mat-icon class="voteButton" aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'DOWNVOTE'">thumb_up</mat-icon>
+        <mat-icon class="voteButton voted" aria-hidden="false" color="primary" *ngIf="post.userVote == 'UPVOTE'">
+          thumb_up</mat-icon>
+        <mat-icon class="voteButton" aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'DOWNVOTE'">thumb_up
+        </mat-icon>
       </button>
       <div class="voteCount">{{post.upvotes}}</div>
       <button mat-button (click)="voteDown(post)" matTooltip="vote down" matTooltipShowDelay="500">
-        <mat-icon class="voteButton voted" aria-hidden="false" color="primary" *ngIf="post.userVote == 'DOWNVOTE'">thumb_down</mat-icon>
-        <mat-icon class="voteButton" aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'UPVOTE'">thumb_down</mat-icon>
+        <mat-icon class="voteButton voted" aria-hidden="false" color="primary" *ngIf="post.userVote == 'DOWNVOTE'">
+          thumb_down</mat-icon>
+        <mat-icon class="voteButton" aria-hidden="false" *ngIf="!post.userVote || post.userVote == 'UPVOTE'">thumb_down
+        </mat-icon>
       </button>
       <div class="voteCount">{{post.downvotes}}</div>
     </div>

@@ -1,7 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Post} from 'src/app/models/post';
-import {FeedService} from 'src/app/services/feed/feed.service';
-import {Router} from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Post } from 'src/app/models/post';
+import { FeedService } from 'src/app/services/feed/feed.service';
+import { Router } from '@angular/router';
+import { DatasharingService } from 'src/app/services/datasharing.service';
+import { ActivityService } from 'src/app/services/activity/activity.service';
+import { ReportReason } from 'src/app/models/reportReason';
 
 @Component({
   selector: 'feed-postlist',
@@ -13,11 +16,23 @@ export class PostlistComponent implements OnInit {
   @Input() childPostList: Post[];
   @Output() voteEvent = new EventEmitter<boolean>();
   selectedPost: Post;
+  loggedIn = false;
+  reportReasons: ReportReason[] = new Array();
 
-  constructor(private feedService: FeedService, private router: Router) {
+  constructor(private feedService: FeedService,
+    private data: DatasharingService,
+    private router: Router,
+    private activityService: ActivityService) {
   }
 
   ngOnInit() {
+    this.data.currentUser.subscribe(user => {
+      this.loggedIn = user.loggedIn;
+    });
+    this.activityService.getReportReasons();
+    this.activityService.reportReasonList.subscribe(response => {
+      this.reportReasons = response;
+    });
   }
 
   voteUp(pPost: Post) {
@@ -47,6 +62,10 @@ export class PostlistComponent implements OnInit {
         }
       }
     });
+  }
+
+  reportPost(reason: ReportReason, post: Post) {
+    this.feedService.reportPost(reason.id, post.id).subscribe();
   }
 
   onLoad(post: Post) {
