@@ -209,11 +209,15 @@ export class GroupComponent implements OnInit {
   }
 
   addGroupAdmin(user: User) {
-    this.groupService.addGroupAdmin(user.userID.toString(), this.id).subscribe();
+    this.groupService.addGroupAdmin(user.userID.toString(), this.id).subscribe(response => {
+      user.isGroupAdmin = true;
+    });
   }
 
   removeGroupAdmin(user: User) {
-    this.groupService.removeGroupAdmin(user.userID.toString(), this.id).subscribe();
+    this.groupService.removeGroupAdmin(user.userID.toString(), this.id).subscribe(response => {
+      user.isGroupAdmin = false;
+    });
   }
 
   openPfpLightbox() {
