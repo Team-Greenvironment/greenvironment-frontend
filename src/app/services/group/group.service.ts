@@ -98,7 +98,7 @@ export class GroupService extends BaseService {
     return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
         const group = this.group.getValue();
-        group.updateAdmins(response.data.addGroupAdmin);
+        group.updateAdmins(response.data.addGroupAdmin.admins);
         this.group.next(group);
       }));
   }
@@ -114,10 +114,13 @@ export class GroupService extends BaseService {
         groupId
       }
     };
+        const group = this.group.getValue();
+        group.admins = [];
+        this.group.next(group);
     return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
         const group = this.group.getValue();
-        group.updateAdmins(response.data.removeGroupAdmin);
+        group.updateAdmins(response.data.removeGroupAdmin.admins);
         this.group.next(group);
       }));
   }
