@@ -115,7 +115,7 @@ export class GroupComponent implements OnInit {
     this.groupService.group.subscribe(response => {
       if (response) {
         if (response.id) {
-          if(response.id.toString() === this.id){
+          if (response.id.toString() === this.id) {
             this.loading = false;
           }
         }

@@ -18,7 +18,7 @@ export class User {
   joinedAt: string;
   friendCount: number;
   groupCount: number;
-  isAdmin: boolean = false;
+  isAdmin = false;
   isGroupAdmin: boolean;
 
   darkmode = false;
