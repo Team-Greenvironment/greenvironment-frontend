@@ -106,34 +106,44 @@ export class GroupComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.id = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
+    this.loading = true;
     this.data.currentUser.subscribe(user => {
       this.self = user;
+      this.checkSelfStats();
     });
     this.groupService.getGroupData(this.id).subscribe();
     this.groupService.group.subscribe(response => {
       if (response) {
-        this.isAdmin = false;
-        this.groupProfile = response;
-        // tslint:disable-next-line:max-line-length
-        this.groupProfile.allowedToJoinGroup = this.requestService.isAllowedToJoinGroup(this.groupProfile.id, this.self);
-        for (const admin of this.groupProfile.admins) {
-          if (admin.userID === this.self.userID) {
-            this.isAdmin = true;
+        if (response.id) {
+          if(response.id.toString() === this.id){
+            this.loading = false;
           }
         }
-        if (this.groupProfile.creator.userID === this.self.userID) {
-          this.isCreator = true;
-        } else {
-          this.isCreator = false;
-        }
+        this.groupProfile = response;
+        this.checkSelfStats();
         for (const member of this.groupProfile.members) {
           member.allowedToSendRequest = this.requestService.isAllowedToSendRequest(member.userID, this.self);
         }
       } else {
         this.groupNotFound = true;
       }
-      this.loading = false;
     });
+  }
+
+  checkSelfStats() {
+    this.isAdmin = false;
+    // tslint:disable-next-line:max-line-length
+    this.groupProfile.allowedToJoinGroup = this.requestService.isAllowedToJoinGroup(this.groupProfile.id, this.self);
+    for (const admin of this.groupProfile.admins) {
+      if (admin.userID === this.self.userID) {
+        this.isAdmin = true;
+      }
+    }
+    if (this.groupProfile.creator.userID === this.self.userID) {
+      this.isCreator = true;
+    } else {
+      this.isCreator = false;
+    }
   }
 
   openDialog(): void {
