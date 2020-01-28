@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Levellist} from '../../models/levellist';
+import {LevelList} from '../../models/levellist';
 import {ActivityService} from '../../services/activity/activity.service';
 import {Activitylist} from '../../models/activity';
 import {MatTableDataSource} from '@angular/material/table';

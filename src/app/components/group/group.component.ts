@@ -111,8 +111,8 @@ export class GroupComponent implements OnInit {
     });
     this.groupService.getGroupData(this.id).subscribe();
     this.groupService.group.subscribe(response => {
-      this.isAdmin = false;
       if (response) {
+        this.isAdmin = false;
         this.groupProfile = response;
         // tslint:disable-next-line:max-line-length
         this.groupProfile.allowedToJoinGroup = this.requestService.isAllowedToJoinGroup(this.groupProfile.id, this.self);
