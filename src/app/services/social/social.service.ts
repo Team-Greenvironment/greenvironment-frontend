@@ -4,6 +4,9 @@ import {HttpClient} from '@angular/common/http';
 import {BaseService} from '../base.service';
 import { tap } from 'rxjs/internal/operators/tap';
 import {DatasharingService} from 'src/app/services/datasharing.service';
+import { group } from '@angular/animations';
+import { Group } from 'src/app/models/group';
+import { GroupInfo } from 'src/app/models/groupinfo';
 
 const graphqlCreateGroupQuery = `mutation($name: String!) {
   createGroup(name: $name) {
@@ -44,7 +47,10 @@ export class SocialService extends BaseService {
     const body = SocialService.buildGroupCreateBody(name);
     return this.postGraphql(body, null,  0)
       .pipe(tap(response => {
-        this.data.addGroupToUser(response.data.createGroup);
+        let group_ = new Group();
+        group_ = response.data.createGroup;
+        group_.picture = group_.buildPictureUrl(group_.picture);
+        this.data.addGroupToUser(group_);
       }));
   }
 
