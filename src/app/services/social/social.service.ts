@@ -7,7 +7,10 @@ import {DatasharingService} from 'src/app/services/datasharing.service';
 
 const graphqlCreateGroupQuery = `mutation($name: String!) {
   createGroup(name: $name) {
-    id
+    id,
+    name,
+    picture,
+    deletable
   }
 }`;
 
@@ -39,7 +42,10 @@ export class SocialService extends BaseService {
    */
   createGroup(name: string) {
     const body = SocialService.buildGroupCreateBody(name);
-    return this.postGraphql(body, null,  0);
+    return this.postGraphql(body, null,  0)
+      .pipe(tap(response => {
+        this.data.addGroupToUser(response.data.createGroup);
+      }));
   }
 
   public removeFriend(id: number) {
