@@ -59,11 +59,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule, MatProgressBarModule} from '@angular/material/';
+import {MatGridListModule, MatNativeDateModule, MatProgressBarModule} from '@angular/material/';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import {LightboxModule} from 'ngx-lightbox';
+import { AdminpageComponent } from './components/adminpage/adminpage.component';
 
 
 const config: SocketIoConfig = {url: 'http://localhost:4444', options: {}};
@@ -76,6 +77,7 @@ const appRoutes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'about', component: AboutComponent},
   {path: 'imprint', component: ImprintComponent},
+  {path: 'admin', component: AdminpageComponent},
 ];
 
 @NgModule({
@@ -104,6 +106,7 @@ const appRoutes: Routes = [
     UserlistComponent,
     DialogFileUploadComponent,
     DialogGroupFileUploadComponent,
+    AdminpageComponent,
   ],
   imports: [
     BrowserModule,
@@ -149,7 +152,8 @@ const appRoutes: Routes = [
     MatSnackBarModule,
     MatProgressBarModule,
     LightboxModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    MatGridListModule,
   ],
   entryComponents: [
     DialogCreateGroupComponent,

@@ -45,4 +45,6 @@ export interface IUser {
   eventCount: number;
 
   events: any[];
+
+  isAdmin?: boolean;
 }

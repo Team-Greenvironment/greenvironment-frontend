@@ -52,12 +52,10 @@ export class Group {
       const user = new User();
       this.admins.push(user.assignFromResponse(admin));
     }
-    for (const admin of this.admins) {
-      for (const member of this.members) {
-        if (member.userID === admin.userID) {
-          member.isGroupAdmin = true;
-        }
-      }
+    for (const member of this.members) {
+      member.isGroupAdmin = !!this.admins.find((a: User) => {
+        return a.userID === member.userID;
+      });
     }
   }
 
