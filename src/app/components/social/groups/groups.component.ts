@@ -30,10 +30,10 @@ export class DialogCreateGroupComponent {
     if (name) {
       this.social.createGroup(name).subscribe(() => {
         this.dialogRef.close();
-      }, ((error: IErrorResponse) => {
+      }, (error: IErrorResponse) => {
         this.errorMessage = error.error.errors[0].message;
         this.errorOccurred = true;
-      }));
+      });
     }
   }
 
