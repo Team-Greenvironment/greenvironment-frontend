@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {environment} from 'src/environments/environment';
-import {HttpClient} from '@angular/common/http';
-import {BaseService} from '../base.service';
+import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { BaseService } from '../base.service';
 import { tap } from 'rxjs/internal/operators/tap';
-import {DatasharingService} from 'src/app/services/datasharing.service';
+import { DatasharingService } from 'src/app/services/datasharing.service';
 import { Group } from 'src/app/models/group';
 import { GroupInfo } from 'src/app/models/groupinfo';
 
@@ -26,10 +26,10 @@ export class SocialService extends BaseService {
     super(http);
   }
 
-   /**
-   * Builds the body for a group creation request
-   * @param name
-   */
+  /**
+  * Builds the body for a group creation request
+  * @param name
+  */
   private static buildGroupCreateBody(name: String): any {
     return {
       query: graphqlCreateGroupQuery, variables: {
@@ -44,12 +44,14 @@ export class SocialService extends BaseService {
    */
   createGroup(name: string) {
     const body = SocialService.buildGroupCreateBody(name);
-    return this.postGraphql(body, null,  0)
+    return this.postGraphql(body, null, 0)
       .pipe(tap(response => {
-        let group = new Group();
-        group = response.data.createGroup;
-        group.picture = group.buildPictureUrl(group.picture);
-        this.data.addGroupToUser(group);
+        const group = response.data.createGroup;
+        this.data.addGroupToUser(new GroupInfo(
+          group.id,
+          group.name,
+          group.picture,
+          group.deletable));
       }));
   }
 
@@ -62,8 +64,8 @@ export class SocialService extends BaseService {
       }
     };
     return this.postGraphql(body)
-    .pipe(tap(response => {
-      this.data.removeFriendFromUser(id);
-    }));
+      .pipe(tap(response => {
+        this.data.removeFriendFromUser(id);
+      }));
   }
 }
