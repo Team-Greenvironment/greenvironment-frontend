@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {RegisterService} from '../../services/register/register.service';
-import {Registration} from '../../models/registration';
+import { Component, OnInit } from '@angular/core';
+import { RegisterService } from '../../services/register/register.service';
+import { Registration } from '../../models/registration';
 import * as sha512 from 'js-sha512';
 
 @Component({
@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
   imprintCheck = false;
 
   constructor(private registerService: RegisterService) {
-    this.registration = {username: null, passwordHash: null, email: null};
+    this.registration = { username: null, passwordHash: null, email: null };
   }
 
   public registerError(error: any) {
@@ -39,6 +39,11 @@ export class RegisterComponent implements OnInit {
   }
 
   passwordSame(pwd: string, pwd2: string) {
+    if (!pwd) {
+      this.errorOccurred = true;
+      this.errorMessage = 'please enter a password';
+      return false;
+    }
     if (pwd === pwd2) {
       return true;
     } else {
