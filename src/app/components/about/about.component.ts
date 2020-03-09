@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Activitylist} from 'src/app/models/activity';
-import {LevelList} from 'src/app/models/levellist';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {ActivityService} from 'src/app/services/activity/activity.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Activitylist } from 'src/app/models/activity';
+import { LevelList } from 'src/app/models/levellist';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivityService } from 'src/app/services/activity/activity.service';
+import { DatasharingService } from '../../services/datasharing.service';
 
 @Component({
   selector: 'app-about',
@@ -11,6 +12,7 @@ import {ActivityService} from 'src/app/services/activity/activity.service';
   styleUrls: ['./about.component.sass']
 })
 export class AboutComponent implements OnInit {
+  loggedIn = false;
   actionlist: Activitylist = new Activitylist();
   levellist: LevelList = new LevelList();
 
@@ -19,12 +21,15 @@ export class AboutComponent implements OnInit {
   displayedLevelColumns = ['level', 'name'];
   levelSource = new MatTableDataSource(this.levellist.levels);
 
-  constructor(private activityService: ActivityService) {
+  constructor(private activityService: ActivityService, private data: DatasharingService) {
   }
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   ngOnInit() {
+    this.data.currentUser.subscribe(user => {
+      this.loggedIn = user.loggedIn;
+    });
     this.activityService.getActivities();
     this.activityService.activitylist.subscribe(response => {
       this.actionlist = response;

@@ -4,7 +4,7 @@
     <h1>Greenvironment</h1>
     <br> <br> <br> <br> <br>
     <h1 class="mat-display-3">Keep it clean and green!</h1>
-    <button mat-icon-button>
+    <button mat-icon-button disabled>
       <mat-icon class="big-icon" color="primary">keyboard_arrow_down</mat-icon>
     </button>
   </div>
@@ -66,9 +66,11 @@
   <div id="text2" style="text-align: center;">
     <p class="mat-display-1">We believe, that together we can do amazing things to protect our environment and keep it
       clean and green.</p>
-    <p class="mat-display-1">You aren't part of greenvironment yet? - join us now!</p>
-    <a mat-stroked-button color="primary" class="link-button" routerLink="/register">Register</a>
-    <br>
-    <a mat-stroked-button color="primary" class="link-button" routerLink="/login">Login</a>
+    <div *ngIf="!loggedIn">
+      <p class="mat-display-1">You aren't part of greenvironment yet? - join us now!</p>
+      <a mat-stroked-button color="primary" class="link-button" routerLink="/register">Register</a>
+      <br>
+      <a mat-stroked-button color="primary" class="link-button" routerLink="/login">Login</a>
+    </div>
   </div>
 </div>
